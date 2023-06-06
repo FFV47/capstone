@@ -1,0 +1,32 @@
+@use "bootstrap" as *;
+@use "colors" as c;
+
+@mixin custom-btn($font-size: 1rem) {
+  .btn {
+    font-size: $font-size;
+    background-color: c.$neon-blue;
+    border-color: c.$neon-blue;
+    transition: box-shadow 0.2s;
+
+    &:hover {
+      background-color: shift-color(c.$neon-blue, 30%);
+    }
+
+    &:active {
+      background-color: shift-color(c.$neon-blue, 30%);
+      box-shadow: 0px 0px 10px 1px shift-color(c.$neon-blue, 30%);
+    }
+  }
+}
+
+@mixin btn-rfs() {
+  .btn {
+    font-size: 20px;
+  }
+
+  @include media-breakpoint-up(md) {
+    .btn {
+      font-size: 1rem;
+    }
+  }
+}

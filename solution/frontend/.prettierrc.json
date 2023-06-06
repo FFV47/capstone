@@ -1,0 +1,6 @@
+{
+  "trailingComma": "es5",
+  "arrowParens": "always",
+  "printWidth": 110,
+  "quoteProps": "preserve"
+}

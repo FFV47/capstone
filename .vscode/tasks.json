@@ -1,0 +1,72 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "django https",
+      "type": "shell",
+      "group": "test",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "source .venv/bin/activate.fish && python manage.py runserver_plus --cert-file localhost.pem --key-file localhost-key.pem",
+      "problemMatcher": []
+    },
+    {
+      "label": "django",
+      "type": "shell",
+      "group": "test",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "source .venv/bin/activate.fish && python manage.py runserver",
+      "problemMatcher": []
+    },
+    {
+      "label": "json server",
+      "type": "shell",
+      "group": "test",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "json-server -w db_json/db.json",
+      "problemMatcher": []
+    },
+    {
+      "label": "sass-watch",
+      "type": "shell",
+      "group": "test",
+      "options": {
+        "cwd": "${workspaceFolder}/solution"
+      },
+      "command": "sass --update -c -w scss:frontend/src/styles",
+      "problemMatcher": []
+    },
+    {
+      "label": "vite dev",
+      "type": "shell",
+      "group": "test",
+      "options": {
+        "cwd": "${workspaceFolder}/solution/frontend"
+      },
+      "command": "pnpm vite",
+      "problemMatcher": []
+    },
+    {
+      "label": "vite build",
+      "type": "shell",
+      "group": {
+        "kind": "build"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/solution/frontend"
+      },
+      "command": "pnpm tsc && pnpm vite build",
+      "problemMatcher": []
+    },
+    {
+      "label": "start dev",
+      "dependsOn": ["django", "json server", "sass-watch", "vite dev"],
+      "problemMatcher": []
+    }
+  ]
+}

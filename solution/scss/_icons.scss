@@ -1,0 +1,23 @@
+@use "bootstrap" as *;
+@use "colors" as c;
+
+.heroicon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.star-filled-icon {
+  color: $yellow;
+}
+
+.jobs-check-icon,
+.map-pin-icon,
+.identification-icon,
+.role-icon {
+  color: c.$green-cyan;
+}
+
+.driving-icon path {
+  stroke: c.$green-cyan;
+  stroke-width: 1.5;
+}

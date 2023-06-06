@@ -1,0 +1,50 @@
+@use "bootstrap" as *;
+@use "colors" as c;
+
+.main-navbar {
+  color: white;
+  background: c.$space-cadet;
+
+  .navbar-brand {
+    border-radius: 0.5rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .navbar-brand:hover {
+    background-color: shift-color(c.$neon-blue, -10%);
+  }
+
+  .navbar-brand,
+  .nav-link {
+    color: whitesmoke;
+  }
+
+  .nav-link {
+    border-radius: 0.5rem;
+
+    &.active {
+      color: white;
+      background-color: c.$neon-blue;
+    }
+    &.active:hover {
+      color: white;
+      background-color: shift-color(c.$neon-blue, 30%);
+    }
+  }
+
+  .nav-link:hover {
+    color: shift-color(c.$neon-blue, -35%);
+  }
+
+  @include media-breakpoint-up(md) {
+    margin: 0.5rem 1rem 0rem;
+    top: 0.5rem;
+    border-radius: 0.75rem;
+
+    & > nav {
+      border-radius: 0.75rem;
+    }
+  }
+}

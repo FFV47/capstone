@@ -1,0 +1,79 @@
+{% extends "solution/layout.html" %}
+
+{% load static %}
+
+{% block scripts %}
+  <script type="module">
+    const email = document.querySelector("#email");
+    const username = document.querySelector("#username");
+    email.addEventListener("input", () => {
+      username.value = email.value.split("@")[0];
+    });
+  </script>
+{% endblock scripts %}
+
+{% block body %}
+  <div class="container auth-container">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title text-center">Solution</h4>
+        <form action="{% url 'solution:register' %}"
+              method="post"
+              class="needs-validation mb-3"
+              novalidate>
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email"
+                   class="form-control {{ form_errors.email|yesno:"is-invalid,,is-valid" }}"
+                   name="email"
+                   id="email"
+                   placeholder="email@email.com"
+                   aria-describedby="emailValidation"
+                   aria-live="polite"
+                   autocomplete="email"
+                   required
+                   value="{{ fields.email }}"/>
+            <small class="text-muted">Username from the provided e-mail will be used as default
+            username. You can change it later in account settings</small>
+            <div id="emailValidation" class="invalid-feedback" aria-live="polite">
+              {{
+              form_errors.email|join:" " }}
+            </div>
+            <input type="hidden" name="username" id="username">
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password"
+                   class="form-control {{ form_errors.password|yesno:"is-invalid,,is-valid" }}"
+                   name="password"
+                   id="password"
+                   aria-describedby="passwordValidation"
+                   aria-live="polite"
+                   autocomplete="new-password"
+                   required/>
+            <div id="passwordValidation" class="invalid-feedback" aria-live="polite">
+              {{ form_errors.password|join:" " }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="confirmation" class="form-label">Password Confirmation</label>
+            <input type="password"
+                   class="form-control {{ form_errors.confirmation|yesno:"is-invalid,,is-valid" }}"
+                   name="confirmation"
+                   id="confirmation"
+                   aria-describedby="passwordValidation"
+                   aria-live="polite"
+                   autocomplete="new-password"
+                   required/>
+            <div id="confirmationValidation" class="invalid-feedback" aria-live="polite">
+              {{ form_errors.confirmation|join:", " }}
+            </div>
+          </div>
+          <input class="btn btn-primary" type="submit" value="Register" />
+        </form>
+        Already have an account? <a href="{% url 'solution:login' %}">Log In here.</a>
+      </div>
+    </div>
+  </div>
+{% endblock body %}

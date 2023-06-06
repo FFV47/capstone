@@ -1,0 +1,91 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+@use "sass:list";
+@use "colors" as c;
+@use "bootstrap" as *;
+
+// Include any default variable overrides here (though functions won't be available)
+@use "loginpage";
+@use "navbar";
+@use "homepage";
+@use "find-workers";
+@use "find-jobs";
+@use "worker-page";
+@use "worker-card";
+@use "setup-account";
+@use "date-picker";
+
+// Fonts
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap");
+
+// Then add additional custom code here
+body {
+  font-family: "Fira Sans", $font-family-base;
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  background-color: $gray-100;
+}
+
+#root {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+img {
+  display: block;
+}
+
+.required::before {
+  content: "*";
+  vertical-align: middle;
+  color: red;
+  margin-right: 0.2rem;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.no-text-select {
+  user-select: none;
+}
+
+.w-fit {
+  width: fit-content;
+}
+
+.divider {
+  position: relative;
+  height: 1rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    // background-color: black;
+    background-image: linear-gradient(to right, transparent, $gray-600, transparent);
+  }
+}
+
+.app-footer {
+  background-color: c.$space-cadet;
+  color: $gray-100;
+}
+
+.small-links {
+  font-size: 0.5rem;
+  color: $gray-400;
+  text-decoration: none;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
+.border-neon {
+  border-color: c.$neon-blue !important;
+}

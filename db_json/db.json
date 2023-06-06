@@ -1,0 +1,260 @@
+{
+  "roles": [
+    "Construction worker",
+    "Carpenter",
+    "Painter",
+    "Landscaper",
+    "Electrician",
+    "Gardener",
+    "Warehouse worker",
+    "Handyman",
+    "Temporary Staff",
+    "General Labor"
+  ],
+  "find-jobs": {
+    "jobs": [
+      {
+        "id": 1,
+        "title": "Bicycle Mechanic",
+        "companyRep": "John Wick",
+        "companyName": "Company Name",
+        "companyDescription": "We are seeking a bicycle mechanic to join our team. The ideal candidate will have experience working in a bicycle environment and be able to perform physical labor for extended periods of time.",
+        "description": "We are seeking an experienced and detail-oriented bicycle mechanic to join our team. The ideal candidate will have a strong knowledge of bicycle mechanics and a passion for providing high-quality service to customers.",
+        "location": "Portland, OR",
+        "types": ["Full-Time", "Contract"],
+        "shifts": ["8 Hour Shift", "12 Hour Shift", "24 Hour Shift"],
+        "responsibilities": [
+          "Perform tune-ups and repairs on bicycles",
+          "Assist customers with bike selection and fitting",
+          "Maintain an organized and clean work area",
+          "Order and maintain inventory of bike parts and accessories",
+          "Assist with customer service and sales as needed"
+        ],
+        "qualifications": [
+          "High school diploma or equivalent",
+          "At least 2 years of experience as a professional bicycle mechanic",
+          "In-depth knowledge of bicycle mechanics and repair techniques",
+          "Experience working with a variety of bicycle types and brands",
+          "Strong attention to detail and commitment to quality",
+          "Excellent communication and customer service skills",
+          "Ability to work in a fast-paced environment and manage multiple tasks",
+          "Familiarity with point-of-sale and inventory management software"
+        ],
+        "benefits": [
+          "Health, dental, and vision insurance",
+          "Paid time off and holidays",
+          "Employee discounts on company products",
+          "Opportunities for professional development and training"
+        ],
+        "salaryRange": {
+          "min": 40000,
+          "max": 60000,
+          "period": "hour"
+        },
+        "workSchedules": [
+          {
+            "schedules": ["Monday to Friday", "Weekend"],
+            "from": "2021-01-01T12:00:00.000Z",
+            "to": "2021-01-01T20:00:00.000Z"
+          }
+        ],
+        "applicationInstructions": "To apply for this position, please send your resume, a cover letter, and any relevant certifications or training to hr@company.com.",
+        "tags": ["Hiring multiple candidates", "Urgently hiring", "Temporary"],
+        "postedDate": "2023-05-04T12:31:00.000Z"
+      }
+    ],
+    "availableJobTypes": ["Part-Time", "Full-Time", "Overtime", "Contract", "Internship"],
+    "availableShifts": [
+      "Day Shift",
+      "Night Shift",
+      "Overnight Shift",
+      "4 Hour Shift",
+      "8 Hour Shift",
+      "12 Hour Shift",
+      "24 Hour Shift"
+    ],
+    "availableSchedule": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+      "Monday to Friday",
+      "Weekend",
+      "Whole Week"
+    ],
+    "availableTags": ["Hiring multiple candidates", "Urgently hiring", "Temporary"]
+  },
+  "profiles": [
+    {
+      "id": 1,
+      "name": "John",
+      "imgURL": "profile1",
+      "role": "Electrician",
+      "rating": 5,
+      "reviewCount": 30,
+      "jobsDone": 45,
+      "location": "New York",
+      "verifiedID": true,
+      "drivingLicense": true,
+      "about": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam laboriosam voluptas mollitia maxime vitae. Ratione, commodi quidem. Et porro eveniet nisi dolorem animi unde consequatur, minima voluptates dignissimos fugit facilis!",
+      "lastUpdate": "2023-03-07T00:50:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Kimbell",
+      "imgURL": "profile2",
+      "role": "Warehouse worker",
+      "rating": 3,
+      "reviewCount": 6,
+      "jobsDone": 68,
+      "location": "Kertosari",
+      "verifiedID": true,
+      "drivingLicense": true,
+      "about": "nunc proin at turpis a pede posuere nonummy integer non velit donec diam neque vestibulum eget vulputate ut ultrices vel augue vestibulum ante ipsum primis in faucibus orci",
+      "lastUpdate": "2022-07-06T03:31:44.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Christos",
+      "imgURL": "profile3",
+      "role": "Warehouse worker",
+      "rating": 4,
+      "reviewCount": 57,
+      "jobsDone": 6,
+      "location": "Mykonos",
+      "verifiedID": false,
+      "drivingLicense": false,
+      "about": "eget vulputate ut ultrices vel augue vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi",
+      "lastUpdate": "2022-12-15T03:21:01.000Z"
+    },
+    {
+      "id": 4,
+      "name": "Leodora",
+      "imgURL": "profile4",
+      "role": "Painter",
+      "rating": 1,
+      "reviewCount": 30,
+      "jobsDone": 69,
+      "location": "Pukhavichy",
+      "verifiedID": false,
+      "drivingLicense": false,
+      "about": "a libero nam dui proin leo odio porttitor id consequat in consequat ut nulla sed accumsan felis ut at dolor quis",
+      "lastUpdate": "2022-03-27T14:46:24.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Alayne",
+      "imgURL": "profile5",
+      "role": "Carpenter",
+      "rating": 1,
+      "reviewCount": 49,
+      "jobsDone": 22,
+      "location": "Salamwates",
+      "verifiedID": true,
+      "drivingLicense": true,
+      "about": "pede venenatis non sodales sed tincidunt eu felis fusce posuere felis sed",
+      "lastUpdate": "2022-08-19T22:09:15.000Z"
+    },
+    {
+      "id": 6,
+      "name": "Quint",
+      "imgURL": "profile6",
+      "role": "Carpenter",
+      "rating": 3,
+      "reviewCount": 21,
+      "jobsDone": 58,
+      "location": "Karney Shomron",
+      "verifiedID": true,
+      "drivingLicense": false,
+      "about": "pede posuere nonummy integer non velit donec diam neque vestibulum eget vulputate ut ultrices vel augue vestibulum ante",
+      "lastUpdate": "2022-03-16T06:30:52.000Z"
+    },
+    {
+      "id": 7,
+      "name": "Sammy",
+      "imgURL": "profile7",
+      "role": "Electrician",
+      "rating": 4,
+      "reviewCount": 88,
+      "jobsDone": 99,
+      "location": "Jeremoabo",
+      "verifiedID": true,
+      "drivingLicense": true,
+      "about": "nec dui luctus rutrum nulla tellus in sagittis dui vel",
+      "lastUpdate": "2022-09-26T23:07:57.000Z"
+    },
+    {
+      "id": 8,
+      "name": "Raff",
+      "imgURL": "profile8",
+      "role": "Temporary Staff",
+      "rating": 5,
+      "reviewCount": 47,
+      "jobsDone": 5,
+      "location": "Kyra",
+      "verifiedID": true,
+      "drivingLicense": false,
+      "about": "molestie hendrerit at vulputate vitae nisl aenean lectus pellentesque eget nunc donec quis",
+      "lastUpdate": "2022-05-31T14:51:14.000Z"
+    },
+    {
+      "id": 9,
+      "name": "Marleen",
+      "imgURL": "profile9",
+      "role": "Electrician",
+      "rating": 4,
+      "reviewCount": 38,
+      "jobsDone": 10,
+      "location": "Bucheon-si",
+      "verifiedID": true,
+      "drivingLicense": false,
+      "about": "integer ac leo pellentesque ultrices mattis odio donec vitae nisi nam ultrices libero non mattis pulvinar nulla pede ullamcorper augue a",
+      "lastUpdate": "2022-10-07T01:31:08.000Z"
+    },
+    {
+      "id": 10,
+      "name": "Clarinda",
+      "imgURL": "profile5",
+      "role": "Handyman",
+      "rating": 4,
+      "reviewCount": 2,
+      "jobsDone": 52,
+      "location": "Meijiahe",
+      "verifiedID": false,
+      "drivingLicense": false,
+      "about": "viverra dapibus nulla suscipit ligula in lacus curabitur at ipsum ac tellus semper interdum mauris ullamcorper purus sit amet nulla quisque arcu libero rutrum ac lobortis vel dapibus",
+      "lastUpdate": "2022-06-29T11:51:47.000Z"
+    },
+    {
+      "id": 11,
+      "name": "Bryant",
+      "imgURL": "profile1",
+      "role": "Warehouse worker",
+      "rating": 4,
+      "reviewCount": 19,
+      "jobsDone": 81,
+      "location": "Raga",
+      "verifiedID": false,
+      "drivingLicense": false,
+      "about": "in congue etiam justo etiam pretium iaculis justo in hac habitasse platea dictumst etiam faucibus cursus urna",
+      "lastUpdate": "2022-04-01T13:00:16.000Z"
+    },
+    {
+      "id": 12,
+      "name": "Baillie",
+      "imgURL": "profile4",
+      "role": "Warehouse worker",
+      "rating": 2,
+      "reviewCount": 88,
+      "jobsDone": 67,
+      "location": "Dukuhmencek Lor",
+      "verifiedID": false,
+      "drivingLicense": true,
+      "about": "est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc nisl duis bibendum",
+      "lastUpdate": "2022-08-29T10:41:29.000Z"
+    }
+  ]
+}

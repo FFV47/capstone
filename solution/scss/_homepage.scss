@@ -1,0 +1,185 @@
+@use "bootstrap" as *;
+@use "colors" as c;
+
+.homepage {
+  footer {
+    margin-bottom: 2rem;
+  }
+
+  .home-main {
+    height: 40vh;
+  }
+
+  .main-img-wrapper {
+    display: none;
+  }
+
+  .headline-wrapper {
+    background-image: linear-gradient(hsla(0, 0%, 0%, 0.4), hsla(0, 0%, 0%, 0.4)),
+      url("../assets/laborer1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+
+    & p {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0;
+      color: antiquewhite;
+      text-shadow: 1px 1px 2px black;
+      padding: 1rem;
+    }
+  }
+
+  .home-worker {
+    h1 {
+      color: $gray-600;
+    }
+
+    h3 {
+      color: c.$neon-blue;
+    }
+
+    .text-side {
+      .buttons {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1rem;
+        margin: 0 1rem;
+      }
+
+      .btn {
+        display: grid;
+        place-items: center;
+      }
+
+      .btn.left {
+        background-color: $green-500;
+        color: white;
+      }
+
+      .btn.right {
+        background-color: $gray-400;
+        color: c.$space-cadet;
+      }
+    }
+
+    figure {
+      display: none;
+    }
+  }
+
+  .home-enterprise {
+    .btn.role {
+      border: 3px solid $indigo-800;
+      color: c.$neon-blue;
+
+      &:hover {
+        background-color: $gray-200;
+      }
+
+      &:active {
+        background-color: $gray-500;
+      }
+    }
+  }
+
+  // * MEDIUM SCREENS
+
+  @include media-breakpoint-up(md) {
+    .home-main {
+      padding-top: 1rem;
+      height: auto;
+    }
+
+    .headline-wrapper {
+      background-image: none;
+      display: flex;
+      align-items: center;
+
+      & p {
+        font-size: 2rem;
+        color: c.$neon-blue;
+        padding: 1rem;
+      }
+    }
+
+    .main-img-wrapper {
+      display: block;
+
+      .lower-img,
+      .upper-img {
+        display: block;
+        position: relative;
+        width: 75%;
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: cover;
+      }
+
+      .upper-img {
+        z-index: 1;
+      }
+
+      .lower-img {
+        margin-left: auto;
+        margin-right: 0;
+        margin-bottom: -20%;
+        bottom: 20%;
+        z-index: 0;
+      }
+    }
+
+    .home-worker {
+      .text-side {
+        .buttons {
+          margin: 0;
+        }
+      }
+
+      figure {
+        display: block;
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+
+    .home-enterprise {
+      flex-flow: row nowrap;
+      gap: 2rem;
+    }
+  }
+
+  // * LARGE SCREENS
+
+  @include media-breakpoint-up(lg) {
+    .headline-wrapper {
+      background-image: none;
+
+      & p {
+        font-size: 2.5rem;
+        text-shadow: 1.5px 1.5px 3px black;
+      }
+    }
+
+    .home-worker {
+      .text-side {
+        .buttons {
+          width: 60%;
+        }
+      }
+    }
+  }
+
+  // * EXTRA LARGE
+
+  @include media-breakpoint-up(xl) {
+    .headline-wrapper p {
+      font-size: 3.5rem;
+    }
+  }
+}

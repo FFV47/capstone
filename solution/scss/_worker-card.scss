@@ -1,0 +1,38 @@
+@use "bootstrap" as *;
+@use "colors" as c;
+
+.id__worker-card {
+  .profile-card {
+    height: 100%;
+  }
+
+  .profile-img {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+    outline: 2px solid $purple-700;
+  }
+
+  .profile-link {
+    text-decoration: none;
+    color: $blue-700;
+    font-size: 1.2rem;
+
+    &:hover {
+      color: c.$neon-blue;
+    }
+  }
+
+  .info-line {
+    border-top: 1px solid $gray-600;
+    padding: 0.35rem 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .profile-about {
+    padding: 0;
+  }
+}

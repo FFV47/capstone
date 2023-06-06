@@ -1,0 +1,39 @@
+@use "colors" as c;
+
+#search-modal {
+  .row .btn {
+    border: 1.5px solid c.$space-cadet;
+
+    &.modal-item-selected {
+      color: white;
+      background-color: c.$space-cadet;
+    }
+
+    &:hover {
+      outline: 3px solid c.$space-cadet;
+      outline-offset: -1px;
+    }
+
+    &:focus {
+      box-shadow: 0 0 5px 3px shift-color(c.$space-cadet, -50%);
+    }
+  }
+
+  .star-wrapper {
+    width: calc(5 * 24px);
+    display: flex;
+    justify-content: center;
+  }
+
+  .modal-footer button {
+    border: none;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    background-color: c.$neon-blue;
+    color: white;
+
+    &:hover {
+      background-color: shift-color(c.$neon-blue, 25%);
+    }
+  }
+}

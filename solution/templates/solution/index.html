@@ -1,0 +1,15 @@
+{% extends 'solution/layout.html' %}
+
+{% load django_vite %}
+{% load static %}
+
+{% block scripts %}
+  {% vite_react_refresh %}
+  {% vite_hmr_client %}
+  {% vite_asset "src/main.tsx" %}
+  {{ user_data|json_script:"userData" }}
+{% endblock scripts %}
+
+{% block body %}
+  <div id="root"></div>
+{% endblock body %}

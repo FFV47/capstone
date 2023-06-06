@@ -1,0 +1,12 @@
+@use "bootstrap" as *;
+@use "search_form";
+
+#find-workers {
+  // MEDIA QUERIES
+  @include media-breakpoint-up(md) {
+    #worker-search {
+      position: sticky;
+      top: 2rem;
+    }
+  }
+}

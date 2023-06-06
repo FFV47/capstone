@@ -1,0 +1,40 @@
+version: "3"
+name: network-app
+services:
+  db:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=network_db
+    volumes:
+      - network-db:/var/lib/postgresql/data
+  web:
+    build:
+      context: .
+      target: prd
+    image: project4:prd
+    environment:
+      - DJANGO_SUPERUSER_USERNAME=${SUPERUSER_USERNAME}
+      - DJANGO_SUPERUSER_EMAIL=${SUPERUSER_EMAIL}
+      - DJANGO_SUPERUSER_PASSWORD=${SUPERUSER_PASSWORD}
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+    entrypoint:
+      [
+        "./wait-for-it.sh",
+        "db:5432",
+        "--timeout=10",
+        "--strict",
+        "--",
+        "./app-setup.sh"
+      ]
+    command: [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
+
+volumes:
+  network-db:
+    driver: local

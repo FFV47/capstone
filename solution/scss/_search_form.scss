@@ -1,0 +1,93 @@
+@use "bootstrap" as *;
+@use "colors" as c;
+
+@use "mixins";
+@use "icons";
+@use "search-modal";
+
+.search-group {
+  span {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+  }
+
+  input {
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+  }
+
+  input:disabled {
+    background-color: white;
+  }
+
+  svg path {
+    stroke: $gray-600;
+  }
+}
+
+.filter-group {
+  color: $gray-700;
+  text-decoration: none;
+  border: 1px solid $gray-400;
+  border-radius: 1rem;
+  background-color: white;
+
+  &:hover,
+  &:focus {
+    color: $gray-700;
+  }
+
+  .btn {
+    background-color: transparent;
+    color: $gray-700;
+    border: none;
+  }
+
+  .btn-filter {
+    background-color: c.$space-cadet;
+    color: white;
+    height: max-content;
+    line-height: 1;
+
+    label {
+      cursor: pointer;
+    }
+  }
+}
+
+.input-rounded {
+  border-radius: 1rem;
+}
+
+.form-btn-wrap {
+  @include mixins.custom-btn(1.3rem);
+
+  button {
+    flex-grow: 1;
+  }
+}
+
+#sortBy {
+  color: $gray-600;
+
+  &:disabled {
+    background-color: white;
+  }
+
+  option {
+    color: black;
+  }
+
+  option[value="default"] {
+    color: $gray-600;
+  }
+}
+
+// MEDIA QUERIES
+@include media-breakpoint-up(md) {
+  .form-btn-wrap {
+    button {
+      flex: 1 1 0px;
+    }
+  }
+}
