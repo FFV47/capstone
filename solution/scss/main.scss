@@ -89,3 +89,8 @@ img {
 .border-neon {
   border-color: c.$neon-blue !important;
 }
+
+.custom-spinner {
+  border-color: c.$neon-blue;
+  border-right-color: transparent;
+}

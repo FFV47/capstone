@@ -2,16 +2,16 @@ import { format } from "date-fns";
 import { useEffect, useRef } from "react";
 import { Card, ListGroup } from "react-bootstrap";
 import { Link, useParams, useRouteLoaderData } from "react-router-dom";
-import ExternalLinkIcon from "../../icons/ExternalLinkIcon";
-import CardTags from "./CardTags";
-import { FindJobsLoaderData } from "./find-jobs";
+import ExternalLinkIcon from "../../../icons/ExternalLinkIcon";
+import CardTags from "../CardTags";
+import { FindJobsLoaderData } from "../FindJobs";
 
 type RouteParams = {
   id: string;
 };
 
 export default function SelectedJobCard() {
-  const { jobs } = useRouteLoaderData("find-jobs") as FindJobsLoaderData;
+  const jobs = useRouteLoaderData("find-jobs") as FindJobsLoaderData;
   const { id } = useParams<RouteParams>();
   const job = jobs.find((item) => item.id === Number(id));
 

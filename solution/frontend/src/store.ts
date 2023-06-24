@@ -1,12 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./authSlice";
 
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-  },
+  reducer: {},
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

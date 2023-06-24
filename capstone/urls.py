@@ -18,12 +18,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from solution.api import api
-
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("oauth/", include("oauth2_provider.urls", namespace="oauth2_provider")),
-    path("solution-api/", api.urls),  # type: ignore
     path("", include("solution.urls")),
     # path("__reload__/", include("django_browser_reload.urls")),
     # path("__debug__/", include("debug_toolbar.urls")),

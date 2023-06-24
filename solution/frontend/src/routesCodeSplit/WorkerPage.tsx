@@ -5,10 +5,10 @@ import { LoaderFunctionArgs } from "react-router-dom";
 // This func replaces the one in the route, to be code-splitted
 export const loader = (queryClient: QueryClient) => async (args: LoaderFunctionArgs) => {
   // This loader func is returning the route loader
-  const { loader } = await import("../routes/worker");
+  const { loader } = await import("../routes/WorkerPage");
   // Get the route loader data, to make this func the loader
   return await loader(queryClient)(args);
 };
 
-const WorkerPage = lazy(() => import("../routes/worker"));
+const WorkerPage = lazy(() => import("../routes/WorkerPage"));
 export default WorkerPage;

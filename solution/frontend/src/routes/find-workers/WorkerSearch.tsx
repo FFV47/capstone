@@ -5,9 +5,9 @@ import { useSearchParams } from "react-router-dom";
 import SearchFilterButton from "../../components/SearchFilterButton";
 import StyledSelect from "../../components/StyledSelect";
 import SearchIcon from "../../icons/SearchIcon";
-import { JobRoles } from "../../queries/rolesQuery";
+import type { JobRoles } from "../Root";
 import type { WorkerProfiles } from "../../queries/workerQuery";
-import { StateHookType } from "../../utils/utils";
+import type { StateHookType } from "../../utils/utils";
 import WorkerFilterModal, { WorkerFilterModalRef } from "./WorkerFilterModal";
 
 export type WorkersSearchForm = {
@@ -199,7 +199,11 @@ export default function WorkerSearch({ queryProfiles, setFilteredProfiles, roles
         </div>
         {/* Filter field */}
         <div className="filter-group d-flex mt-3">
-          <button type="button" className="btn nowrap ps-3" onClick={() => modalRef.current?.showModal()}>
+          <button
+            type="button"
+            className="btn nowrap ps-3"
+            onClick={() => modalRef.current?.showModal()}
+          >
             <BsFilter className="heroicon" />
             <span className="d-inline-block ms-2 h-auto">Filter</span>
           </button>

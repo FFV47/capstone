@@ -3,10 +3,10 @@ import { Col, Row } from "react-bootstrap";
 import { Outlet, useRouteLoaderData } from "react-router-dom";
 import JobMiniCard from "./JobMiniCard";
 import JobSearch from "./JobSearch";
-import { FindJobsLoaderData } from "./find-jobs";
+import { FindJobsLoaderData } from "../FindJobs";
 
 export default function JobFeed() {
-  const { jobs } = useRouteLoaderData("find-jobs") as FindJobsLoaderData;
+  const jobs = useRouteLoaderData("find-jobs") as FindJobsLoaderData;
 
   const [filteredJobs, setFilteredJobs] = useState(jobs);
 

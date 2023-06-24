@@ -5,9 +5,9 @@
 #setup-account {
   @include mixins.btn-rfs();
   @include mixins.custom-btn();
+
   font-family: "Inter", $font-family-base;
   font-weight: 500;
-  max-width: 650px;
 
   .btn-link-custom {
     color: white;
@@ -18,35 +18,46 @@
     }
   }
 
-  .account-type {
-    border: 3px solid $gray-500;
-    border-radius: 1rem;
-    opacity: 0.7;
-    transition: opacity 0.3s;
-    height: fit-content;
+  #account-type {
+    margin: auto;
+    max-width: 700px;
 
-    &:hover {
+    .form-check-card {
       border: 3px solid $gray-500;
-      opacity: 1;
+      border-radius: 1rem;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+
+      &:hover {
+        border: 3px solid $gray-500;
+        opacity: 1;
+      }
+
+      &.selected {
+        border-color: black;
+        background-color: $blue-100;
+        opacity: 1;
+      }
+
+      h5 {
+        font-weight: bold;
+      }
     }
 
-    &.selected {
-      border-color: black;
-      background-color: $blue-100;
-      opacity: 1;
-    }
-
-    h4 {
-      font-weight: 700;
+    .card-form-img {
+      width: 40%;
+      height: auto;
+      border-radius: 2rem;
+      border: 1px solid $gray-500;
+      background-color: whitesmoke;
     }
   }
 
-  .account-form-icon {
-    width: 40%;
-    height: auto;
-    border-radius: 2rem;
-    border: 1px solid $gray-500;
-    background-color: whitesmoke;
+  #business-form,
+  #business-rep-form,
+  #personal-form {
+    margin: auto;
+    max-width: 768px;
   }
 
   .uploaded-img {
@@ -69,8 +80,19 @@
   }
 
   @include media-breakpoint-up(md) {
-    .account-form-icon {
-      width: 70%;
+    #business-form,
+    #business-rep-form,
+    #personal-form {
+      margin-top: 1rem;
+    }
+    #account-type {
+      .card-form-img {
+        width: 70%;
+      }
+
+      button[type="submit"] {
+        font-size: 1.5rem;
+      }
     }
 
     .uploaded-img {

@@ -9,14 +9,18 @@ version = "0.1.0"
 Django = "*"
 Pillow = "^9.2.0"
 django-environ = "^0.10.0"
-django-ninja = "*"
 django-vite = {git = "https://github.com/FFV47/django-vite.git"}
-orjson = "*"
 python = "^3.10"
 python-magic = "^0.4.27"
 whitenoise = "*"
-django-oauth-toolkit = "^2.3.0"
-django-ninja-jwt = "^5.2.5"
+djangorestframework = "^3.14.0"
+pyyaml = "^6.0"
+uritemplate = "^4.1.1"
+markdown = "^3.4.3"
+pygments = "^2.15.1"
+django-filter = "^23.2"
+django-guardian = "^2.4.0"
+orjson = "^3.9.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
@@ -27,7 +31,7 @@ django-types = "^0.17.0"
 djlint = "^1.12.1"
 pyopenssl = "^23.0.0"
 pytest-django = "^4.5.2"
-werkzeug = "^2.2.2"
+djangorestframework-types = "^0.8.0"
 
 [tool.djlint]
 blank_line_after_tag = "load,extends,include,endblock"
@@ -47,7 +51,7 @@ indent_size = 2
 line-length = 200
 
 [tool.black]
-line-length = 100
+line-length = 90
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

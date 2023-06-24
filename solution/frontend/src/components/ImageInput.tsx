@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useReducer, useRef } from "react";
 import { FieldValues, Path, PathValue, UseFormSetValue } from "react-hook-form";
 import { StateHookType } from "../utils/utils";
+import { Col, Form, FormText, Row } from "react-bootstrap";
 
 type Props<T extends FieldValues> = {
   imageField: TImageKeys;
@@ -15,7 +16,7 @@ type Reducer = {
   preview: string;
 };
 
-type TImageKeys = "photo" | "companyRepPhoto" | "companyLogo";
+type TImageKeys = "photo" | "logo";
 
 function validImageFile(file: File | undefined) {
   if (!file) {
@@ -119,7 +120,8 @@ export default function ImageInput<T extends FieldValues>({
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
 
-        if (!ctx) throw new Error("This browser does not support 2-dimensional canvas rendering contexts.");
+        if (!ctx)
+          throw new Error("This browser does not support 2-dimensional canvas rendering contexts.");
 
         ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
 
@@ -145,35 +147,32 @@ export default function ImageInput<T extends FieldValues>({
             Preview
           </span>
           <canvas ref={canvasRef} width={384} height={384} className="visually-hidden"></canvas>
-          <img src={preview} alt="uploaded file" className="img-thumbnail flex-md-grow-0 uploaded-img" />
+          <img
+            src={preview}
+            alt="uploaded file"
+            className="img-thumbnail flex-md-grow-0 uploaded-img"
+          />
         </div>
       )}
 
-      <div className="row mb-3">
-        <label htmlFor={imageField} className="col-12 col-md-auto col-form-label">
+      <Form.Group as={Row} className="mb-3" controlId={imageField}>
+        <Form.Label column xs={12} md={3}>
           Company Logo
-        </label>
-        <div className="col">
-          <input
+        </Form.Label>
+
+        <Col md={9}>
+          <Form.Control
             type="file"
-            id={imageField}
             ref={inputRef}
-            className={`form-control ${fileError ? "is-invalid" : ""}`}
-            name={imageField}
             onChange={handleFileUpload}
             accept="image/png, image/jpg, image/webp"
-            aria-describedby="formFileHelp imageUploadFeedback"
+            isInvalid={Boolean(fileError)}
+            aria-invalid={Boolean(fileError)}
           />
-          {fileError && (
-            <span className="invalid-feedback" id="imageUploadFeedback" aria-live="polite">
-              {fileError}
-            </span>
-          )}
-          <span id="formFileHelp" className="form-text d-inline-block mt-1">
-            Only PNG, JPEG and WEBP accepted
-          </span>
-        </div>
-      </div>
+          <Form.Control.Feedback type="invalid">{fileError}</Form.Control.Feedback>
+          <FormText>Only PNG, JPEG and WEBP accepted</FormText>
+        </Col>
+      </Form.Group>
     </>
   );
 }

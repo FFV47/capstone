@@ -11860,13 +11860,15 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-#loginpage {
+#login-page,
+#register-page {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#loginpage .card {
+#login-page .card,
+#register-page .card {
   width: 540px;
 }
 
@@ -12310,7 +12312,6 @@ textarea.form-control-lg {
 #setup-account {
   font-family: "Inter", var(--bs-font-sans-serif);
   font-weight: 500;
-  max-width: 650px;
 }
 #setup-account .btn {
   font-size: 20px;
@@ -12340,31 +12341,40 @@ textarea.form-control-lg {
 #setup-account .btn-link-custom:hover {
   color: unset;
 }
-#setup-account .account-type {
+#setup-account #account-type {
+  margin: auto;
+  max-width: 700px;
+}
+#setup-account #account-type .form-check-card {
   border: 3px solid #adb5bd;
   border-radius: 1rem;
   opacity: 0.7;
   transition: opacity 0.3s;
-  height: fit-content;
 }
-#setup-account .account-type:hover {
+#setup-account #account-type .form-check-card:hover {
   border: 3px solid #adb5bd;
   opacity: 1;
 }
-#setup-account .account-type.selected {
+#setup-account #account-type .form-check-card.selected {
   border-color: black;
   background-color: #cfe2ff;
   opacity: 1;
 }
-#setup-account .account-type h4 {
-  font-weight: 700;
+#setup-account #account-type .form-check-card h5 {
+  font-weight: bold;
 }
-#setup-account .account-form-icon {
+#setup-account #account-type .card-form-img {
   width: 40%;
   height: auto;
   border-radius: 2rem;
   border: 1px solid #adb5bd;
   background-color: whitesmoke;
+}
+#setup-account #business-form,
+#setup-account #business-rep-form,
+#setup-account #personal-form {
+  margin: auto;
+  max-width: 768px;
 }
 #setup-account .uploaded-img {
   width: 60%;
@@ -12383,8 +12393,16 @@ textarea.form-control-lg {
   transform: scale(0.85) translateY(-1.2rem) translateX(1.75rem);
 }
 @media (min-width: 768px) {
-  #setup-account .account-form-icon {
+  #setup-account #business-form,
+  #setup-account #business-rep-form,
+  #setup-account #personal-form {
+    margin-top: 1rem;
+  }
+  #setup-account #account-type .card-form-img {
     width: 70%;
+  }
+  #setup-account #account-type button[type=submit] {
+    font-size: 1.5rem;
   }
   #setup-account .uploaded-img {
     width: 30%;
@@ -12550,6 +12568,11 @@ img {
 
 .border-neon {
   border-color: #4b0f8c !important;
+}
+
+.custom-spinner {
+  border-color: #4b0f8c;
+  border-right-color: transparent;
 }
 
 /*# sourceMappingURL=main.css.map */

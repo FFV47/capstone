@@ -13,10 +13,13 @@ from pathlib import Path
 
 import environ
 
+# set casting, default value
+env = environ.Env(DEBUG=(bool, False))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(DEBUG=(bool, False))
+# Take environment variables from .env file
 env.read_env(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +28,13 @@ env.read_env(BASE_DIR / ".env")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-*hytq74#dulwf%flrcovlpxn6#1$o@$eu#2j^x_nvhj%$(61wr"
 
+
+SESSION_COOKIE_SAMESITE = "Strict"
+SESSION_COOKIE_SECURE = True
+CSRF_USE_SESSIONS = True
+
 # SECURITY WARNING: don't run with debug turned on in production!
+# False if not in os.environ due to casting above
 DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
@@ -39,8 +48,6 @@ LOGIN_URL = "/login"
 
 INSTALLED_APPS = [
     "solution",
-    "oauth2_provider",
-    "ninja_extra",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -49,6 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_vite",
     "django_extensions",
+    "rest_framework",
 ]
 
 if DEBUG:
@@ -94,6 +102,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "capstone.wsgi.application"
+ASGI_APPLICATION = "capstone.asgi.application"
 
 
 # Database
@@ -166,7 +175,16 @@ MEDIA_URL = "/media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# DJANGO_VITE_DEV_SERVER_PROTOCOL = "https"
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    # "DEFAULT_PERMISSION_CLASSES": [
+    #     "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    # ]
+    "DEFAULT_PARSER_CLASSES": [
+        "solution.parsers.ORJSONParser",
+    ]
+}
 
 # Same as "ourDir" in vite config
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "solution/static/solution"
@@ -180,3 +198,31 @@ STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
 # RUNSERVERPLUS_SERVER_ADDRESS_PORT = "0.0.0.0:8000"
 
 # RUNSERVERPLUS_POLLER_RELOADER_TYPE = "watchdog"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"},
+        "minimal": {"format": "%(asctime)s - %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "minimal",
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "level": "DEBUG",
+            "filename": "request.log",
+            "formatter": "minimal",
+        },
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+        }
+    },
+}

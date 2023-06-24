@@ -2,10 +2,11 @@ import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { FindJobsQuery } from "../../queries/findJobsQuery";
-import CardTags from "./CardTags";
+import CardTags from "../CardTags";
+import type { FindJobsQuery } from "../FindJobs";
+
 type Props = {
-  job: FindJobsQuery["jobs"][number];
+  job: FindJobsQuery[number];
 };
 
 export default function JobMiniCard({ job }: Props) {
@@ -38,7 +39,11 @@ export default function JobMiniCard({ job }: Props) {
         </ul>
 
         {Number(job.responsibilities?.length) > 3 && (
-          <button type="button" className="btn position-relative" onClick={() => setShowMore(!showMore)}>
+          <button
+            type="button"
+            className="btn position-relative"
+            onClick={() => setShowMore(!showMore)}
+          >
             {!showMore ? "More..." : "Less..."}
           </button>
         )}

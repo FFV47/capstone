@@ -2,13 +2,27 @@ import { QueryClient, useQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
 
+import axios from "axios";
+import { z } from "zod";
 import NavBar from "../components/NavBar";
-import rolesQuery from "../queries/rolesQuery";
 
+// *** Data fetch ***
+const rolesSchema = z.array(z.string());
+export type JobRoles = z.infer<typeof rolesSchema>;
+
+const rolesQuery = {
+  queryKey: ["roles"],
+  queryFn: async () => {
+    const { data } = await axios.get("/solution-api/roles");
+    return rolesSchema.parse(data);
+  },
+};
+
+// *** Component ***
 export type RootLoaderData = Awaited<ReturnType<ReturnType<typeof loader>>>;
 
-// loader is a normal function when no parameters are used, or must return another async function
-// when called with parameters from the router
+// loader is a normal function when no parameters are used, or must return
+// another async function when called with parameters from the router
 export function loader(queryClient: QueryClient) {
   return async () => {
     const data = queryClient.ensureQueryData(rolesQuery);
@@ -20,11 +34,7 @@ export function loader(queryClient: QueryClient) {
 
 export default function Root() {
   const initialData = useLoaderData() as RootLoaderData;
-  const { data: roles, isError } = useQuery({ ...rolesQuery, initialData });
-
-  if (isError) {
-    throw new Error("Worker roles not found");
-  }
+  useQuery({ ...rolesQuery, initialData });
 
   const fallback = (
     <div className="d-flex justify-content-center align-items-center" style={{ height: "90vh" }}>
@@ -38,7 +48,7 @@ export default function Root() {
     <>
       <NavBar />
       <Suspense fallback={fallback}>
-        <Outlet context={roles} />
+        <Outlet />
       </Suspense>
       <footer className="app-footer m-0 p-2">
         <p className="text-center mb-0 small">&#169; 2022 Solution Inc. All Rights Reserved</p>

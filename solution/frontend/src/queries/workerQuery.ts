@@ -20,12 +20,12 @@ export const workerProfilesSchema = z.array(
 
 export type WorkerProfiles = z.infer<typeof workerProfilesSchema>;
 
-const getWorkerQuery = () => ({
+const workerQuery = {
   queryKey: ["workerQuery"],
   queryFn: async () => {
     const { data } = await axios.get("http://localhost:3000/profiles");
     return workerProfilesSchema.parse(data);
   },
-});
+};
 
-export default getWorkerQuery;
+export default workerQuery;

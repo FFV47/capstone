@@ -5,9 +5,9 @@ import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
 import InputBoolTags from "../../components/InputBoolTags";
 import InputRatingTags from "../../components/InputRatingTags";
 import InputTextTags from "../../components/InputTextTags";
-import { JobRoles } from "../../queries/rolesQuery";
-import { StateHookType } from "../../utils/utils";
-import { WorkersSearchForm } from "./WorkerSearch";
+import type { JobRoles } from "../Root";
+import type { StateHookType } from "../../utils/utils";
+import type { WorkersSearchForm } from "./WorkerSearch";
 
 type Props = {
   setFiltersApplied: StateHookType<boolean>;
@@ -60,7 +60,11 @@ const WorkerFilterModal = forwardRef<WorkerFilterModalRef, Props>(
         </Modal.Header>
         <Modal.Body>
           <Container className="d-flex flex-column align-items-center">
-            <form id="modal-filter-form" className="w-100" onSubmit={handleSubmit(handleFormSubmit)}>
+            <form
+              id="modal-filter-form"
+              className="w-100"
+              onSubmit={handleSubmit(handleFormSubmit)}
+            >
               <InputTextTags
                 title="Job Types"
                 register={register}

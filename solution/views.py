@@ -14,16 +14,16 @@ class AuthHttpRequest(HttpRequest):
     user: User
 
 
-# @method_decorator(login_required, name="dispatch")
 class IndexView(TemplateView):
     template_name: str = "solution/index.html"
 
     def get(self, request: AuthHttpRequest):
         user_data = {
-            "username": request.user.username,  # type: ignore
+            "username": request.user.username,
             "authenticated": request.user.is_authenticated,
-            "hasAccount": request.user.has_account if request.user.is_authenticated else False,  # type: ignore
-            # "hasAccount": True,  # type: ignore
+            "hasAccount": request.user.has_account
+            if request.user.is_authenticated
+            else False,
         }
 
         context = {"user_data": user_data}
@@ -80,10 +80,14 @@ class LoginView(TemplateView):
                 login(request=request, user=user)
                 return redirect("solution:index")
 
-            return render(request, self.template_name, {"auth_error": "Invalid Credentials"})
+            return render(
+                request, self.template_name, {"auth_error": "Invalid Credentials"}
+            )
 
         return render(
-            request, self.template_name, {"form_errors": form.errors, "fields": form.cleaned_data}
+            request,
+            self.template_name,
+            {"form_errors": form.errors, "fields": form.cleaned_data},
         )
 
 

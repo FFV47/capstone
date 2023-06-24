@@ -1,29 +1,27 @@
 // add the beginning of your app entry
 import "vite/modulepreload-polyfill";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Routes
-import Root, { loader as rootLoader } from "./routes/root";
-import Login from "./routes/login";
-import Register from "./routes/register";
-import Home from "./routes/home";
-import FindWorkers, { loader as findWorkersLoader } from "./routes/find-workers/find-workers";
-import WorkerPage, { loader as workerPageLoader } from "./routes/worker";
-import SetupAccount, { loader as setupAccountLoader } from "./routes/setup-account/setup-account";
-import AccountType from "./routes/setup-account/AccountType";
-import PersonalInfo from "./routes/setup-account/personal";
-import CompanyInfo from "./routes/setup-account/business/business";
-import CompanyRepInfo from "./routes/setup-account/business/business-rep";
-import UserAccount from "./routes/user";
-import FindJobs, { loader as findJobsLoader } from "./routes/find-jobs/find-jobs";
-import JobFeed from "./routes/find-jobs/JobFeed";
-import SelectedJobCard from "./routes/find-jobs/SelectedJobCard";
+import FindJobs, { loader as findJobsLoader } from "./routes/find-jobs/FindJobs";
 import JobFavorites from "./routes/find-jobs/JobFavorites";
+import JobFeed from "./routes/find-jobs/feed/JobFeed";
+import SelectedJobCard from "./routes/find-jobs/feed/SelectedJobCard";
+import FindWorkers, { loader as findWorkersLoader } from "./routes/find-workers/FindWorkers";
+import Home from "./routes/Home";
+import Root, { loader as rootLoader } from "./routes/Root";
+import AccountType from "./routes/setup-account/AccountType";
+import BusinessForm from "./routes/setup-account/business/BusinessForm";
+import BusinessRepForm from "./routes/setup-account/business-rep/BusinessRepForm";
+import PersonalInfo from "./routes/setup-account/personal/Personal";
+import SetupAccount, { loader as setupAccountLoader } from "./routes/setup-account/SetupAccount";
+import UserAccount from "./routes/user";
+import WorkerPage, { loader as workerPageLoader } from "./routes/WorkerPage";
 // import ErrorPage from "./components/ErrorPage";
 
 // Code-splitted Routes
@@ -82,7 +80,6 @@ const router = createBrowserRouter([
         path: "worker/:id",
         element: <WorkerPage />,
         loader: workerPageLoader(queryClient),
-        action: undefined,
       },
       {
         path: "setup-account",
@@ -99,28 +96,19 @@ const router = createBrowserRouter([
           },
           {
             path: "business",
-            element: <CompanyInfo />,
+            element: <BusinessForm />,
           },
           {
             path: "business-rep",
-            element: <CompanyRepInfo />,
+            element: <BusinessRepForm />,
           },
         ],
       },
       {
         path: "user",
         element: <UserAccount />,
-        loader: undefined,
       },
     ],
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
   },
 ]);
 

@@ -3,7 +3,7 @@ import { Link, useRouteLoaderData } from "react-router-dom";
 import img1 from "../assets/laborer1.jpg";
 import img2 from "../assets/laborer2.png";
 import worker_illustration from "../assets/worker-illustration.jpg";
-import { RootLoaderData } from "./root";
+import { RootLoaderData } from "./Root";
 import { WorkersSearchForm } from "./find-workers/WorkerSearch";
 
 type WorkerSearchParams = {
@@ -14,7 +14,9 @@ export default function Home() {
   const roles = useRouteLoaderData("root") as RootLoaderData;
 
   const roleLinks = roles.map((role) => {
-    const link = new URLSearchParams({ selectedRoles: role } satisfies WorkerSearchParams).toString();
+    const link = new URLSearchParams({
+      selectedRoles: role,
+    } satisfies WorkerSearchParams).toString();
 
     return (
       <Link to={`find-workers?${link}`} className="btn role" key={role}>
@@ -44,7 +46,9 @@ export default function Home() {
         >
           <h1>For Workers</h1>
           <h3>Choose how you work</h3>
-          <p>Sign up with your work preferences and matching job opportunities will be sent to you.</p>
+          <p>
+            Sign up with your work preferences and matching job opportunities will be sent to you.
+          </p>
           {/* Buttons */}
           <div className="buttons">
             <a href="/register" className="btn left flex-grow-1">

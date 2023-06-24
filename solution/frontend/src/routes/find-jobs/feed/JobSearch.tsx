@@ -6,14 +6,14 @@ import ReactDatePicker from "react-datepicker";
 import { Controller, FormProvider, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { BsFilter } from "react-icons/bs";
 import { useSearchParams } from "react-router-dom";
-import InputFilterTextTags from "../../components/InputFilterTextTags";
-import StyledSelect from "../../components/StyledSelect";
-import ClockIcon from "../../icons/ClockIcon";
-import CloseIcon from "../../icons/CloseIcon";
-import SearchIcon from "../../icons/SearchIcon";
-import { FindJobsQuery } from "../../queries/findJobsQuery";
-import { StateHookType } from "../../utils/utils";
+import InputFilterTextTags from "../../../components/InputFilterTextTags";
+import StyledSelect from "../../../components/StyledSelect";
+import ClockIcon from "../../../icons/ClockIcon";
+import CloseIcon from "../../../icons/CloseIcon";
+import SearchIcon from "../../../icons/SearchIcon";
+import type { StateHookType } from "../../../utils/utils";
 import JobFilterModal from "./JobFilterModal";
+import type { FindJobsQuery } from "../FindJobs";
 
 export type JobSearchForm = {
   jobSearch?: string;
@@ -43,7 +43,15 @@ function getMinutesFromISO(date: Date | string) {
   return parseInt(hour, 10) * 60 + parseInt(min, 10);
 }
 
-function checkTime(scheduleStart: string, scheduleEnd: string, selectedStart?: Date, selectedEnd?: Date) {
+/**
+ * Returns a boolean indicating if the selected time range falls within the schedule range.
+ */
+function checkTime(
+  scheduleStart: string,
+  scheduleEnd: string,
+  selectedStart?: Date,
+  selectedEnd?: Date
+) {
   const scheduleStartMin = getMinutesFromISO(scheduleStart);
   const scheduleEndMin = getMinutesFromISO(scheduleEnd);
 
@@ -68,8 +76,8 @@ function checkTime(scheduleStart: string, scheduleEnd: string, selectedStart?: D
 }
 
 type Props = {
-  setFilteredJobs: StateHookType<FindJobsQuery["jobs"]>;
-  jobs: FindJobsQuery["jobs"];
+  setFilteredJobs: StateHookType<FindJobsQuery>;
+  jobs: FindJobsQuery;
 };
 
 export default function JobSearch({ setFilteredJobs, jobs }: Props) {
@@ -128,7 +136,8 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
           job.title.toLowerCase().includes(param) ||
           job.description.toLowerCase().includes(param) ||
           job.location.toLowerCase().includes(param) ||
-          (job.responsibilities && job.responsibilities.some((r) => r.toLowerCase().includes(param))) ||
+          (job.responsibilities &&
+            job.responsibilities.some((r) => r.toLowerCase().includes(param))) ||
           (job.qualifications && job.qualifications.some((r) => r.toLowerCase().includes(param)))
       );
     }
@@ -146,7 +155,9 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
     }
 
     if (data.tagsSelected.length) {
-      selectedJobs = selectedJobs.filter((job) => job.tags?.some((tag) => data.tagsSelected.includes(tag)));
+      selectedJobs = selectedJobs.filter((job) =>
+        job.tags?.some((tag) => data.tagsSelected.includes(tag))
+      );
     }
 
     // Salary filter
@@ -213,6 +224,7 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
       <FormProvider {...formMethods}>
         <JobFilterModal {...{ showModal, setShowModal, formSubmit, setFiltersApplied }} />
       </FormProvider>
+
       <form
         ref={formEl}
         className="d-flex flex-column align-items-stretch mb-4"
@@ -231,6 +243,7 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
             {...register("jobSearch")}
           ></FormControl>
         </InputGroup>
+
         {/* Schedule */}
         <InputGroup as="div" className="flex-nowrap mb-3">
           <InputGroup.Text id="clockIcon">
@@ -244,7 +257,7 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
                 <ReactDatePicker
                   id="scheduleFrom"
                   selected={field.value}
-                  onChange={field.onChange}
+                  onChange={(date) => field.onChange(date as Date)}
                   onBlur={field.onBlur}
                   name={field.name}
                   showPopperArrow={false}
@@ -272,7 +285,7 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
                 <ReactDatePicker
                   id="scheduleTo"
                   selected={field.value}
-                  onChange={field.onChange}
+                  onChange={(date) => field.onChange(date as Date)}
                   onBlur={field.onBlur}
                   name={field.name}
                   showPopperArrow={false}
@@ -293,7 +306,7 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
             </button>
           </InputGroup.Text>
         </InputGroup>
-        {/* <div className="input-group flex-nowrap mb-3"></div> */}
+
         {/* Salary */}
         <InputGroup className="mb-3">
           <InputGroup.Text>$</InputGroup.Text>
@@ -333,26 +346,16 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
           </button>
           {filtersApplied && (
             <div className="d-flex flex-wrap align-items-center gap-2 p-1">
-              <InputFilterTextTags
-                formMethods={formMethods}
-                fieldName="typesSelected"
-                formSubmit={formSubmit}
-              />
-              <InputFilterTextTags
-                formMethods={formMethods}
-                fieldName="shiftsSelected"
-                formSubmit={formSubmit}
-              />
-              <InputFilterTextTags
-                formMethods={formMethods}
-                fieldName="scheduleSelected"
-                formSubmit={formSubmit}
-              />
-              <InputFilterTextTags
-                formMethods={formMethods}
-                fieldName="tagsSelected"
-                formSubmit={formSubmit}
-              />
+              {(
+                ["typesSelected", "shiftsSelected", "scheduleSelected", "tagsSelected"] as const
+              ).map((field) => (
+                <InputFilterTextTags
+                  key={field}
+                  formMethods={formMethods}
+                  fieldName={field}
+                  formSubmit={formSubmit}
+                />
+              ))}
             </div>
           )}
         </div>

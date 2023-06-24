@@ -13,7 +13,7 @@
 {% endblock scripts %}
 
 {% block body %}
-  <div class="container auth-container">
+  <div id="register-page" class="container auth-container">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title text-center">Solution</h4>
@@ -33,7 +33,7 @@
                    aria-live="polite"
                    autocomplete="email"
                    required
-                   value="{{ fields.email }}"/>
+                   value="{{ fields.email }}" />
             <small class="text-muted">Username from the provided e-mail will be used as default
             username. You can change it later in account settings</small>
             <div id="emailValidation" class="invalid-feedback" aria-live="polite">
@@ -51,7 +51,7 @@
                    aria-describedby="passwordValidation"
                    aria-live="polite"
                    autocomplete="new-password"
-                   required/>
+                   required />
             <div id="passwordValidation" class="invalid-feedback" aria-live="polite">
               {{ form_errors.password|join:" " }}
             </div>
@@ -65,7 +65,7 @@
                    aria-describedby="passwordValidation"
                    aria-live="polite"
                    autocomplete="new-password"
-                   required/>
+                   required />
             <div id="confirmationValidation" class="invalid-feedback" aria-live="polite">
               {{ form_errors.confirmation|join:", " }}
             </div>

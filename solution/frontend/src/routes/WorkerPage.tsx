@@ -17,8 +17,6 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 
 type LoaderData = Awaited<ReturnType<ReturnType<typeof loader>>>;
 
-const query = workerQuery();
-
 export function loader(queryClient: QueryClient) {
   return async () => {
     const { authenticated } = djangoUserData;
@@ -27,7 +25,7 @@ export function loader(queryClient: QueryClient) {
       throw new Response("User is not authenticated", { status: 401 });
     }
 
-    const profiles = queryClient.ensureQueryData(query);
+    const profiles = queryClient.ensureQueryData(workerQuery);
 
     if (!profiles) throw new Response("Worker profiles not found", { status: 404 });
 
@@ -43,7 +41,7 @@ export default function WorkerPage() {
   const params = useParams();
 
   const initialData = useLoaderData() as LoaderData;
-  const { data: profiles } = useQuery({ ...workerQuery(), initialData });
+  const { data: profiles } = useQuery({ ...workerQuery, initialData });
 
   const profile = profiles.find((profile) => profile.id === Number(params.id));
 
@@ -124,7 +122,13 @@ export default function WorkerPage() {
         <Card.Body className="pt-1">
           <Form method="post">
             <label className="mt-2 mb-3">
-              <input type="checkbox" className="btn-check" name="rating" value={rating} autoComplete="off" />
+              <input
+                type="checkbox"
+                className="btn-check"
+                name="rating"
+                value={rating}
+                autoComplete="off"
+              />
               <div className="star-wrapper">
                 {[...Array(5)].map((_, value) => (
                   <button
@@ -190,9 +194,9 @@ export default function WorkerPage() {
             {/* Body */}
             <Card.Body>
               <Card.Text>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat pariatur facilis perspiciatis
-                sunt sed, vitae ad officiis laboriosam unde, temporibus tempora nemo velit mollitia earum
-                assumenda minus voluptatum quod facere.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat pariatur facilis
+                perspiciatis sunt sed, vitae ad officiis laboriosam unde, temporibus tempora nemo
+                velit mollitia earum assumenda minus voluptatum quod facere.
               </Card.Text>
             </Card.Body>
           </Card>

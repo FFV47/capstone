@@ -7,10 +7,10 @@ import ClockFillIcon from "../../icons/ClockFillIcon";
 import ClockIcon from "../../icons/ClockIcon";
 import CurrencyIcon from "../../icons/CurrencyIcon";
 import InfoFillIcon from "../../icons/InfoFillIcon";
-import { FindJobsQuery } from "../../queries/findJobsQuery";
+import type { FindJobsQuery } from "./FindJobs";
 
 type Props = {
-  job: FindJobsQuery["jobs"][number];
+  job: FindJobsQuery[number];
   unwrapTags?: boolean;
 };
 
@@ -19,7 +19,9 @@ export default function CardTags({ job, unwrapTags }: Props) {
 
   job.workSchedules?.forEach((item) => (allSchedules = allSchedules?.concat(item.schedules)));
 
-  const salaryPeriodSuffix = `a${job.salaryRange?.period === "hour" ? "n" : ""} ${job.salaryRange?.period}`;
+  const salaryPeriodSuffix = `a${job.salaryRange?.period === "hour" ? "n" : ""} ${
+    job.salaryRange?.period
+  }`;
 
   return (
     <>
@@ -76,13 +78,17 @@ export default function CardTags({ job, unwrapTags }: Props) {
             <Alert variant="primary" className="job-card-tag">
               <BriefcaseIcon />
               <span className="ms-1">
-                {job.types.length > 1 ? `${job.types.at(0)} +${job.types.length - 1}` : job.types.at(0)}
+                {job.types.length > 1
+                  ? `${job.types.at(0)} +${job.types.length - 1}`
+                  : job.types.at(0)}
               </span>
             </Alert>
             <Alert variant="secondary" className="job-card-tag">
               <ClockIcon />
               <span className="ms-1">
-                {job.shifts.length > 1 ? `${job.shifts.at(0)} +${job.shifts.length - 1}` : job.shifts.at(0)}
+                {job.shifts.length > 1
+                  ? `${job.shifts.at(0)} +${job.shifts.length - 1}`
+                  : job.shifts.at(0)}
               </span>
             </Alert>
             <Alert variant="secondary" className="job-card-tag">

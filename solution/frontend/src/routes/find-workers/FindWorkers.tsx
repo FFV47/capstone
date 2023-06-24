@@ -1,23 +1,22 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { useLoaderData, useRouteLoaderData } from "react-router-dom";
-import getWorkerQuery from "../../queries/workerQuery";
+import workerQuery from "../../queries/workerQuery";
 import WorkerCard from "./WorkerCard";
 
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { RootLoaderData } from "../root";
+import { RootLoaderData } from "../Root";
 import FilteredWorkerCards from "./FilteredWorkerCards";
 import WorkerSearch from "./WorkerSearch";
 
 type LoaderData = Awaited<ReturnType<ReturnType<typeof loader>>>;
 
-const workerQuery = getWorkerQuery();
-
 export function loader(queryClient: QueryClient) {
   return async () => {
     const profiles = await queryClient.ensureQueryData(workerQuery);
 
-    if (!profiles || !profiles.length) throw new Response("Worker profiles not found", { status: 404 });
+    if (!profiles || !profiles.length)
+      throw new Response("Worker profiles not found", { status: 404 });
 
     return profiles;
   };
@@ -52,7 +51,11 @@ export default function FindWorkers() {
         <Row>
           <Col xs={12} lg={4}>
             {/* Search and Filter */}
-            <WorkerSearch queryProfiles={profiles} setFilteredProfiles={setFilteredProfiles} roles={roles} />
+            <WorkerSearch
+              queryProfiles={profiles}
+              setFilteredProfiles={setFilteredProfiles}
+              roles={roles}
+            />
           </Col>
           <Col>
             {/* Worker Cards result */}

@@ -8,12 +8,13 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.forms import JSONField
-from django.utils.translation import gettext_lazy as _
 
 from solution import validators
 from solution.utils import upload_path
 
-file_validator = validators.FileValidator(max_size=3, content_types=("image/jpeg", "image/png"))
+file_validator = validators.FileValidator(
+    max_size=3, content_types=("image/jpeg", "image/png")
+)
 
 if TYPE_CHECKING:
     from django.db.models.manager import RelatedManager
@@ -33,22 +34,31 @@ class Role(models.Model):
 
     professionals: RelatedManager[PersonalAccount]
 
-    class JobRoles(models.TextChoices):
-        CONSTRUCTION_WORKER = "CON", _("Construction worker")
-        CARPENTER = "CAR", _("Carpenter")
-        PAINTER = "PAI", _("Painter")
-        LANDSCAPER = "LAN", _("Landscaper")
-        ELECTRICIAN = "ELE", _("Electrician")
-        GARDENER = "GAR", _("Gardener")
-        WAREHOUSE_WORKER = "WAR", _("Warehouse worker")
-        HANDYMAN = "HAN", _("Handyman")
-        TEMPORARY_STAFF = "TEM", _("Temporary Staff")
-        GENERAL_LABOR = "GEN", _("General Labor")
+    name = models.CharField(max_length=255)
 
-    name = models.CharField(max_length=255, choices=JobRoles.choices)
 
-    def __str__(self) -> str:
-        return self.name
+class JobType(models.Model):
+    id: int
+
+    name = models.CharField(max_length=255)
+
+
+class Shift(models.Model):
+    id: int
+
+    name = models.CharField(max_length=255)
+
+
+class DaysSchedule(models.Model):
+    id: int
+
+    name = models.CharField(max_length=255)
+
+
+class JobTag(models.Model):
+    id: int
+
+    name = models.CharField(max_length=255)
 
 
 class PersonalAccount(models.Model):
@@ -84,7 +94,22 @@ class PersonalAccount(models.Model):
 class BusinessAccount(models.Model):
     id: int
 
-    user = models.OneToOneField(
+    company_logo = models.ImageField(
+        blank=True,
+        upload_to=upload_path,
+        validators=[file_validator],
+    )
+
+    name = models.CharField(max_length=100)
+    address = models.CharField(max_length=255)
+    legal_name = models.CharField(max_length=255)
+    industry = models.CharField(max_length=255)
+    company_size = models.IntegerField(validators=[MinValueValidator(0)])
+    location = models.CharField(max_length=255)
+    company_url = models.URLField(blank=True)
+    description = models.TextField(blank=True)
+
+    company_rep = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="business_account",
@@ -95,12 +120,10 @@ class BusinessAccount(models.Model):
         upload_to=upload_path,
         validators=[file_validator],
     )
-    enterprise_logo = models.ImageField(
-        blank=True,
-        upload_to=upload_path,
-        validators=[file_validator],
-    )
-    verified_id = models.BooleanField(default=False)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    verified_id = models.BooleanField()
+
     last_update = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
@@ -124,7 +147,9 @@ class Job(models.Model):
     qualifications = models.JSONField(default=list)
     benefits = models.JSONField(default=list)
     min_salary = models.FloatField(validators=[MinValueValidator(0)])
-    max_salary = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(1_000_000)])
+    max_salary = models.FloatField(
+        validators=[MinValueValidator(0), MaxValueValidator(1_000_000)]
+    )
     period_salary = models.CharField(max_length=255)
     application_instructions = models.TextField()
     tags = models.JSONField(validators=[validators.validate_tags])
@@ -146,3 +171,6 @@ class WorkSchedules(models.Model):
     schedules = JSONField(validators=[validators.validate_schedule])
     time_from = models.TimeField()
     time_to = models.TimeField()
+
+    class Meta:
+        verbose_name_plural = "Work Schedules"

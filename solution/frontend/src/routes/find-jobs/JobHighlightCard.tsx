@@ -1,11 +1,11 @@
 import { Card, Col, ListGroup, Row } from "react-bootstrap";
 import companyLogo from "../../assets/companyLogo.jpg";
-import { FindJobsQuery } from "../../queries/findJobsQuery";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import CardTags from "./CardTags";
+import type { FindJobsQuery } from "./FindJobs";
 
 type Props = {
-  job: FindJobsQuery["jobs"][number];
+  job: FindJobsQuery[number];
 };
 
 export default function JobHighlightCard({ job }: Props) {

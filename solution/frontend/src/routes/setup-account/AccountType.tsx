@@ -1,9 +1,10 @@
-import personalIcon from "../../assets/personalIcon.png";
-import businessIcon from "../../assets/businessIcon.png";
+import { useState } from "react";
+import { Alert, Form, Row } from "react-bootstrap";
 import { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Account, useSetupAccountContext } from "./setup-account";
-import { useState } from "react";
+import businessIcon from "../../assets/businessIcon.png";
+import personalIcon from "../../assets/personalIcon.png";
+import { Account, useSetupAccountContext } from "./SetupAccount";
 
 export default function AccountType() {
   const { accountForm } = useSetupAccountContext();
@@ -16,56 +17,73 @@ export default function AccountType() {
 
   const onSubmitSuccess: SubmitHandler<Account> = (data) => {
     setShowError(false);
+    console.log(data);
+
     navigate(data.accountType);
   };
 
   return (
-    <form
-      className="container-sm flex-grow-1 d-flex justify-content-center flex-wrap px-4 p-md-0 mt-1 needs-validation"
+    <Form
+      id="account-type"
       onSubmit={handleSubmit(onSubmitSuccess, () => setShowError(true))}
       noValidate
     >
-      <fieldset className="d-flex flex-column mb-3">
+      <fieldset className="mb-3">
         <legend className="h1 text-center text-md-start">I want to</legend>
-        <div className="row row-cols-2 flex-grow-1 flex-md-grow-0 justify-content-between align-items-center gap-3 m-0 my-md-4">
-          <label
-            className={`col-12 col-md-5 p-3 account-type ${accountType === "business" ? "selected" : ""}`}
+        <Row className="justify-content-around align-items-center gap-3 m-0 my-md-4">
+          <Form.Check
+            type="radio"
+            id="radio-business"
+            className={`col-12 col-md-5 p-3 form-check-card ${
+              accountType === "business" ? "selected" : ""
+            }`}
           >
-            <input
+            <Form.Check.Input
               type="radio"
               autoComplete="off"
+              required
               className="btn-check"
               value="business"
-              required
               {...register("accountType")}
             />
-            <img className="account-form-icon m-auto" src={businessIcon} alt="Contractor Icon" />
-            <p className="h5 text-center mt-3">HIRE WORKERS</p>
-            <p className="text-center">
-              For businesses looking to hire for short-term and ongoing project work.
-            </p>
-          </label>
-          <label
-            className={`col-12 col-md-5 p-3 account-type ${accountType === "personal" ? "selected" : ""}`}
+            <Form.Check.Label>
+              <img className="card-form-img m-auto" src={businessIcon} alt="Contractor Icon" />
+              <h5 className="text-center mt-3">HIRE WORKERS</h5>
+              <p className="text-center">
+                For businesses looking to hire for short-term and ongoing project work.
+              </p>
+            </Form.Check.Label>
+          </Form.Check>
+          <Form.Check
+            type="radio"
+            id="radio-personal"
+            className={`col-12 col-md-5 p-3 form-check-card ${
+              accountType === "personal" ? "selected" : ""
+            }`}
           >
-            <input
+            <Form.Check.Input
               type="radio"
               autoComplete="off"
+              required
               className="btn-check"
               value="personal"
               {...register("accountType")}
             />
-            <img className="account-form-icon m-auto" src={personalIcon} alt="ToolBox Icon" />
-            <p className="h5 text-center mt-3">FIND WORK</p>
-            <p className="text-center">For personal or domestic projects including home build and DIY.</p>
-          </label>
-        </div>
+            <Form.Check.Label>
+              <img className="card-form-img m-auto" src={personalIcon} alt="ToolBox Icon" />
+              <h5 className="text-center mt-3">FIND WORK</h5>
+              <p className="text-center">
+                For personal or domestic projects including home build and DIY.
+              </p>
+            </Form.Check.Label>
+          </Form.Check>
+        </Row>
 
-        <div className={`alert alert-danger mt-3 ${showError ? "d-block" : "d-none"}`}>
+        <Alert variant="danger" className={`mt-3 ${showError ? "d-block" : "d-none"}`}>
           Please select one of these options.
-        </div>
+        </Alert>
 
-        <div className="d-flex mt-2 justify-content-md-end">
+        <div className="d-flex mt-2 justify-content-center">
           <button
             type="submit"
             className="btn btn-primary btn-rfs flex-grow-1 flex-md-grow-0 px-4"
@@ -75,6 +93,6 @@ export default function AccountType() {
           </button>
         </div>
       </fieldset>
-    </form>
+    </Form>
   );
 }
