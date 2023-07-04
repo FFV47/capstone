@@ -5,18 +5,13 @@ from django.conf import settings
 from rest_framework.exceptions import ParseError
 from rest_framework.parsers import BaseParser
 
-# from rest_framework.renderers import BaseRenderer, JSONRenderer
-
-# __all__ = ["UJSONParser"]
-
 
 class ORJSONParser(BaseParser):
     """
-    Parses JSON-serialized data by ujson parser.
+    Parses JSON-serialized data.
     """
 
     media_type: str = "application/json"
-    # renderer_class: Type[BaseRenderer] = JSONRenderer
 
     def parse(
         self,

@@ -3,14 +3,17 @@ import { Link, useNavigate, useRouteLoaderData } from "react-router-dom";
 import ImageInput from "../../../components/ImageInput";
 import { PersonalInfo, maxBirthDate, minBirthDate, useSetupAccountContext } from "../SetupAccount";
 
-import { Col, Form, Row } from "react-bootstrap";
+import axios from "axios";
+import { CloseButton, Col, Form, Row, Spinner } from "react-bootstrap";
 import ReactDatePicker from "react-datepicker";
-import { Controller, SubmitHandler } from "react-hook-form";
-import { RootLoaderData } from "../../Root";
+import { SubmitHandler, useWatch } from "react-hook-form";
+import { handleAxiosError } from "../../../utils/utils";
+import { RootLoaderData, useRootContext } from "../../Root";
 import BsHorizonralInput from "../BsHorizontalInput";
 
 export default function PersonalInfo() {
   const roles = useRouteLoaderData("root") as RootLoaderData;
+  const { dispatch } = useRootContext();
 
   const { personalInfoForm, accountForm } = useSetupAccountContext();
 
@@ -19,24 +22,48 @@ export default function PersonalInfo() {
     handleSubmit,
     watch,
     setValue,
+    getValues,
+    resetField,
     control,
     formState: { errors },
   } = personalInfoForm;
+
+  const { birthdate } = { ...useWatch({ control }), ...getValues() };
 
   const imageBlob = watch("photo");
 
   const [validImg, setValidImg] = useState(true);
   const [validated, setValidated] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<PersonalInfo> = (data) => {
-    const formData = { ...data, accountType };
-    setValidated(true);
+  const onSubmit: SubmitHandler<PersonalInfo> = async (data) => {
+    const formData = {
+      ...data,
+      accountType,
+      birthdate: data.birthdate.toISOString().substring(0, 10),
+    };
+
+    dispatch({
+      showToast: true,
+      toastHeader: "Personal Account",
+      toastBody: "Account created successfully.",
+    });
 
     if (validImg) {
-      console.log(formData);
-      // console.log(formData.birthDate.toISOString());
+      // await sleep(2);
+      try {
+        const { data: responseData } = await axios.postForm(
+          "/solution-api/personal-account",
+          formData
+        );
+        console.log({ responseData });
+      } catch (error) {
+        handleAxiosError(error);
+      }
+      setIsSending(false);
+      navigate("/user");
     }
   };
 
@@ -48,12 +75,21 @@ export default function PersonalInfo() {
   }, [accountType, navigate]);
 
   return (
-    <Form id="personal-form" onSubmit={handleSubmit(onSubmit)} validated={validated} noValidate>
+    <Form
+      id="personal-form"
+      onSubmit={(e) => {
+        setValidated(true);
+        handleSubmit(onSubmit)(e);
+      }}
+      validated={validated}
+      noValidate
+    >
       <fieldset>
         <legend className="h1">Worker Info</legend>
         <p className="text-muted required">Indicates a required field</p>
 
         <ImageInput
+          label="Photo"
           imageField="photo"
           imageBlob={imageBlob}
           setValue={setValue}
@@ -79,9 +115,9 @@ export default function PersonalInfo() {
         <BsHorizonralInput
           type="text"
           register={register}
-          field="firstName"
+          field="first_name"
           label="First Name"
-          fieldError={errors.firstName}
+          fieldError={errors.first_name}
           required
           pattern="^[A-Z][\w]{1,}"
           autoCapitalize="words"
@@ -90,9 +126,9 @@ export default function PersonalInfo() {
         <BsHorizonralInput
           type="text"
           register={register}
-          field="lastName"
+          field="last_name"
           label="Last Name"
-          fieldError={errors.lastName}
+          fieldError={errors.last_name}
           required
           pattern="^[A-Z][\w]{1,}"
           autoCapitalize="words"
@@ -104,35 +140,30 @@ export default function PersonalInfo() {
             Birth Date
           </Form.Label>
 
-          <Col md={9}>
-            <Controller
-              control={control}
-              name="birthDate"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <ReactDatePicker
-                  id="birthDate"
-                  selected={field.value}
-                  onChange={(date) => field.onChange(date as Date)}
-                  onBlur={field.onBlur}
-                  name={field.name}
-                  ref={field.ref}
-                  showPopperArrow={false}
-                  showYearDropdown
-                  showMonthDropdown
-                  dropdownMode="select"
-                  placeholderText="Click to select your birthdate"
-                  dateFormat="dd/MM/yyyy"
-                  className="form-control"
-                  autoComplete="bday"
-                  minDate={minBirthDate}
-                  maxDate={maxBirthDate}
-                />
-              )}
+          <Col md={9} className="d-flex align-items-center flex-wrap">
+            <CloseButton className="ms-1 me-2" onClick={() => resetField("birthdate")} />
+            <ReactDatePicker
+              {...register("birthdate")}
+              onChange={(date) => setValue("birthdate", date as Date)}
+              required
+              selected={birthdate}
+              showPopperArrow={false}
+              showYearDropdown
+              showMonthDropdown
+              dropdownMode="select"
+              placeholderText="Click to select your birthdate"
+              dateFormat="dd/MM/yyyy"
+              className="form-control"
+              autoComplete="bday"
+              minDate={minBirthDate}
+              maxDate={maxBirthDate}
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.birthDate?.message}
-            </Form.Control.Feedback>
+            <div
+              className="invalid-feedback"
+              style={{ display: errors.birthdate ? "block" : "none" }}
+            >
+              {errors.birthdate?.message}
+            </div>
           </Col>
         </Form.Group>
 
@@ -163,9 +194,9 @@ export default function PersonalInfo() {
           as="textarea"
           rows={3}
           register={register}
-          field="aboutMe"
+          field="about"
           label="About Me"
-          fieldError={errors.aboutMe}
+          fieldError={errors.about}
         />
 
         <div className="d-flex gap-4 justify-content-md-end mt-2 mb-3 p-0">
@@ -180,7 +211,18 @@ export default function PersonalInfo() {
           <button
             type="submit"
             className="btn btn-primary flex-grow-1 flex-md-grow-0 px-4 position-relative"
+            // onClick={() => setIsSending(true)}
           >
+            {isSending && (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+                className="me-2"
+              />
+            )}
             Submit
           </button>
         </div>

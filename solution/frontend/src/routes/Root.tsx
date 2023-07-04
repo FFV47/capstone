@@ -1,8 +1,9 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import { Suspense } from "react";
+import { Suspense, createContext, useContext, useReducer } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
 
 import axios from "axios";
+import { Toast, ToastContainer } from "react-bootstrap";
 import { z } from "zod";
 import NavBar from "../components/NavBar";
 
@@ -32,9 +33,44 @@ export function loader(queryClient: QueryClient) {
   };
 }
 
+type Context = {
+  dispatch: React.Dispatch<Partial<Reducer>>;
+};
+
+const RootContext = createContext<Context | null>(null);
+
+export function useRootContext() {
+  const context = useContext(RootContext);
+
+  if (!context) {
+    throw new Error("useRootContext must be used within a RootProvider");
+  }
+  return context;
+}
+
+type Reducer = {
+  showToast: boolean;
+  toastHeader: string;
+  toastBody: string;
+};
+
+function reducer(state: Reducer, payload: Partial<Reducer>) {
+  return {
+    ...state,
+    ...payload,
+  };
+}
+
 export default function Root() {
   const initialData = useLoaderData() as RootLoaderData;
   useQuery({ ...rolesQuery, initialData });
+
+  const reducerState: Reducer = {
+    showToast: false,
+    toastHeader: "",
+    toastBody: "",
+  };
+  const [state, dispatch] = useReducer(reducer, reducerState);
 
   const fallback = (
     <div className="d-flex justify-content-center align-items-center" style={{ height: "90vh" }}>
@@ -46,10 +82,28 @@ export default function Root() {
 
   return (
     <>
+      <ToastContainer className="success-toast">
+        <Toast
+          bg="success"
+          show={state.showToast}
+          onClose={() => dispatch({ showToast: false })}
+          delay={3000}
+          autohide
+        >
+          <Toast.Header>
+            <strong className="me-auto">{state.toastHeader}</strong>
+          </Toast.Header>
+          <Toast.Body className="text-white">{state.toastBody}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+
       <NavBar />
       <Suspense fallback={fallback}>
-        <Outlet />
+        <RootContext.Provider value={{ dispatch }}>
+          <Outlet />
+        </RootContext.Provider>
       </Suspense>
+
       <footer className="app-footer m-0 p-2">
         <p className="text-center mb-0 small">&#169; 2022 Solution Inc. All Rights Reserved</p>
         {/* <small>Icons attributions</small> */}

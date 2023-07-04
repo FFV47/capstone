@@ -1,0 +1,43 @@
+@use "bootstrap" as *;
+
+.input-file-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  button {
+    flex-grow: 1;
+  }
+
+  input[type="file"] {
+    max-width: 88%;
+  }
+}
+
+.upload-span {
+  font-size: $h4-font-size;
+  font-weight: 500;
+  width: 100%;
+}
+
+.uploaded-img {
+  width: 60%;
+  height: auto;
+  border-radius: 1rem;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  flex-grow: 0;
+}
+
+@include media-breakpoint-up(md) {
+  .input-file-wrapper {
+    button {
+      margin-right: 0.5rem;
+    }
+
+    input[type="file"] {
+      max-width: 93%;
+    }
+  }
+}

@@ -1,22 +1,21 @@
-import { useEffect, useLayoutEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef } from "react";
+import { CloseButton, Col, Form, FormText, Row } from "react-bootstrap";
 import { FieldValues, Path, PathValue, UseFormSetValue } from "react-hook-form";
 import { StateHookType } from "../utils/utils";
-import { Col, Form, FormText, Row } from "react-bootstrap";
 
 type Props<T extends FieldValues> = {
-  imageField: TImageKeys;
-  imageBlob: Blob | undefined;
+  label: string;
+  imageField: "photo" | "logo";
+  imageBlob: File | undefined;
   setValue: UseFormSetValue<T>;
   setValidImg: StateHookType<boolean>;
 };
 
 type Reducer = {
   fileError: string;
-  uploadedImg: Blob | undefined;
+  uploadedImg: File | undefined;
   preview: string;
 };
-
-type TImageKeys = "photo" | "logo";
 
 function validImageFile(file: File | undefined) {
   if (!file) {
@@ -58,9 +57,14 @@ function reducer(state: Reducer, payload: Partial<Reducer>) {
   };
 }
 
-const initialState: Reducer = { fileError: "", uploadedImg: undefined, preview: "" };
+const initialState: Reducer = {
+  fileError: "",
+  uploadedImg: undefined,
+  preview: "",
+};
 
 export default function ImageInput<T extends FieldValues>({
+  label,
   imageField,
   imageBlob,
   setValue,
@@ -84,6 +88,7 @@ export default function ImageInput<T extends FieldValues>({
       setValue(imageField as Path<T>, "" as PathValue<T, Path<T>>);
     } else if (e.currentTarget.files?.length) {
       const imgFile = e.currentTarget.files[0];
+
       dispatch({ uploadedImg: imgFile });
     }
   };
@@ -99,23 +104,19 @@ export default function ImageInput<T extends FieldValues>({
   }, [fileError]);
 
   useEffect(() => {
-    return () => {
-      URL.revokeObjectURL(imageURL);
-    };
-  }, [imageURL]);
-
-  useLayoutEffect(() => {
     if (!uploadedImg) return;
-    const fileURL = URL.createObjectURL(uploadedImg);
 
-    // Show image on the page
-    dispatch({ preview: fileURL });
+    const fileURL = URL.createObjectURL(uploadedImg);
 
     const canvasImg = new Image();
     canvasImg.src = fileURL;
+
     canvasImg.addEventListener("load", function () {
+      // Release the object URL since it's no longer needed once the image has
+      // been loaded
       URL.revokeObjectURL(fileURL);
-      // Resize image in canvas for upload
+
+      // Resize image in canvas
       if (canvasRef.current) {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
@@ -125,28 +126,37 @@ export default function ImageInput<T extends FieldValues>({
 
         ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
 
+        // Convert canvas to image, then set image as form field and preview
         canvas.toBlob((blob) => {
-          blob && setValue(imageField as Path<T>, blob as PathValue<T, Path<T>>);
-        });
+          if (blob) {
+            // Django doesn't accept blob for file upload
+            const file = new File([blob], "photo.jpg", { type: "image/jpg" });
+            setValue(imageField as Path<T>, file as PathValue<T, Path<T>>);
 
-        // setValue(imageField as Path<T>, canvas.toDataURL("image/jpg", 1) as PathValue<T, Path<T>>);
+            const url = URL.createObjectURL(blob);
+            dispatch({ preview: url });
+          }
+        });
       }
     });
-
-    // return () => {
-    //   URL.revokeObjectURL(fileURL);
-    // };
   }, [imageField, setValue, uploadedImg]);
+
+  useEffect(() => {
+    URL.revokeObjectURL(preview);
+    return () => {
+      URL.revokeObjectURL(imageURL);
+    };
+  }, [imageURL, preview]);
 
   return (
     <>
       {/* Image View */}
+      <canvas ref={canvasRef} width={1024} height={1024} className="visually-hidden"></canvas>
       {!fileError && preview && (
         <div className="d-flex flex-wrap justify-content-center mb-3">
           <span className="upload-span text-center flex-grow-1 flex-md-grow-0 me-md-5 mb-2 mb-md-0">
             Preview
           </span>
-          <canvas ref={canvasRef} width={384} height={384} className="visually-hidden"></canvas>
           <img
             src={preview}
             alt="uploaded file"
@@ -157,19 +167,29 @@ export default function ImageInput<T extends FieldValues>({
 
       <Form.Group as={Row} className="mb-3" controlId={imageField}>
         <Form.Label column xs={12} md={3}>
-          Company Logo
+          {label}
         </Form.Label>
 
         <Col md={9}>
-          <Form.Control
-            type="file"
-            ref={inputRef}
-            onChange={handleFileUpload}
-            accept="image/png, image/jpg, image/webp"
-            isInvalid={Boolean(fileError)}
-            aria-invalid={Boolean(fileError)}
-          />
-          <Form.Control.Feedback type="invalid">{fileError}</Form.Control.Feedback>
+          <div className="input-file-wrapper">
+            <CloseButton
+              onClick={() => {
+                if (inputRef.current) {
+                  inputRef.current.value = "";
+                  dispatch({ fileError: "", preview: "" });
+                }
+              }}
+            />
+            <Form.Control
+              type="file"
+              ref={inputRef}
+              onChange={handleFileUpload}
+              accept="image/png, image/jpg, image/webp"
+              isInvalid={Boolean(fileError)}
+              aria-invalid={Boolean(fileError)}
+            />
+            <Form.Control.Feedback type="invalid">{fileError}</Form.Control.Feedback>
+          </div>
           <FormText>Only PNG, JPEG and WEBP accepted</FormText>
         </Col>
       </Form.Group>

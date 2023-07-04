@@ -50,6 +50,7 @@ export default function BusinessRepForm() {
 
         {/* Image View */}
         <ImageInput
+          label="Photo"
           imageField="photo"
           imageBlob={imageBlob}
           setValue={setValue}

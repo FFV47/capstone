@@ -9,7 +9,7 @@ def fill_db(apps, schema_editor):
     # We can't import the Person model directly as it may be a newer
     # version than this migration expects. We use the historical version.
     User = apps.get_model("solution", "User")
-    Role = apps.get_model("solution", "Role")
+    Profession = apps.get_model("solution", "Profession")
     JobType = apps.get_model("solution", "JobType")
     Shift = apps.get_model("solution", "Shift")
     DaysSchedule = apps.get_model("solution", "DaysSchedule")
@@ -17,7 +17,7 @@ def fill_db(apps, schema_editor):
 
     with open("db_json/db.json") as db:
         db_json = json.loads(db.read())
-        role_objs = [Role(name=role) for role in db_json["roles"]]
+        profession_objs = [Profession(name=role) for role in db_json["roles"]]
         job_types = [JobType(name=job_type) for job_type in db_json["jobTypes"]]
         shifts = [Shift(name=shift) for shift in db_json["shifts"]]
         days_schedules = [
@@ -25,19 +25,19 @@ def fill_db(apps, schema_editor):
         ]
         job_tags = [JobTag(name=job_tag) for job_tag in db_json["jobTags"]]
 
-        Role.objects.bulk_create(role_objs)
+        Profession.objects.bulk_create(profession_objs)
         JobType.objects.bulk_create(job_types)
         Shift.objects.bulk_create(shifts)
         DaysSchedule.objects.bulk_create(days_schedules)
         JobTag.objects.bulk_create(job_tags)
 
-    User.objects.create_superuser(username="fernando", email="fernando@email.com", password="123", first_name="Fernando", last_name="Flores")  # type: ignore
+    User.objects.create_superuser(username="fernando", email="fernando@me.com", password="123")  # type: ignore
 
     new_user = User()
     new_user.first_name = "John"
     new_user.last_name = "Doe"
     new_user.username = "johndoe"
-    new_user.email = "john@email.com"
+    new_user.email = "john@me.com"
     new_user.password = "123"
     new_user.save()
 
@@ -45,7 +45,7 @@ def fill_db(apps, schema_editor):
     new_user.first_name = "Jane"
     new_user.last_name = "Doe"
     new_user.username = "janedoe"
-    new_user.email = "jane@email.com"
+    new_user.email = "jane@me.com"
     new_user.password = "123"
     new_user.save()
 

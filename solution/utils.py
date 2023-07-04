@@ -1,7 +1,10 @@
-from os import path
+import os
+from pathlib import Path
 from uuid import uuid4
 
-app_name = path.basename(path.dirname(__file__))
+from django.conf import settings
+
+app_name = Path(__file__).resolve().parent.name
 
 
 class FormErrors:
@@ -10,7 +13,9 @@ class FormErrors:
 
     def __init__(self, error_dict):
         self.fields = tuple(error_dict.keys())
-        self.errors = [f"{key.title()}: {', '.join(value)}" for key, value in error_dict.items()]
+        self.errors = [
+            f"{key.title()}: {', '.join(value)}" for key, value in error_dict.items()
+        ]
 
 
 def form_errors_handler(error_dict: dict[str, list[str]] | None) -> FormErrors | None:
@@ -33,5 +38,26 @@ def upload_path(instance, filename):
     file. This may or may not be taken into account when determining
     the final destination path.
     """
-    file_ext = path.splitext(filename)[1]
-    return f"{app_name}/user_{instance.id}/{uuid4().hex}{file_ext}"
+    file_ext = os.path.splitext(filename)[1]
+    user_id = instance.id if getattr(instance, "id", None) else instance.user_id
+    return f"{app_name}/user_{user_id}/{uuid4().hex}{file_ext}"
+
+
+def personal_account_path(instance, filename):
+    return account_path_handler(instance, filename, "personal/")
+
+
+def business_account_path(instance, filename):
+    return account_path_handler(instance, filename, "business/")
+
+
+def account_path_handler(instance, filename, extra_path):
+    file_ext = os.path.splitext(filename)[1]
+    path = f"{app_name}/user_{instance.user_id}/{extra_path}"
+
+    # Remove old files
+    for root, _, files in os.walk(settings.MEDIA_ROOT / path):
+        for file in files:
+            os.remove(os.path.join(root, file))
+
+    return f"{path}{uuid4().hex}{file_ext}"

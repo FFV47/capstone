@@ -1,3 +1,4 @@
+import datetime
 import re
 
 import magic
@@ -35,25 +36,54 @@ TAGS = ["Hiring multiple candidates", "Urgently hiring", "Temporary"]
 def validate_job_types(values: list[str]):
     for job_type in values:
         if job_type not in JOB_TYPES:
-            raise ValidationError(_(f"{job_type} is not a valid job type"), code="invalid_job_type")
+            raise ValidationError(
+                _(f"{job_type} is not a valid job type"), code="invalid_job_type"
+            )
 
 
 def validate_shifts(values: list[str]):
     for shift in values:
         if shift not in SHIFTS:
-            raise ValidationError(_(f"{shift} is not a valid shift"), code="invalid_shift")
+            raise ValidationError(
+                _(f"{shift} is not a valid shift"), code="invalid_shift"
+            )
 
 
 def validate_schedule(values: list[str]):
     for schedule in values:
         if schedule not in SCHEDULE:
-            raise ValidationError(_(f"{schedule} is not a valid schedule"), code="invalid_schedule")
+            raise ValidationError(
+                _(f"{schedule} is not a valid schedule"), code="invalid_schedule"
+            )
 
 
 def validate_tags(values: list[str]):
     for tag in values:
         if tag not in TAGS:
             raise ValidationError(_(f"{tag} is not a valid tag"), code="invalid_tag")
+
+
+def validate_birthdate(value: datetime.date):
+    current_date = datetime.date.today()
+    age = current_date.year - value.year
+
+    # Check if the birthday hasn't occurred yet this year
+    if current_date.month < value.month or (
+        current_date.month == value.month and current_date.day < value.day
+    ):
+        age -= 1
+
+    if age > 80:
+        raise ValidationError(
+            _("Your age is %(age)s. Too old."),
+            params={"age": age},
+        )
+
+    if age < 18:
+        raise ValidationError(
+            _("Your age is %(age)s. Too young."),
+            params={"age": age},
+        )
 
 
 @deconstructible
@@ -75,10 +105,14 @@ class UsernameEmailValidator:
             )
 
             if match is None:
-                raise ValidationError(_("Enter a valid username."), code="invalid_username")
+                raise ValidationError(
+                    _("Enter a valid username."), code="invalid_username"
+                )
 
     def __eq__(self, other) -> bool:
-        return isinstance(other, UsernameEmailValidator) and self.username == other.username
+        return (
+            isinstance(other, UsernameEmailValidator) and self.username == other.username
+        )
 
 
 # https://docs.djangoproject.com/en/4.0/ref/validators/
@@ -90,8 +124,12 @@ class UsernameEmailValidator:
 @deconstructible
 class FileValidator:
     error_messages = {
-        "max_size": _("File size must not be greater than %(max_size)s. Your file size is %(size)s."),
-        "min_size": _("File size must not be less than %(min_size)s. Your file size is %(size)s."),
+        "max_size": _(
+            "File size must not be greater than %(max_size)s. Your file size is %(size)s."
+        ),
+        "min_size": _(
+            "File size must not be less than %(min_size)s. Your file size is %(size)s."
+        ),
         "content_type": _("File of type %(content_type)s are not supported."),
     }
 
@@ -117,7 +155,9 @@ class FileValidator:
                 "min_size": filesizeformat(self.min_size),
                 "size": filesizeformat(file.size),
             }
-            raise ValidationError(message=self.error_messages["min_size"], code="min_size", params=params)
+            raise ValidationError(
+                message=self.error_messages["min_size"], code="min_size", params=params
+            )
 
         if self.content_types is not None:
             content_type = magic.from_buffer(file.read(), mime=True)

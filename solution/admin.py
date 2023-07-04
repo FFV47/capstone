@@ -7,7 +7,7 @@ from .models import (
     JobTag,
     JobType,
     PersonalAccount,
-    Role,
+    Profession,
     Shift,
     User,
     WorkSchedules,
@@ -18,7 +18,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ("id", "username", "email", "first_name", "last_name")
 
 
-class RoleAdmin(admin.ModelAdmin):
+class ProfessionAdmin(admin.ModelAdmin):
     list_display = ("name",)
 
 
@@ -39,7 +39,7 @@ class JobTagAdmin(admin.ModelAdmin):
 
 
 class PersonalAccountAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("user", "first_name", "last_name")
 
 
 class BusinessAccountAdmin(admin.ModelAdmin):
@@ -53,7 +53,7 @@ class WorkSchedulesAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(PersonalAccount, PersonalAccountAdmin)
 admin.site.register(BusinessAccount, BusinessAccountAdmin)
-admin.site.register(Role, RoleAdmin)
+admin.site.register(Profession, ProfessionAdmin)
 admin.site.register(WorkSchedules, WorkSchedulesAdmin)
 admin.site.register(JobType, JobTypeAdmin)
 admin.site.register(Shift, ShiftAdmin)

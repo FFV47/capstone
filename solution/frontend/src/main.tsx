@@ -20,7 +20,7 @@ import BusinessForm from "./routes/setup-account/business/BusinessForm";
 import BusinessRepForm from "./routes/setup-account/business-rep/BusinessRepForm";
 import PersonalInfo from "./routes/setup-account/personal/Personal";
 import SetupAccount, { loader as setupAccountLoader } from "./routes/setup-account/SetupAccount";
-import UserAccount from "./routes/user";
+import UserAccount from "./routes/UserAccount";
 import WorkerPage, { loader as workerPageLoader } from "./routes/WorkerPage";
 // import ErrorPage from "./components/ErrorPage";
 
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
     element: <Root />,
     loader: rootLoader(queryClient),
     // errorElement: <ErrorPage />,
-    id: "root",
+    id: "root", // needed for useRouteLoaderData
     children: [
       {
         index: true,

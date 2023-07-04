@@ -1,9 +1,10 @@
-from django.urls import include, path, re_path
-from rest_framework.urlpatterns import format_suffix_patterns
+from django.urls import path, re_path
 
-from solution import api_views, views
+from solution import views
+from solution.api import api_views
 
 app_name = "solution"
+
 
 urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
@@ -13,7 +14,16 @@ urlpatterns = [
     path("solution-api", api_views.api_root, name="api-root"),
     path("solution-api/roles", api_views.roles, name="roles"),
     path("solution-api/job-data", api_views.job_data, name="job-data"),
-    path("api-auth/", include("rest_framework.urls"), name="rest_framework"),
+    path(
+        "solution-api/personal-account",
+        api_views.PersonalAccountView.as_view(),
+        name="personal-account",
+    ),
+    path(
+        "solution-api/business-account",
+        api_views.BusinessAccountView.as_view(),
+        name="business-account",
+    ),
     # Match every url, except if starts with "media" or "static"
     re_path(
         r"^(?!admin|media|static|__reload__|__debug__)",
@@ -22,4 +32,4 @@ urlpatterns = [
     ),
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+# urlpatterns = format_suffix_patterns(urlpatterns)

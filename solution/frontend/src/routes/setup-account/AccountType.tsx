@@ -17,8 +17,6 @@ export default function AccountType() {
 
   const onSubmitSuccess: SubmitHandler<Account> = (data) => {
     setShowError(false);
-    console.log(data);
-
     navigate(data.accountType);
   };
 

@@ -47,6 +47,7 @@ export default function BusinessForm() {
         <p className="text-muted required">Indicates a required field</p>
 
         <ImageInput
+          label="Company Logo"
           imageField="logo"
           imageBlob={imageBlob}
           setValue={setValue}
