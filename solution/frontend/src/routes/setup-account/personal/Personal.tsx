@@ -7,13 +7,14 @@ import axios from "axios";
 import { CloseButton, Col, Form, Row, Spinner } from "react-bootstrap";
 import ReactDatePicker from "react-datepicker";
 import { SubmitHandler, useWatch } from "react-hook-form";
-import { handleAxiosError } from "../../../utils/utils";
+import { handleAxiosError, sleep } from "../../../utils/utils";
 import { RootLoaderData, useRootContext } from "../../Root";
 import BsHorizonralInput from "../BsHorizontalInput";
+import useStateReducer from "../../../hooks/useStateReducer";
 
 export default function PersonalInfo() {
   const roles = useRouteLoaderData("root") as RootLoaderData;
-  const { dispatch } = useRootContext();
+  const { dispatch: rootDispatch } = useRootContext();
 
   const { personalInfoForm, accountForm } = useSetupAccountContext();
 
@@ -32,9 +33,9 @@ export default function PersonalInfo() {
 
   const imageBlob = watch("photo");
 
+  const [state, dispatch] = useStateReducer({ validated: false, isSending: false });
+
   const [validImg, setValidImg] = useState(true);
-  const [validated, setValidated] = useState(false);
-  const [isSending, setIsSending] = useState(false);
 
   const navigate = useNavigate();
 
@@ -45,25 +46,21 @@ export default function PersonalInfo() {
       birthdate: data.birthdate.toISOString().substring(0, 10),
     };
 
-    dispatch({
-      showToast: true,
-      toastHeader: "Personal Account",
-      toastBody: "Account created successfully.",
-    });
-
     if (validImg) {
-      // await sleep(2);
       try {
-        const { data: responseData } = await axios.postForm(
-          "/solution-api/personal-account",
-          formData
-        );
-        console.log({ responseData });
+        await sleep(2);
+        await axios.postForm("/solution-api/personal-account", formData);
+
+        dispatch({ isSending: false });
+        rootDispatch({
+          showToast: true,
+          toastHeader: "Personal Account",
+          toastBody: "Personal account created successfully.",
+        });
+        navigate("/user");
       } catch (error) {
         handleAxiosError(error);
       }
-      setIsSending(false);
-      navigate("/user");
     }
   };
 
@@ -78,10 +75,10 @@ export default function PersonalInfo() {
     <Form
       id="personal-form"
       onSubmit={(e) => {
-        setValidated(true);
+        dispatch({ validated: true, isSending: true });
         handleSubmit(onSubmit)(e);
       }}
-      validated={validated}
+      validated={state.validated}
       noValidate
     >
       <fieldset>
@@ -115,9 +112,9 @@ export default function PersonalInfo() {
         <BsHorizonralInput
           type="text"
           register={register}
-          field="first_name"
+          field="firstName"
           label="First Name"
-          fieldError={errors.first_name}
+          fieldError={errors.firstName}
           required
           pattern="^[A-Z][\w]{1,}"
           autoCapitalize="words"
@@ -126,9 +123,9 @@ export default function PersonalInfo() {
         <BsHorizonralInput
           type="text"
           register={register}
-          field="last_name"
+          field="lastName"
           label="Last Name"
-          fieldError={errors.last_name}
+          fieldError={errors.lastName}
           required
           pattern="^[A-Z][\w]{1,}"
           autoCapitalize="words"
@@ -211,9 +208,8 @@ export default function PersonalInfo() {
           <button
             type="submit"
             className="btn btn-primary flex-grow-1 flex-md-grow-0 px-4 position-relative"
-            // onClick={() => setIsSending(true)}
           >
-            {isSending && (
+            {state.isSending && (
               <Spinner
                 as="span"
                 animation="border"

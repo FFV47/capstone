@@ -15,7 +15,12 @@ from django.db import models
 from django.forms import JSONField
 
 from solution import validators
-from solution.utils import personal_account_path, upload_path
+from solution.utils import (
+    business_logo_path,
+    business_photo_path,
+    personal_account_path,
+    upload_path,
+)
 
 file_validator = validators.FileValidator(
     max_size=3, content_types=("image/jpeg", "image/png")
@@ -34,7 +39,19 @@ class User(AbstractUser):
     has_account = models.BooleanField(default=False)
 
 
-class Profession(models.Model):
+class BaseModel(models.Model):
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
+
+class Profession(BaseModel):
     id: int
 
     professionals: RelatedManager[PersonalAccount]
@@ -44,11 +61,8 @@ class Profession(models.Model):
     def __repr__(self) -> str:
         return f"{self.name}"
 
-    def __str__(self) -> str:
-        return f"{self.name}"
 
-
-class JobType(models.Model):
+class JobType(BaseModel):
     id: int
 
     name = models.CharField(max_length=255)
@@ -56,11 +70,8 @@ class JobType(models.Model):
     def __repr__(self) -> str:
         return f"{self.name}"
 
-    def __str__(self) -> str:
-        return f"{self.name}"
 
-
-class Shift(models.Model):
+class Shift(BaseModel):
     id: int
 
     name = models.CharField(max_length=255)
@@ -68,11 +79,8 @@ class Shift(models.Model):
     def __repr__(self) -> str:
         return f"{self.name}"
 
-    def __str__(self) -> str:
-        return f"{self.name}"
 
-
-class DaysSchedule(models.Model):
+class DaysSchedule(BaseModel):
     id: int
 
     name = models.CharField(max_length=255)
@@ -80,11 +88,8 @@ class DaysSchedule(models.Model):
     def __repr__(self) -> str:
         return f"{self.name}"
 
-    def __str__(self) -> str:
-        return f"{self.name}"
 
-
-class JobTag(models.Model):
+class JobTag(BaseModel):
     id: int
 
     name = models.CharField(max_length=255)
@@ -92,11 +97,8 @@ class JobTag(models.Model):
     def __repr__(self) -> str:
         return f"{self.name}"
 
-    def __str__(self) -> str:
-        return f"{self.name}"
 
-
-class PersonalAccount(models.Model):
+class PersonalAccount(BaseModel):
     user_id: int
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -133,18 +135,18 @@ class PersonalAccount(models.Model):
     driving_license = models.BooleanField(default=False)
     last_update = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
-
     def __repr__(self) -> str:
         return f"{self.user_id} - {self.profession}"
 
-    def __str__(self) -> str:
-        return f"{self.user_id} - {self.profession}"
 
+class BusinessAccount(BaseModel):
+    class CompanySize(models.IntegerChoices):
+        MICRO = 0, "Fewer than 10 employees"
+        SMALL = 1, "10 to 50 employees"
+        MEDIUM = 2, "50 to 250 employees"
+        LARGE = 3, "250 to 500 employees"
+        ENTERPRISE = 4, "More than 500 employees"
 
-class BusinessAccount(models.Model):
     user_id: int
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -152,42 +154,39 @@ class BusinessAccount(models.Model):
         related_name="business_account",
         primary_key=True,
     )
-
-    company_logo = models.ImageField(
+    logo = models.ImageField(
         blank=True,
-        upload_to=upload_path,
+        upload_to=business_logo_path,
         validators=[file_validator],
     )
-    company_name = models.CharField(max_length=100)
+    company_name = models.CharField(max_length=50)
     address = models.CharField(max_length=255)
-    legal_name = models.CharField(max_length=255)
-    industry = models.CharField(max_length=255)
-    company_size = models.IntegerField(validators=[MinValueValidator(0)])
-    location = models.CharField(max_length=255)
+    legal_name = models.CharField(max_length=100)
+    industry = models.CharField(max_length=50)
+    company_size = models.IntegerField(choices=CompanySize.choices)
+    location = models.CharField(max_length=50)
     company_url = models.URLField(blank=True)
     description = models.TextField(blank=True)
 
-    rep_name = models.CharField(max_length=255)
     personal_photo = models.ImageField(
         blank=True,
-        upload_to=upload_path,
+        upload_to=business_photo_path,
         validators=[file_validator],
     )
-    verified_id = models.BooleanField()
+    role = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    phone = models.CharField(
+        max_length=20, validators=[RegexValidator(r"^(\d{1,3})(\d{2})(\d{9})$")]
+    )
+    verified_id = models.BooleanField(default=False)
     last_update = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
-
     def __repr__(self) -> str:
-        return f"{self.user_id} - {self.company_name} - {self.rep_name}"
-
-    def __str__(self) -> str:
-        return f"{self.user_id} - {self.company_name} - {self.rep_name}"
+        return f"{self.user_id} - {self.company_name} - {self.role}"
 
 
-class Job(models.Model):
+class Job(BaseModel):
     work_schedules: RelatedManager[WorkSchedules]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -211,18 +210,11 @@ class Job(models.Model):
     tags = models.JSONField(validators=[validators.validate_tags])
     posted_date = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
-
     def __repr__(self):
         return f"{self.id} - {self.title}"
 
-    def __str__(self):
-        return f"{self.id} - {self.title}"
 
-
-class WorkSchedules(models.Model):
+class WorkSchedules(BaseModel):
     class Meta:
         verbose_name_plural = "Work Schedules"
 
@@ -234,12 +226,5 @@ class WorkSchedules(models.Model):
     time_from = models.TimeField()
     time_to = models.TimeField()
 
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
-
     def __repr__(self) -> str:
-        return f"{self.job_id} - {self.schedules}"
-
-    def __str__(self) -> str:
         return f"{self.job_id} - {self.schedules}"

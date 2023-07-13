@@ -1,11 +1,13 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import { Suspense, createContext, useContext, useReducer } from "react";
+import { Suspense, createContext, useContext } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
 
 import axios from "axios";
 import { Toast, ToastContainer } from "react-bootstrap";
 import { z } from "zod";
 import NavBar from "../components/NavBar";
+import useStateReducer, { StateReducerDispatch } from "../hooks/useStateReducer";
+import { LoaderData } from "../utils/utils";
 
 // *** Data fetch ***
 const rolesSchema = z.array(z.string());
@@ -20,7 +22,7 @@ const rolesQuery = {
 };
 
 // *** Component ***
-export type RootLoaderData = Awaited<ReturnType<ReturnType<typeof loader>>>;
+export type RootLoaderData = LoaderData<typeof loader>;
 
 // loader is a normal function when no parameters are used, or must return
 // another async function when called with parameters from the router
@@ -33,8 +35,14 @@ export function loader(queryClient: QueryClient) {
   };
 }
 
+type RootState = {
+  showToast: boolean;
+  toastHeader: string;
+  toastBody: string;
+};
+
 type Context = {
-  dispatch: React.Dispatch<Partial<Reducer>>;
+  dispatch: StateReducerDispatch<RootState>;
 };
 
 const RootContext = createContext<Context | null>(null);
@@ -48,29 +56,15 @@ export function useRootContext() {
   return context;
 }
 
-type Reducer = {
-  showToast: boolean;
-  toastHeader: string;
-  toastBody: string;
-};
-
-function reducer(state: Reducer, payload: Partial<Reducer>) {
-  return {
-    ...state,
-    ...payload,
-  };
-}
-
 export default function Root() {
   const initialData = useLoaderData() as RootLoaderData;
   useQuery({ ...rolesQuery, initialData });
 
-  const reducerState: Reducer = {
+  const [state, dispatch] = useStateReducer({
     showToast: false,
     toastHeader: "",
     toastBody: "",
-  };
-  const [state, dispatch] = useReducer(reducer, reducerState);
+  });
 
   const fallback = (
     <div className="d-flex justify-content-center align-items-center" style={{ height: "90vh" }}>

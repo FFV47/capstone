@@ -7,6 +7,8 @@ import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import JobHighlightCard from "./JobHighlightCard";
 import axios from "axios";
 import { z } from "zod";
+import { Container } from "react-bootstrap";
+import { LoaderData } from "../../utils/utils";
 
 // *** zod query validation ***
 // Schedules
@@ -80,15 +82,8 @@ const findJobsQuery = {
   },
 };
 
-// function getRandomIntInclusive(min: number, max: number): number {
-//   const roundedMin = Math.floor(min);
-//   const roundedMax = Math.ceil(max);
-
-//   return Math.floor(Math.random() * (roundedMax - roundedMin + 1)) + roundedMin;
-// }
-
 // *** Component ***
-export type FindJobsLoaderData = Awaited<ReturnType<ReturnType<typeof loader>>>;
+export type FindJobsLoaderData = LoaderData<typeof loader>;
 
 export function loader(queryClient: QueryClient) {
   return async () => {
@@ -111,7 +106,7 @@ export default function FindJobs() {
   const [tab, setTab] = useState("feed");
 
   return (
-    <div id="find-jobs" className="container mt-3 mb-3">
+    <Container id="find-jobs" className="mt-3 mb-3">
       <h1 className="display-5 text-center">Recently added</h1>
       <JobHighlightCard job={mostRecentJob} />
 
@@ -137,6 +132,6 @@ export default function FindJobs() {
           </Tab>
         </Tabs>
       </section>
-    </div>
+    </Container>
   );
 }

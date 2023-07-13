@@ -47,8 +47,12 @@ def personal_account_path(instance, filename):
     return account_path_handler(instance, filename, "personal/")
 
 
-def business_account_path(instance, filename):
-    return account_path_handler(instance, filename, "business/")
+def business_logo_path(instance, filename):
+    return account_path_handler(instance, filename, "business/logo/")
+
+
+def business_photo_path(instance, filename):
+    return account_path_handler(instance, filename, "business/photo/")
 
 
 def account_path_handler(instance, filename, extra_path):

@@ -102,7 +102,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "capstone.wsgi.application"
-ASGI_APPLICATION = "capstone.asgi.application"
 
 
 # Database
@@ -212,6 +211,8 @@ STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
 
 # RUNSERVERPLUS_POLLER_RELOADER_TYPE = "watchdog"
 
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 Mb limit
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -230,12 +231,21 @@ LOGGING = {
             "level": "DEBUG",
             "filename": "request.log",
             "formatter": "minimal",
+            "delay": True,
+        },
+        "json": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
         },
     },
     "loggers": {
         "django.request": {
             "handlers": ["console"],
             "level": "DEBUG",
-        }
+        },
+        "solution.request": {
+            "handlers": ["json"],
+            "level": "DEBUG",
+        },
     },
 }

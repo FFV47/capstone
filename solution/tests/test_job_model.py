@@ -27,6 +27,22 @@ class JSONFieldsTestCase(TestCase):
         )
 
     def test_json_fields(self):
+        fields = {
+            "title": "test",
+            "company_rep": "test",
+            "company_name": "test",
+            "company_description": "test",
+            "description": "test",
+            "location": "test",
+            "responsibilities": ["test"],
+            "qualifications": ["test"],
+            "benefits": ["test"],
+            "min_salary": 0,
+            "max_salary": 1000000,
+            "period_salary": "test",
+            "application_instructions": "test",
+        }
+
         self.assertRaisesMessage(
             ValidationError,
             "test is not a valid job type",
@@ -34,6 +50,7 @@ class JSONFieldsTestCase(TestCase):
             types=["test"],
             shifts=["Day Shift"],
             tags=["Temporary"],
+            **fields,
         )
         self.assertRaisesMessage(
             ValidationError,
@@ -42,6 +59,7 @@ class JSONFieldsTestCase(TestCase):
             types=["Overtime"],
             shifts=["test"],
             tags=["Temporary"],
+            **fields,
         )
         self.assertRaisesMessage(
             ValidationError,
@@ -50,15 +68,9 @@ class JSONFieldsTestCase(TestCase):
             types=["Overtime"],
             shifts=["12 Hour Shift"],
             tags=["test"],
+            **fields,
         )
-        self.assertRaisesMessage(
-            ValidationError,
-            "None is not a valid tag",
-            Job.objects.create,
-            types=[],
-            shifts=["12 Hour Shift"],
-            tags=["test"],
-        )
+
         self.assertEqual(self.job.types, ["Part-Time"])
         self.assertEqual(self.job.shifts, ["Day Shift"])
         self.assertEqual(self.job.tags, ["Temporary"])

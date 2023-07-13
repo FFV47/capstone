@@ -75,16 +75,19 @@ const router = createBrowserRouter([
         path: "find-workers",
         element: <FindWorkers />,
         loader: findWorkersLoader(queryClient),
+        id: "find-workers",
       },
       {
         path: "worker/:id",
         element: <WorkerPage />,
         loader: workerPageLoader(queryClient),
+        id: "worker-page",
       },
       {
         path: "setup-account",
         element: <SetupAccount />,
         loader: setupAccountLoader,
+        id: "setup-account",
         children: [
           {
             index: true,

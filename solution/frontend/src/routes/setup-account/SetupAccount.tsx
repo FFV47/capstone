@@ -28,22 +28,22 @@ export type Account = z.infer<typeof accountTypeSchema>;
 // *** Business Form ***
 const companyInfoSchema = z.object({
   logo: z.instanceof(File).optional(),
-  name: zNameRequired("Company name"),
+  companyName: zNameRequired("Company name"),
   address: zStringRequired("Company address").regex(/[\w\d\s.#]{2,}/, {
     message: "Invalid address",
   }),
   legalName: zNameRequired("Legal name"),
   industry: zNameRequired("Industry"),
-  companySize: z.enum(["tiny", "small", "medium", "big"]).or(z.literal("")),
+  companySize: z.enum(["micro", "small", "medium", "large", "enterprise"]),
   location: zNameRequired("Location"),
-  companyURL: z.string().url().optional().or(z.literal("")),
+  companyUrl: z.string().url().optional().or(z.literal("")),
   description: z.string(),
 });
 export type CompanyInfo = z.infer<typeof companyInfoSchema>;
 
 const companyRepSchema = z.object({
+  personalPhoto: z.instanceof(File).optional(),
   role: zNameRequired("Company role"),
-  photo: z.instanceof(File).optional(),
   firstName: zNameRequired("First Name"),
   lastName: zNameRequired("Last Name"),
   phone: zPhoneNumber,
@@ -58,8 +58,8 @@ export const minBirthDate = subYears(new Date(), 80);
 const personalInfoSchema = z.object({
   photo: z.instanceof(File).optional(),
   profession: zStringRequired("Profession"),
-  first_name: zNameRequired("First Name"),
-  last_name: zNameRequired("Last Name"),
+  firstName: zNameRequired("First Name"),
+  lastName: zNameRequired("Last Name"),
   birthdate: z
     .date()
     .max(maxBirthDate, { message: "Too old!" })
@@ -101,11 +101,11 @@ export default function SetupAccount() {
   const companyInfoForm = useZodForm({
     schema: companyInfoSchema,
     defaultValues: {
-      name: "Brave",
+      companyName: "Brave",
       legalName: "Brave",
       address: "3190283",
       industry: "Arts",
-      companySize: "small",
+      companySize: undefined,
       location: "New York",
     },
   });
@@ -117,7 +117,7 @@ export default function SetupAccount() {
       role: "Consultant",
       firstName: "John",
       lastName: "Dow",
-      phone: "123459187238971",
+      phone: "12345918723897",
     },
   });
 
@@ -126,8 +126,8 @@ export default function SetupAccount() {
     schema: personalInfoSchema,
     defaultValues: {
       profession: "Painter",
-      first_name: "John",
-      last_name: "Doe",
+      firstName: "John",
+      lastName: "Doe",
       phone: "12345918723897",
       location: "New York",
       birthdate: subYears(new Date(new Date().getFullYear(), 0, 0, 0, 0, 0, 0), 20),

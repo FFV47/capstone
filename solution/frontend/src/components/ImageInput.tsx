@@ -5,7 +5,7 @@ import { StateHookType } from "../utils/utils";
 
 type Props<T extends FieldValues> = {
   label: string;
-  imageField: "photo" | "logo";
+  imageField: "photo" | "logo" | "personalPhoto";
   imageBlob: File | undefined;
   setValue: UseFormSetValue<T>;
   setValidImg: StateHookType<boolean>;

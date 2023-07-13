@@ -57,9 +57,9 @@ export default function BusinessForm() {
         <BsHorizonralInput
           type="text"
           register={register}
-          field="name"
+          field="companyName"
           label="Company Name"
-          fieldError={errors.name}
+          fieldError={errors.companyName}
           required
           pattern="[A-Z][\w\s.]{1,}"
           autoCapitalize="words"
@@ -132,43 +132,46 @@ export default function BusinessForm() {
         <fieldset className="mb-3">
           <legend className="required fs-6">Company Size</legend>
           <Form.Check
-            id="size-tiny"
+            id="size-micro"
             type="radio"
-            label="1 to 2 people"
-            value="tiny"
+            label="Fewer than 10 employees"
+            value="micro"
             isInvalid={Boolean(errors.companySize)}
-            feedback="Company size is required"
-            feedbackType="invalid"
             required
             {...register("companySize")}
           />
           <Form.Check
             id="size-small"
             type="radio"
-            label="3 to 10 people"
+            label="10 to 50 employees"
             value="small"
             isInvalid={Boolean(errors.companySize)}
-            feedback="Company size is required"
-            feedbackType="invalid"
             required
             {...register("companySize")}
           />
           <Form.Check
             id="size-medium"
             type="radio"
-            label="11 to 20 people"
+            label="50 to 250 employees"
             value="medium"
             isInvalid={Boolean(errors.companySize)}
-            feedback="Company size is required"
-            feedbackType="invalid"
             required
             {...register("companySize")}
           />
           <Form.Check
-            id="size-big"
+            id="size-large"
             type="radio"
-            label="21 or more people"
-            value="big"
+            label="250 to 500 employees"
+            value="large"
+            isInvalid={Boolean(errors.companySize)}
+            required
+            {...register("companySize")}
+          />
+          <Form.Check
+            id="size-enterprise"
+            type="radio"
+            label="More than 500 employees"
+            value="enterprise"
             isInvalid={Boolean(errors.companySize)}
             feedback="Company size is required"
             feedbackType="invalid"
@@ -191,9 +194,9 @@ export default function BusinessForm() {
         <BsHorizonralInput
           type="text"
           register={register}
-          field="companyURL"
+          field="companyUrl"
           label="Website URL"
-          fieldError={errors.companyURL}
+          fieldError={errors.companyUrl}
           pattern="https://.*"
           placeholder="https://example.com"
         />
@@ -207,7 +210,7 @@ export default function BusinessForm() {
         />
 
         <Row>
-          <Col xs={12} md={6} className="d-flex">
+          <Col xs={12} md={8} className="d-flex">
             <button
               type="button"
               className="btn btn-primary flex-grow-1 flex-md-grow-0 align-self-center px-4"
@@ -216,11 +219,7 @@ export default function BusinessForm() {
               Reset
             </button>
           </Col>
-          <Col
-            xs={12}
-            md={5}
-            className="offset-md-1 d-flex justify-content-between gap-3 mt-3 mb-3"
-          >
+          <Col xs={12} md={4} className="d-flex justify-content-between gap-3 mt-3 mb-3">
             <button type="button" className="btn btn-primary flex-grow-1 position-relative">
               <Link to={".."} className="stretched-link btn-link-custom">
                 Back

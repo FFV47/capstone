@@ -8,8 +8,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { RootLoaderData } from "../Root";
 import FilteredWorkerCards from "./FilteredWorkerCards";
 import WorkerSearch from "./WorkerSearch";
-
-type LoaderData = Awaited<ReturnType<ReturnType<typeof loader>>>;
+import { LoaderData } from "../../utils/utils";
 
 export function loader(queryClient: QueryClient) {
   return async () => {
@@ -24,7 +23,7 @@ export function loader(queryClient: QueryClient) {
 
 export default function FindWorkers() {
   const roles = useRouteLoaderData("root") as RootLoaderData;
-  const initialData = useLoaderData() as LoaderData;
+  const initialData = useLoaderData() as LoaderData<typeof loader>;
   const { data: profiles } = useQuery({ ...workerQuery, initialData });
 
   const [filteredProfiles, setFilteredProfiles] = useState(profiles);

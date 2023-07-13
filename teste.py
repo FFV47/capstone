@@ -1,4 +1,7 @@
-from solution.models import PersonalAccount
+from typing import Any, TypedDict, get_type_hints
 
-obj = PersonalAccount.objects.get(user=1)
-print(obj)
+from django.db import models
+
+from solution.models import BaseModel, BusinessAccount, PersonalAccount
+
+print(BusinessAccount.CompanySize.labels[3])

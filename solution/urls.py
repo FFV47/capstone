@@ -16,12 +16,12 @@ urlpatterns = [
     path("solution-api/job-data", api_views.job_data, name="job-data"),
     path(
         "solution-api/personal-account",
-        api_views.PersonalAccountView.as_view(),
+        api_views.PersonalAccountView.as_view(),  # type: ignore
         name="personal-account",
     ),
     path(
         "solution-api/business-account",
-        api_views.BusinessAccountView.as_view(),
+        api_views.BusinessAccountView.as_view(),  # type: ignore
         name="business-account",
     ),
     # Match every url, except if starts with "media" or "static"

@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, Row, Spinner } from "react-bootstrap";
 import { SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import ImageInput from "../../../components/ImageInput";
 import BsHorizonralInput from "../BsHorizontalInput";
 import { CompanyRep, useSetupAccountContext } from "../SetupAccount";
+import useStateReducer from "../../../hooks/useStateReducer";
+import axios from "axios";
+import { handleAxiosError, sleep } from "../../../utils/utils";
+import { useRootContext } from "../../Root";
 
 export default function BusinessRepForm() {
+  const { dispatch: rootDispatch } = useRootContext();
   const { companyRepForm, accountForm, companyInfoForm } = useSetupAccountContext();
+  const accountType = accountForm.getValues("accountType");
 
   const {
     register,
@@ -19,22 +25,13 @@ export default function BusinessRepForm() {
     formState: { errors },
   } = companyRepForm;
 
-  const imageBlob = watch("photo");
+  const imageBlob = watch("personalPhoto");
+
+  const [state, dispatch] = useStateReducer({ validated: false, isSending: false });
 
   const [validImg, setValidImg] = useState(true);
-  const [validated, setValidated] = useState(false);
+
   const navigate = useNavigate();
-
-  const onSubmit: SubmitHandler<CompanyRep> = (data) => {
-    const formData = { ...data, accountType, ...companyInfoForm.getValues() };
-    setValidated(true);
-
-    if (validImg) {
-      console.log(formData);
-    }
-  };
-
-  const accountType = accountForm.getValues("accountType");
 
   useEffect(() => {
     if (!accountType) {
@@ -42,21 +39,50 @@ export default function BusinessRepForm() {
     }
   }, [accountType, navigate, trigger]);
 
+  const onSubmit: SubmitHandler<CompanyRep> = async (data) => {
+    const formData = { ...data, ...companyInfoForm.getValues(), accountType };
+
+    if (validImg) {
+      try {
+        await sleep(2);
+        await axios.postForm("/solution-api/business-account", formData);
+
+        dispatch({ isSending: false });
+
+        rootDispatch({
+          showToast: true,
+          toastHeader: "Business Account",
+          toastBody: "Business account created successfully.",
+        });
+        navigate("/user");
+      } catch (error) {
+        handleAxiosError(error);
+      }
+    }
+  };
+
   return (
-    <Form id="business-rep-form" validated={validated} noValidate onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      id="business-rep-form"
+      validated={state.validated}
+      noValidate
+      onSubmit={(e) => {
+        dispatch({ validated: true, isSending: true });
+        handleSubmit(onSubmit)(e);
+      }}
+    >
       <fieldset>
         <legend className="h1">Company Representative</legend>
         <p className="text-muted required">Indicates a required field</p>
 
         {/* Image View */}
         <ImageInput
-          label="Photo"
-          imageField="photo"
+          label="Personal Photo"
+          imageField="personalPhoto"
           imageBlob={imageBlob}
           setValue={setValue}
           setValidImg={setValidImg}
         />
-
         <BsHorizonralInput
           type="text"
           register={register}
@@ -68,7 +94,6 @@ export default function BusinessRepForm() {
           autoCapitalize="words"
           title="Company role must be capitalized"
         />
-
         <BsHorizonralInput
           type="text"
           register={register}
@@ -100,7 +125,7 @@ export default function BusinessRepForm() {
         />
 
         <Row>
-          <Col xs={12} md={6} className="d-flex">
+          <Col xs={12} md={8} className="d-flex">
             <button
               type="button"
               className="btn btn-primary flex-grow-1 flex-md-grow-0 align-self-center px-4"
@@ -109,11 +134,7 @@ export default function BusinessRepForm() {
               Reset
             </button>
           </Col>
-          <Col
-            xs={12}
-            md={5}
-            className="offset-md-1 d-flex justify-content-between gap-3 mt-3 mb-3"
-          >
+          <Col xs={12} md={4} className="d-flex justify-content-between gap-3 mt-3 mb-3">
             <button type="button" className="btn btn-primary flex-grow-1 position-relative">
               <Link to={"../business"} className="stretched-link btn-link-custom">
                 Back
@@ -121,6 +142,16 @@ export default function BusinessRepForm() {
             </button>
 
             <button type="submit" className="btn btn-primary flex-grow-1">
+              {state.isSending && (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                  className="me-2"
+                />
+              )}
               Submit
             </button>
           </Col>
