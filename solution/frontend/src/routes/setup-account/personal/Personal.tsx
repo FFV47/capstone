@@ -67,7 +67,7 @@ export default function PersonalInfo() {
   const accountType = accountForm.getValues("accountType");
   useEffect(() => {
     if (!accountType) {
-      navigate("..");
+      navigate("/setup-account");
     }
   }, [accountType, navigate]);
 

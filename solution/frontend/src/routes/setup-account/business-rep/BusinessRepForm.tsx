@@ -35,7 +35,7 @@ export default function BusinessRepForm() {
 
   useEffect(() => {
     if (!accountType) {
-      navigate("..");
+      navigate("/setup-account");
     }
   }, [accountType, navigate, trigger]);
 

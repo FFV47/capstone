@@ -35,9 +35,9 @@ export default function BusinessForm() {
   const accountType = accountForm.getValues("accountType");
 
   useEffect(() => {
-    // if (!accountType) {
-    //   navigate("/setup-account");
-    // }
+    if (!accountType) {
+      navigate("/setup-account");
+    }
   }, [accountType, navigate]);
 
   return (
