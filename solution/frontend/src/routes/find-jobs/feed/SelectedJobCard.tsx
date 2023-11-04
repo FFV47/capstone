@@ -4,14 +4,14 @@ import { Card, ListGroup } from "react-bootstrap";
 import { Link, useParams, useRouteLoaderData } from "react-router-dom";
 import ExternalLinkIcon from "../../../icons/ExternalLinkIcon";
 import CardTags from "../CardTags";
-import { FindJobsLoaderData } from "../FindJobs";
+import { TFindJobsLoaderData } from "../FindJobs";
 
 type RouteParams = {
   id: string;
 };
 
 export default function SelectedJobCard() {
-  const jobs = useRouteLoaderData("find-jobs") as FindJobsLoaderData;
+  const jobs = useRouteLoaderData("find-jobs") as TFindJobsLoaderData;
   const { id } = useParams<RouteParams>();
   const job = jobs.find((item) => item.id === Number(id));
 
@@ -42,15 +42,18 @@ export default function SelectedJobCard() {
   if (!job) {
     return <div>Loading...</div>;
   }
+
   return (
     <Card id="selected-job-card" className="shadow-sm" ref={cardRef}>
       <Card.Body className="selected-job-head">
         <p className="h3">{job.title}</p>
         <Card.Subtitle className="mb-2 text-muted">{job.companyName}</Card.Subtitle>
         <Card.Text>{job.description}</Card.Text>
-        <Link to={""} className="btn btn-primary fs-5 px-4">
-          Apply Now <ExternalLinkIcon style={{ verticalAlign: "text-bottom" }} />
-        </Link>
+        <div className="btn-wrap">
+          <Link to={""} className="btn btn-primary rounded-3 fs-5 px-4">
+            Apply Now <ExternalLinkIcon style={{ verticalAlign: "text-bottom" }} />
+          </Link>
+        </div>
       </Card.Body>
 
       <div className="selected-job-body">

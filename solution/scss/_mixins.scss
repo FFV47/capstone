@@ -1,20 +1,22 @@
-@use "bootstrap" as *;
+@use "bootstrap" as bs;
 @use "colors" as c;
 
-@mixin custom-btn($font-size: 1rem) {
+@mixin custom-btn($font-size: 1rem, $color: c.$majorelle-blue) {
+  $custom-btn-color: bs.shift-color($color, 30%);
   .btn {
     font-size: $font-size;
-    background-color: c.$neon-blue;
-    border-color: c.$neon-blue;
+    background-color: $color;
+    border-color: $color;
     transition: box-shadow 0.2s;
+    transition: background-color 0.5s;
 
     &:hover {
-      background-color: shift-color(c.$neon-blue, 30%);
+      background-color: $custom-btn-color;
     }
 
     &:active {
-      background-color: shift-color(c.$neon-blue, 30%);
-      box-shadow: 0px 0px 10px 1px shift-color(c.$neon-blue, 30%);
+      background-color: $custom-btn-color;
+      box-shadow: 0px 0px 10px 1px $custom-btn-color;
     }
   }
 }
@@ -24,7 +26,7 @@
     font-size: 20px;
   }
 
-  @include media-breakpoint-up(md) {
+  @include bs.media-breakpoint-up(md) {
     .btn {
       font-size: 1rem;
     }

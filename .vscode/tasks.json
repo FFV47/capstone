@@ -28,7 +28,7 @@
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "command": "json-server -w db_json/db.json",
+      "command": "npx json-server -w db_json/db.json",
       "problemMatcher": []
     },
     {

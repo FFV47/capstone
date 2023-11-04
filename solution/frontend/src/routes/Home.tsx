@@ -3,20 +3,20 @@ import { Link, useRouteLoaderData } from "react-router-dom";
 import img1 from "../assets/laborer1.jpg";
 import img2 from "../assets/laborer2.png";
 import worker_illustration from "../assets/worker-illustration.jpg";
-import { RootLoaderData } from "./Root";
-import { WorkersSearchForm } from "./find-workers/WorkerSearch";
+import { TRootLoaderData } from "./Root";
+import { TWorkersSearchForm } from "./find-workers/WorkerSearch";
 
-type WorkerSearchParams = {
-  [k in keyof WorkersSearchForm]?: string;
+type TWorkerSearchParams = {
+  [k in keyof TWorkersSearchForm]?: string;
 };
 
 export default function Home() {
-  const roles = useRouteLoaderData("root") as RootLoaderData;
+  const roles = useRouteLoaderData("root") as TRootLoaderData;
 
   const roleLinks = roles.map((role) => {
     const link = new URLSearchParams({
       selectedRoles: role,
-    } satisfies WorkerSearchParams).toString();
+    } satisfies TWorkerSearchParams).toString();
 
     return (
       <Link to={`find-workers?${link}`} className="btn role" key={role}>

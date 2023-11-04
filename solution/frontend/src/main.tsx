@@ -18,10 +18,12 @@ import Root, { loader as rootLoader } from "./routes/Root";
 import AccountType from "./routes/setup-account/AccountType";
 import BusinessForm from "./routes/setup-account/business/BusinessForm";
 import BusinessRepForm from "./routes/setup-account/business-rep/BusinessRepForm";
-import PersonalInfo from "./routes/setup-account/personal/Personal";
+import PersonalForm from "./routes/setup-account/personal/PersonalForm";
 import SetupAccount, { loader as setupAccountLoader } from "./routes/setup-account/SetupAccount";
-import UserAccount from "./routes/UserAccount";
+import UserAccount from "./routes/user-acc/UserAccount";
 import WorkerPage, { loader as workerPageLoader } from "./routes/WorkerPage";
+import AccountInfo from "./routes/user-acc/AccountInfo";
+import ChangePassword from "./routes/user-acc/ChangePassword";
 // import ErrorPage from "./components/ErrorPage";
 
 // Code-splitted Routes
@@ -95,7 +97,7 @@ const router = createBrowserRouter([
           },
           {
             path: "personal",
-            element: <PersonalInfo />,
+            element: <PersonalForm />,
           },
           {
             path: "business",
@@ -110,6 +112,16 @@ const router = createBrowserRouter([
       {
         path: "user",
         element: <UserAccount />,
+        children: [
+          {
+            path: "info?",
+            element: <AccountInfo />,
+          },
+          {
+            path: "change-password",
+            element: <ChangePassword />,
+          },
+        ],
       },
     ],
   },

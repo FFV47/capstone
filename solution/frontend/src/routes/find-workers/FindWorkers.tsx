@@ -5,10 +5,10 @@ import WorkerCard from "./WorkerCard";
 
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { RootLoaderData } from "../Root";
+import { TRootLoaderData } from "../Root";
 import FilteredWorkerCards from "./FilteredWorkerCards";
 import WorkerSearch from "./WorkerSearch";
-import { LoaderData } from "../../utils/utils";
+import { TLoaderData } from "../../utils/utils";
 
 export function loader(queryClient: QueryClient) {
   return async () => {
@@ -22,8 +22,8 @@ export function loader(queryClient: QueryClient) {
 }
 
 export default function FindWorkers() {
-  const roles = useRouteLoaderData("root") as RootLoaderData;
-  const initialData = useLoaderData() as LoaderData<typeof loader>;
+  const roles = useRouteLoaderData("root") as TRootLoaderData;
+  const initialData = useLoaderData() as TLoaderData<typeof loader>;
   const { data: profiles } = useQuery({ ...workerQuery, initialData });
 
   const [filteredProfiles, setFilteredProfiles] = useState(profiles);
@@ -34,7 +34,7 @@ export default function FindWorkers() {
     <main id="find-workers">
       <Container>
         <header>
-          <h1 className="text-center mt-2 mb-2">Meet some of our high rated workers</h1>
+          <h1 className="text-center mb-2">Meet some of our high rated workers</h1>
         </header>
         {/* Rated worker cards */}
         <Row xs={"auto"} md={2} lg={3} className="id__worker-card justify-content-evenly gy-3">

@@ -1,7 +1,7 @@
 from typing import Any, Mapping, Optional, Union
 
 import orjson
-from rest_framework.compat import parse_header_parameters  # type: ignore
+from rest_framework.compat import parse_header_parameters
 from rest_framework.renderers import JSONRenderer
 
 
@@ -46,9 +46,6 @@ class ORJSONRenderer(JSONRenderer):
         if indent:
             options = orjson.OPT_INDENT_2
 
-        ret = orjson.dumps(
-            data,
-            option=options,
-        )
+        ret = orjson.dumps(data, option=options)
 
         return ret

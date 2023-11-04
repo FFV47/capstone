@@ -1,10 +1,10 @@
 import axios from "axios";
 import React from "react";
 
-export type StateHookType<T> = React.Dispatch<React.SetStateAction<T>>;
+export type TStateHook<T> = React.Dispatch<React.SetStateAction<T>>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type LoaderData<T extends (...args: any) => any> = Awaited<ReturnType<ReturnType<T>>>;
+export type TLoaderData<T extends (...args: any) => any> = Awaited<ReturnType<ReturnType<T>>>;
 
 export const sleep = (sec: number) => new Promise((resolve) => setTimeout(resolve, sec * 1000));
 

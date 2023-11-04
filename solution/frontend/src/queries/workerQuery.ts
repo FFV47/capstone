@@ -18,7 +18,7 @@ export const workerProfilesSchema = z.array(
   })
 );
 
-export type WorkerProfiles = z.infer<typeof workerProfilesSchema>;
+export type TWorkerProfiles = z.infer<typeof workerProfilesSchema>;
 
 const workerQuery = {
   queryKey: ["workerQuery"],

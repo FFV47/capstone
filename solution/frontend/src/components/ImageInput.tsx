@@ -1,17 +1,17 @@
 import { useEffect, useReducer, useRef } from "react";
 import { CloseButton, Col, Form, FormText, Row } from "react-bootstrap";
 import { FieldValues, Path, PathValue, UseFormSetValue } from "react-hook-form";
-import { StateHookType } from "../utils/utils";
+import { TStateHook } from "../utils/utils";
 
-type Props<T extends FieldValues> = {
+type TProps<T extends FieldValues> = {
   label: string;
   imageField: "photo" | "logo" | "personalPhoto";
   imageBlob: File | undefined;
   setValue: UseFormSetValue<T>;
-  setValidImg: StateHookType<boolean>;
+  setValidImg: TStateHook<boolean>;
 };
 
-type Reducer = {
+type TReducer = {
   fileError: string;
   uploadedImg: File | undefined;
   preview: string;
@@ -50,14 +50,14 @@ function formatFileSize(byteSize: number) {
   }
 }
 
-function reducer(state: Reducer, payload: Partial<Reducer>) {
+function reducer(state: TReducer, payload: Partial<TReducer>) {
   return {
     ...state,
     ...payload,
   };
 }
 
-const initialState: Reducer = {
+const initialState: TReducer = {
   fileError: "",
   uploadedImg: undefined,
   preview: "",
@@ -69,7 +69,7 @@ export default function ImageInput<T extends FieldValues>({
   imageBlob,
   setValue,
   setValidImg,
-}: Props<T>) {
+}: TProps<T>) {
   const inputRef = useRef<HTMLInputElement>(null);
   const imageURL = imageBlob ? URL.createObjectURL(imageBlob) : "";
   const [{ fileError, uploadedImg, preview }, dispatch] = useReducer(reducer, {

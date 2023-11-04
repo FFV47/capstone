@@ -4,7 +4,7 @@ import { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import businessIcon from "../../assets/businessIcon.png";
 import personalIcon from "../../assets/personalIcon.png";
-import { Account, useSetupAccountContext } from "./SetupAccount";
+import { TAccount, useSetupAccountContext } from "./SetupAccount";
 
 export default function AccountType() {
   const { accountForm } = useSetupAccountContext();
@@ -15,7 +15,7 @@ export default function AccountType() {
 
   const [showError, setShowError] = useState(false);
 
-  const onSubmitSuccess: SubmitHandler<Account> = (data) => {
+  const onSubmitSuccess: SubmitHandler<TAccount> = (data) => {
     setShowError(false);
     navigate(data.accountType);
   };

@@ -2,7 +2,9 @@ from uuid import uuid4
 
 from django import forms
 from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import (
+    gettext_lazy as _,
+)
 
 from solution.models import User
 
@@ -31,7 +33,10 @@ class RegisterForm(forms.Form):
     def clean_email(self):
         email: str = self.cleaned_data["email"]
         if User.objects.filter(email=email).exists():
-            raise ValidationError(_("A user with this email already exists"), code="email_exists")
+            raise ValidationError(
+                _("A user with this email already exists"),
+                code="email_exists",
+            )
 
         return email
 
@@ -49,7 +54,10 @@ class RegisterForm(forms.Form):
         confirmation: str = cleaned_data["confirmation"]
 
         if password != confirmation:
-            error = ValidationError(_("Passwords must match."), code="password_mismatch")
+            error = ValidationError(
+                _("Passwords must match."),
+                code="password_mismatch",
+            )
 
             self.add_error("password", error)
             self.add_error("confirmation", error)

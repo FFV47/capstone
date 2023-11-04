@@ -7,3 +7,16 @@
         href="{% static 'rest_framework/darkly.min.css' %}"
         type="text/css">
 {% endblock bootstrap_theme %}
+
+{% block style %}
+  {{ block.super }}
+  <style>
+    .content-main {
+          font-family: "Fira Sans" !important
+    }
+
+    .prettyprint {
+          font-family: "JetBrains Mono"
+    }
+  </style>
+{% endblock style %}

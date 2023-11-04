@@ -1,14 +1,28 @@
-@use "bootstrap" as *;
+@use "bootstrap" as bs;
 @use "colors" as c;
+@use "mixins";
 @use "search_form";
 
 #find-jobs {
+  // *******************************
+  // * Job Highlight Card
+  // *******************************
+  #job-highlight-card {
+    border: 2px solid c.$yale-blue;
+
+    @include bs.media-breakpoint-up(md) {
+      .card-border {
+        border-left: 2px solid c.$yale-blue !important;
+      }
+    }
+  }
+
   // *******************************
   // * Job Feed & Search
   // *******************************
   .nav-tabs {
     border-width: 3px;
-    background-color: $white;
+    background-color: bs.$white;
     border-radius: 1rem;
   }
 
@@ -31,7 +45,7 @@
       border-radius: 1rem;
       right: 0;
       bottom: -3px;
-      background-color: c.$neon-blue;
+      background-color: c.$majorelle-blue;
       height: 0.2rem;
       width: 100%;
       transform: scaleX(0);
@@ -47,7 +61,7 @@
   }
 
   // *******************************
-  // * JobMiniCard
+  // * Job MiniCard
   // *******************************
   .id__job-mini-card {
     a {
@@ -61,29 +75,33 @@
   }
 
   // *******************************
-  // * SelectedJobCard
+  // * Selected JobCard
   // *******************************
   #selected-job-card {
     position: sticky;
     top: 4.5rem;
     max-height: 90vh;
-    border: 2px solid c.$space-cadet;
+    border: 2px solid c.$yale-blue;
 
     .selected-job-head {
       border-top-left-radius: 0.25rem;
       border-top-right-radius: 0.25rem;
-      box-shadow: 0px 6px 5px $gray-300;
-      outline: c.$space-cadet solid 2px;
+      box-shadow: 0px 6px 5px bs.$gray-300;
+      outline: c.$yale-blue solid 2px;
     }
 
     .selected-job-body {
       overflow-y: scroll;
       z-index: -1;
     }
+
+    .btn-wrap {
+      @include mixins.custom-btn(1rem, bs.shift-color(c.$yale-blue, -15%));
+    }
   }
 
   // *******************************
-  // * CardTags
+  // * Card Tags
   // *******************************
   .job-card-tag {
     font-size: 0.9rem;
@@ -95,8 +113,8 @@
     }
 
     &.alert-secondary {
-      background-color: $orange-100;
-      border-color: $orange-200;
+      background-color: bs.$orange-100;
+      border-color: bs.$orange-200;
     }
 
     &.extra-tag {
@@ -109,13 +127,9 @@
   // * Media Queries
   // *******************************
 
-  @include media-breakpoint-up(md) {
+  @include bs.media-breakpoint-up(md) {
     .nav-tabs .nav-item {
       font-size: 1.25rem;
-    }
-
-    .job-highlight-border {
-      border-left: 2px solid c.$neon-blue !important;
     }
   }
 }

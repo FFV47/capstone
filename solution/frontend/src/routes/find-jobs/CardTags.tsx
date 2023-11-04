@@ -7,21 +7,20 @@ import ClockFillIcon from "../../icons/ClockFillIcon";
 import ClockIcon from "../../icons/ClockIcon";
 import CurrencyIcon from "../../icons/CurrencyIcon";
 import InfoFillIcon from "../../icons/InfoFillIcon";
-import type { FindJobsQuery } from "./FindJobs";
+import type { TFindJobsQuery } from "./FindJobs";
 
-type Props = {
-  job: FindJobsQuery[number];
+type TProps = {
+  job: TFindJobsQuery[number];
   unwrapTags?: boolean;
 };
 
-export default function CardTags({ job, unwrapTags }: Props) {
+export default function CardTags({ job, unwrapTags }: TProps) {
   let allSchedules: string[] = [];
 
   job.workSchedules?.forEach((item) => (allSchedules = allSchedules?.concat(item.schedules)));
 
-  const salaryPeriodSuffix = `a${job.salaryRange?.period === "hour" ? "n" : ""} ${
-    job.salaryRange?.period
-  }`;
+  const salaryPeriodSuffix = `a${job.salaryRange?.period === "hour" ? "n" : ""} ${job.salaryRange
+    ?.period}`;
 
   return (
     <>

@@ -3,13 +3,13 @@ import { useState } from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import CardTags from "../CardTags";
-import type { FindJobsQuery } from "../FindJobs";
+import type { TFindJobsQuery } from "../FindJobs";
 
-type Props = {
-  job: FindJobsQuery[number];
+type TProps = {
+  job: TFindJobsQuery[number];
 };
 
-export default function JobMiniCard({ job }: Props) {
+export default function JobMiniCard({ job }: TProps) {
   const [showMore, setShowMore] = useState(false);
 
   let responsibilities = job.responsibilities;
@@ -33,9 +33,7 @@ export default function JobMiniCard({ job }: Props) {
         <CardTags job={job} />
 
         <ul className="mt-2">
-          {responsibilities?.map((responsibility, i) => (
-            <li key={i}>{responsibility}</li>
-          ))}
+          {responsibilities?.map((responsibility, i) => <li key={i}>{responsibility}</li>)}
         </ul>
 
         {Number(job.responsibilities?.length) > 3 && (

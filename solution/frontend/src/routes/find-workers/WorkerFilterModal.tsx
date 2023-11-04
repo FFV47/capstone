@@ -5,23 +5,23 @@ import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
 import InputBoolTags from "../../components/InputBoolTags";
 import InputRatingTags from "../../components/InputRatingTags";
 import InputTextTags from "../../components/InputTextTags";
-import type { JobRoles } from "../Root";
-import type { StateHookType } from "../../utils/utils";
-import type { WorkersSearchForm } from "./WorkerSearch";
+import type { TJobRoles } from "../Root";
+import type { TStateHook } from "../../utils/utils";
+import type { TWorkersSearchForm } from "./WorkerSearch";
 
-type Props = {
-  setFiltersApplied: StateHookType<boolean>;
+type TProps = {
+  setFiltersApplied: TStateHook<boolean>;
   formSubmit: () => void | undefined;
-  roles: JobRoles;
+  roles: TJobRoles;
 };
 
-export type WorkerFilterModalRef = {
+export type TWorkerFilterModalRef = {
   showModal: () => void;
 };
 
-const WorkerFilterModal = forwardRef<WorkerFilterModalRef, Props>(
+const WorkerFilterModal = forwardRef<TWorkerFilterModalRef, TProps>(
   ({ setFiltersApplied, formSubmit, roles }, ref) => {
-    const { register, handleSubmit, control, getValues } = useFormContext<WorkersSearchForm>();
+    const { register, handleSubmit, control, getValues } = useFormContext<TWorkersSearchForm>();
 
     const { selectedRoles, selectedRating, hasVerifiedID, hasDrivingLicense } = {
       ...useWatch({ control }),
@@ -39,7 +39,7 @@ const WorkerFilterModal = forwardRef<WorkerFilterModalRef, Props>(
     });
 
     // Handlers
-    const handleFormSubmit: SubmitHandler<WorkersSearchForm> = () => {
+    const handleFormSubmit: SubmitHandler<TWorkersSearchForm> = () => {
       setFiltersApplied(true);
       setShowModal(false);
       formSubmit();

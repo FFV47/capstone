@@ -11,11 +11,9 @@ class FormErrors:
     fields: tuple[str]
     errors: list[str]
 
-    def __init__(self, error_dict):
+    def __init__(self, error_dict: dict[str, list[str]]):
         self.fields = tuple(error_dict.keys())
-        self.errors = [
-            f"{key.title()}: {', '.join(value)}" for key, value in error_dict.items()
-        ]
+        self.errors = [f"{key.title()}: {', '.join(value)}" for key, value in error_dict.items()]
 
 
 def form_errors_handler(error_dict: dict[str, list[str]] | None) -> FormErrors | None:

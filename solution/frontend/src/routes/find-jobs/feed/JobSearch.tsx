@@ -11,11 +11,11 @@ import StyledSelect from "../../../components/StyledSelect";
 import ClockIcon from "../../../icons/ClockIcon";
 import CloseIcon from "../../../icons/CloseIcon";
 import SearchIcon from "../../../icons/SearchIcon";
-import type { StateHookType } from "../../../utils/utils";
+import type { TStateHook } from "../../../utils/utils";
 import JobFilterModal from "./JobFilterModal";
-import type { FindJobsQuery } from "../FindJobs";
+import type { TFindJobsQuery } from "../FindJobs";
 
-export type JobSearchForm = {
+export type TJobSearchForm = {
   jobSearch?: string;
   scheduleFrom?: Date;
   scheduleTo?: Date;
@@ -28,8 +28,8 @@ export type JobSearchForm = {
   sortBy: "default" | "title" | "location" | "salary" | "datePosted";
 };
 
-type TargetForm = {
-  [prop in keyof JobSearchForm]: HTMLInputElement | HTMLSelectElement;
+type TTargetForm = {
+  [prop in keyof TJobSearchForm]: HTMLInputElement | HTMLSelectElement;
 } & HTMLFormElement;
 
 function getMinutesFromISO(date: Date | string) {
@@ -76,13 +76,13 @@ function checkTime(
 }
 
 type Props = {
-  setFilteredJobs: StateHookType<FindJobsQuery>;
-  jobs: FindJobsQuery;
+  setFilteredJobs: TStateHook<TFindJobsQuery>;
+  jobs: TFindJobsQuery;
 };
 
 export default function JobSearch({ setFilteredJobs, jobs }: Props) {
   // RHF
-  const formMethods = useForm<JobSearchForm>({
+  const formMethods = useForm<TJobSearchForm>({
     defaultValues: {
       jobSearch: "",
       salaryMin: "",
@@ -122,9 +122,9 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
   // Functions
   const formSubmit = () => formEl.current?.requestSubmit();
 
-  const handleFormSubmit: SubmitHandler<JobSearchForm> = (
+  const handleFormSubmit: SubmitHandler<TJobSearchForm> = (
     data,
-    e: React.BaseSyntheticEvent<object, unknown, TargetForm> | undefined
+    e: React.BaseSyntheticEvent<object, unknown, TTargetForm> | undefined
   ) => {
     let selectedJobs = jobs;
 
@@ -155,8 +155,8 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
     }
 
     if (data.tagsSelected.length) {
-      selectedJobs = selectedJobs.filter((job) =>
-        job.tags?.some((tag) => data.tagsSelected.includes(tag))
+      selectedJobs = selectedJobs.filter(
+        (job) => job.tags?.some((tag) => data.tagsSelected.includes(tag))
       );
     }
 
@@ -381,13 +381,13 @@ export default function JobSearch({ setFilteredJobs, jobs }: Props) {
         </div>
         {/* Buttons wrap */}
         <div className="form-btn-wrap d-flex gap-3 mt-3">
-          <Button type="submit" variant="primary" className="rounded-pill flex-grow-1">
+          <Button type="submit" variant="primary" className="rounded-4 flex-grow-1">
             Apply Filters
           </Button>
           <Button
             type="button"
             variant="primary"
-            className="rounded-pill flex-grow-1"
+            className="rounded-4 flex-grow-1"
             onClick={() => {
               reset();
               formSubmit();

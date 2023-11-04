@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
-type Option = {
+type TOption = {
   "default": string;
   [key: string]: string;
 };
 
-type Props<T extends FieldValues> = {
+type TProps<T extends FieldValues> = {
   register: UseFormRegister<T>;
   fieldName: keyof T;
   onChange: () => void | undefined;
-  options: Option;
+  options: TOption;
   className?: string;
 };
 
@@ -20,7 +20,7 @@ export default function StyledSelect<T extends FieldValues>({
   onChange,
   options,
   className,
-}: Props<T>) {
+}: TProps<T>) {
   const [selectedOption, setSelectedOption] = useState("default");
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

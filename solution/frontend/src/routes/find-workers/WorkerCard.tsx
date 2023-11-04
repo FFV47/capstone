@@ -11,17 +11,19 @@ import MapPinIcon from "../../icons/MapPinIcon";
 import StarFilledIcon from "../../icons/StarFilledIcon";
 import RoleIcon from "../../icons/RoleIcon";
 
-import type { WorkerProfiles } from "../../queries/workerQuery";
+import type { TWorkerProfiles } from "../../queries/workerQuery";
 
-type Props = { profile: WorkerProfiles[number] };
+type TProps = { profile: TWorkerProfiles[number] };
 
-export type WorkerCardRef = {
+export type TWorkerCardRef = {
   cardScroll: () => void;
 };
 
-const WorkerCard = forwardRef<WorkerCardRef, Props>((props, ref) => {
+const WorkerCard = forwardRef<TWorkerCardRef, TProps>((props, ref) => {
   const aboutText =
-    props.profile.about.length > 200 ? `${props.profile.about.slice(0, 200)}...` : props.profile.about;
+    props.profile.about.length > 200
+      ? `${props.profile.about.slice(0, 200)}...`
+      : props.profile.about;
 
   const cardRef = useRef<HTMLElement>(null);
 
@@ -97,7 +99,8 @@ const WorkerCard = forwardRef<WorkerCardRef, Props>((props, ref) => {
       {/* Card footer */}
       <Card.Footer>
         <small className="text-muted">
-          Last updated {formatDistanceToNow(new Date(props.profile.lastUpdate.substring(0, 19)))} ago
+          Last updated {formatDistanceToNow(new Date(props.profile.lastUpdate.substring(0, 19)))}{" "}
+          ago
         </small>
       </Card.Footer>
     </Card>

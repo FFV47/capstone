@@ -8,7 +8,7 @@ import JobHighlightCard from "./JobHighlightCard";
 import axios from "axios";
 import { z } from "zod";
 import { Container } from "react-bootstrap";
-import { LoaderData } from "../../utils/utils";
+import { TLoaderData } from "../../utils/utils";
 
 // *** zod query validation ***
 // Schedules
@@ -71,7 +71,7 @@ export const findJobSchema = z.array(
   })
 );
 
-export type FindJobsQuery = z.infer<typeof findJobSchema>;
+export type TFindJobsQuery = z.infer<typeof findJobSchema>;
 
 // *** data fetch ***
 const findJobsQuery = {
@@ -83,7 +83,7 @@ const findJobsQuery = {
 };
 
 // *** Component ***
-export type FindJobsLoaderData = LoaderData<typeof loader>;
+export type TFindJobsLoaderData = TLoaderData<typeof loader>;
 
 export function loader(queryClient: QueryClient) {
   return async () => {
@@ -96,7 +96,7 @@ export function loader(queryClient: QueryClient) {
 }
 
 export default function FindJobs() {
-  const initialData = useLoaderData() as FindJobsLoaderData;
+  const initialData = useLoaderData() as TFindJobsLoaderData;
   const { data: jobs } = useQuery({ ...findJobsQuery, initialData });
 
   const mostRecentJob = jobs[0];
@@ -106,7 +106,7 @@ export default function FindJobs() {
   const [tab, setTab] = useState("feed");
 
   return (
-    <Container id="find-jobs" className="mt-3 mb-3">
+    <Container id="find-jobs" className="mb-3">
       <h1 className="display-5 text-center">Recently added</h1>
       <JobHighlightCard job={mostRecentJob} />
 

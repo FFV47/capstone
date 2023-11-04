@@ -18,14 +18,22 @@ class IndexView(TemplateView):
     template_name: str = "solution/index.html"
 
     def get(self, request: AuthHttpRequest):
-        user_data = {
-            "username": request.user.username,
-            "authenticated": request.user.is_authenticated,
-            "hasAccount": request.user.has_account
-            if request.user.is_authenticated
-            else False,
-        }
-
+        if request.user.is_authenticated:
+            user_data = {
+                "firstName": request.user.first_name,
+                "lastName": request.user.last_name,
+                "username": request.user.username,
+                "authenticated": request.user.is_authenticated,
+                # "hasAccount": request.user.has_account,
+            }
+        else:
+            user_data = {
+                "firstName": None,
+                "lastName": None,
+                "username": request.user.username,
+                "authenticated": request.user.is_authenticated,
+                "hasAccount": False,
+            }
         context = {"user_data": user_data}
 
         return render(request, self.template_name, context)
@@ -43,7 +51,9 @@ class RegisterView(TemplateView):
             username: str = form.cleaned_data["username"]
 
             try:
-                user: User = User.objects.create_user(username=username, email=email, password=password)  # type: ignore
+                user: User = User.objects.create_user(
+                    username=username, email=email, password=password
+                )
                 user.user_permissions.clear()
 
                 login(request=request, user=user)
@@ -80,14 +90,10 @@ class LoginView(TemplateView):
                 login(request=request, user=user)
                 return redirect("solution:index")
 
-            return render(
-                request, self.template_name, {"auth_error": "Invalid Credentials"}
-            )
+            return render(request, self.template_name, {"auth_error": "Invalid Credentials"})
 
         return render(
-            request,
-            self.template_name,
-            {"form_errors": form.errors, "fields": form.cleaned_data},
+            request, self.template_name, {"form_errors": form.errors, "fields": form.cleaned_data}
         )
 
 

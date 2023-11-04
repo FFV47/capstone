@@ -1,7 +1,7 @@
 import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form";
 import CloseIcon from "../icons/CloseIcon";
 
-type Props<T extends FieldValues> = {
+type TProps<T extends FieldValues> = {
   fieldName: keyof T;
   formMethods: UseFormReturn<T>;
   formSubmit: () => void | undefined;
@@ -11,7 +11,7 @@ export default function InputFilterTextTags<T extends FieldValues>({
   fieldName,
   formMethods,
   formSubmit,
-}: Props<T>) {
+}: TProps<T>) {
   const { register, setValue, watch } = formMethods;
 
   const tagsSelected = watch(fieldName as Path<T>) as string[];

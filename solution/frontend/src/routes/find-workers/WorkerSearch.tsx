@@ -5,12 +5,12 @@ import { useSearchParams } from "react-router-dom";
 import SearchFilterButton from "../../components/SearchFilterButton";
 import StyledSelect from "../../components/StyledSelect";
 import SearchIcon from "../../icons/SearchIcon";
-import type { JobRoles } from "../Root";
-import type { WorkerProfiles } from "../../queries/workerQuery";
-import type { StateHookType } from "../../utils/utils";
-import WorkerFilterModal, { WorkerFilterModalRef } from "./WorkerFilterModal";
+import type { TJobRoles } from "../Root";
+import type { TWorkerProfiles } from "../../queries/workerQuery";
+import type { TStateHook } from "../../utils/utils";
+import WorkerFilterModal, { TWorkerFilterModalRef } from "./WorkerFilterModal";
 
-export type WorkersSearchForm = {
+export type TWorkersSearchForm = {
   workerSearch?: string;
   selectedRoles: string[];
   selectedRating?: string;
@@ -19,22 +19,22 @@ export type WorkersSearchForm = {
   sortBy: "default" | "name" | "role" | "rating" | "reviewCount" | "jobsDone" | "location";
 };
 
-type TargetForm = {
-  [prop in keyof WorkersSearchForm]: HTMLInputElement | HTMLSelectElement;
+type TTargetForm = {
+  [prop in keyof TWorkersSearchForm]: HTMLInputElement | HTMLSelectElement;
 } & HTMLFormElement;
 
-type Props = {
-  queryProfiles: WorkerProfiles;
-  setFilteredProfiles: StateHookType<WorkerProfiles>;
-  roles: JobRoles;
+type TProps = {
+  queryProfiles: TWorkerProfiles;
+  setFilteredProfiles: TStateHook<TWorkerProfiles>;
+  roles: TJobRoles;
 };
 
-export default function WorkerSearch({ queryProfiles, setFilteredProfiles, roles }: Props) {
+export default function WorkerSearch({ queryProfiles, setFilteredProfiles, roles }: TProps) {
   // Router
   const [searchParams, setSearchParams] = useSearchParams();
 
   // React-Hook-Form
-  const formMethods = useForm<WorkersSearchForm>({
+  const formMethods = useForm<TWorkersSearchForm>({
     defaultValues: {
       workerSearch: "",
       selectedRoles: [],
@@ -58,7 +58,7 @@ export default function WorkerSearch({ queryProfiles, setFilteredProfiles, roles
   const [updateURL, setUpdateURL] = useState(false);
 
   const formEl = useRef<HTMLFormElement>(null);
-  const modalRef = useRef<WorkerFilterModalRef>(null);
+  const modalRef = useRef<TWorkerFilterModalRef>(null);
 
   // Effects
   useEffect(() => {
@@ -104,8 +104,8 @@ export default function WorkerSearch({ queryProfiles, setFilteredProfiles, roles
     setValue("selectedRoles", newRoles);
   };
 
-  const handleValidForm: SubmitHandler<WorkersSearchForm> = (data, e) => {
-    const target = e?.target as TargetForm;
+  const handleValidForm: SubmitHandler<TWorkersSearchForm> = (data, e) => {
+    const target = e?.target as TTargetForm;
 
     let profiles = queryProfiles;
 
@@ -141,8 +141,8 @@ export default function WorkerSearch({ queryProfiles, setFilteredProfiles, roles
       const sortBy = data.sortBy;
 
       profiles.sort((a, b) => {
-        const x = a[sortBy as keyof WorkerProfiles[number]];
-        const y = b[sortBy as keyof WorkerProfiles[number]];
+        const x = a[sortBy as keyof TWorkerProfiles[number]];
+        const y = b[sortBy as keyof TWorkerProfiles[number]];
 
         if (typeof x === "string" && typeof y === "string") {
           return x.localeCompare(y, "en", { sensitivity: "base" });
@@ -286,12 +286,12 @@ export default function WorkerSearch({ queryProfiles, setFilteredProfiles, roles
         </div>
         {/* Buttons wrap */}
         <div className="form-btn-wrap d-flex gap-3 mt-3">
-          <button type="submit" className="btn btn-primary rounded-pill">
+          <button type="submit" className="btn btn-primary rounded-4">
             Apply filters
           </button>
           <button
             type="button"
-            className="btn btn-primary rounded-pill"
+            className="btn btn-primary rounded-4"
             onClick={() => {
               reset();
               formSubmit();

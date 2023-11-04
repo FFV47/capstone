@@ -55,10 +55,6 @@ img {
   user-select: none;
 }
 
-.w-fit {
-  width: fit-content;
-}
-
 .divider {
   position: relative;
   height: 1rem;
@@ -73,8 +69,18 @@ img {
   }
 }
 
+.btn-outline-light-dark {
+  @include button-outline-variant($light);
+  color: black;
+  border-color: transparent;
+
+  &:hover {
+    background-color: $gray-200;
+  }
+}
+
 .app-footer {
-  background-color: c.$space-cadet;
+  background-color: c.$yale-blue;
   color: $gray-100;
 }
 
@@ -88,11 +94,7 @@ img {
   }
 }
 
-.border-neon {
-  border-color: c.$neon-blue !important;
-}
-
 .custom-spinner {
-  border-color: c.$neon-blue;
+  border-color: c.$majorelle-blue;
   border-right-color: transparent;
 }

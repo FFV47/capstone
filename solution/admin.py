@@ -1,17 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import (
-    BusinessAccount,
-    DaysSchedule,
-    JobTag,
-    JobType,
-    PersonalAccount,
-    Profession,
-    Shift,
-    User,
-    WorkSchedules,
-)
+from solution import models
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -38,11 +28,27 @@ class JobTagAdmin(admin.ModelAdmin):
     list_display = ("name",)
 
 
-class PersonalAccountAdmin(admin.ModelAdmin):
+class WorkerAccountAdmin(admin.ModelAdmin):
     list_display = ("user", "first_name", "last_name")
 
 
-class BusinessAccountAdmin(admin.ModelAdmin):
+class EmployerAccountAdmin(admin.ModelAdmin):
+    pass
+
+
+class JobAdmin(admin.ModelAdmin):
+    pass
+
+
+class ContractAdmin(admin.ModelAdmin):
+    pass
+
+
+class EmployerFeedbackAdmin(admin.ModelAdmin):
+    pass
+
+
+class WorkerFeedbackAdmin(admin.ModelAdmin):
     pass
 
 
@@ -50,12 +56,16 @@ class WorkSchedulesAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(User, UserAdmin)
-admin.site.register(PersonalAccount, PersonalAccountAdmin)
-admin.site.register(BusinessAccount, BusinessAccountAdmin)
-admin.site.register(Profession, ProfessionAdmin)
-admin.site.register(WorkSchedules, WorkSchedulesAdmin)
-admin.site.register(JobType, JobTypeAdmin)
-admin.site.register(Shift, ShiftAdmin)
-admin.site.register(DaysSchedule, DaysScheduleAdmin)
-admin.site.register(JobTag, JobTagAdmin)
+admin.site.register(models.User, UserAdmin)
+admin.site.register(models.Profession, ProfessionAdmin)
+admin.site.register(models.JobType, JobTypeAdmin)
+admin.site.register(models.Shift, ShiftAdmin)
+admin.site.register(models.DaysSchedule, DaysScheduleAdmin)
+admin.site.register(models.JobTag, JobTagAdmin)
+admin.site.register(models.WorkerAccount, WorkerAccountAdmin)
+admin.site.register(models.EmployerAccount, EmployerAccountAdmin)
+admin.site.register(models.Job, JobAdmin)
+admin.site.register(models.Contract, ContractAdmin)
+admin.site.register(models.EmployerFeedback, EmployerFeedbackAdmin)
+admin.site.register(models.WorkerFeedback, WorkerFeedbackAdmin)
+admin.site.register(models.WorkSchedules, WorkSchedulesAdmin)

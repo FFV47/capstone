@@ -1,5 +1,7 @@
 import axios from "axios";
-type DjangoUserData = {
+type TDjangoUserData = {
+  firstName?: string;
+  lastName?: string;
   username: string;
   authenticated: boolean;
   hasAccount: boolean;
@@ -7,7 +9,7 @@ type DjangoUserData = {
 
 export const djangoUserData = JSON.parse(
   document.getElementById("userData")?.textContent as string
-) as DjangoUserData;
+) as TDjangoUserData;
 
 const csrftoken = document.querySelector<HTMLInputElement>("[name=csrfmiddlewaretoken]")?.value;
 

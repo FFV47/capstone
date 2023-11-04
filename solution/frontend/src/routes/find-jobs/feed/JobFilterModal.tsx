@@ -3,8 +3,8 @@ import { Container, Modal, Spinner } from "react-bootstrap";
 import { useQuery } from "@tanstack/react-query";
 import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
 import InputTextTags from "../../../components/InputTextTags";
-import { StateHookType } from "../../../utils/utils";
-import { JobSearchForm } from "./JobSearch";
+import { TStateHook } from "../../../utils/utils";
+import { TJobSearchForm } from "./JobSearch";
 import axios from "axios";
 import { z } from "zod";
 
@@ -25,14 +25,14 @@ const jobDataQuery = {
 };
 
 // *** BS Modal ***
-interface ModalProps {
+interface TModalProps {
   showModal: boolean;
-  setShowModal: StateHookType<boolean>;
-  setFiltersApplied: StateHookType<boolean>;
+  setShowModal: TStateHook<boolean>;
+  setFiltersApplied: TStateHook<boolean>;
   children?: React.ReactNode;
 }
 
-function ModalBlueprint({ showModal, setShowModal, setFiltersApplied, children }: ModalProps) {
+function ModalBlueprint({ showModal, setShowModal, setFiltersApplied, children }: TModalProps) {
   return (
     <Modal
       id="search-modal"
@@ -58,7 +58,7 @@ function ModalBlueprint({ showModal, setShowModal, setFiltersApplied, children }
 }
 
 // *** Component ***
-interface Props extends ModalProps {
+interface TProps extends TModalProps {
   formSubmit: () => void | undefined;
 }
 
@@ -67,10 +67,10 @@ export default function JobFilterModal({
   setShowModal,
   setFiltersApplied,
   formSubmit,
-}: Props) {
+}: TProps) {
   const { data, error, isLoading, isError } = useQuery({ ...jobDataQuery });
 
-  const { register, getValues, handleSubmit, control } = useFormContext<JobSearchForm>();
+  const { register, getValues, handleSubmit, control } = useFormContext<TJobSearchForm>();
 
   const { typesSelected, scheduleSelected, shiftsSelected, tagsSelected } = {
     ...useWatch({ control }),
@@ -78,7 +78,7 @@ export default function JobFilterModal({
   };
 
   // Handlers
-  const handleFormSubmit: SubmitHandler<JobSearchForm> = () => {
+  const handleFormSubmit: SubmitHandler<TJobSearchForm> = () => {
     setFiltersApplied(true);
     setShowModal(false);
     formSubmit();

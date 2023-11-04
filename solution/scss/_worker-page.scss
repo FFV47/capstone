@@ -5,17 +5,17 @@
     width: 65%;
 
     .btn.btn-primary {
-      background-color: c.$neon-blue;
-      border-color: c.$neon-blue;
+      background-color: c.$majorelle-blue;
+      border-color: c.$majorelle-blue;
       transition: box-shadow 0.2s;
 
       &:hover {
-        background-color: shift-color(c.$neon-blue, 30%);
+        background-color: shift-color(c.$majorelle-blue, 30%);
       }
 
       &:active {
-        background-color: shift-color(c.$neon-blue, 30%);
-        box-shadow: 0px 0px 10px 1px shift-color(c.$neon-blue, 30%);
+        background-color: shift-color(c.$majorelle-blue, 30%);
+        box-shadow: 0px 0px 10px 1px shift-color(c.$majorelle-blue, 30%);
       }
     }
   }

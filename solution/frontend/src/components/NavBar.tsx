@@ -6,7 +6,12 @@ export default function NavBar() {
   const { authenticated, hasAccount } = djangoUserData;
 
   return (
-    <Navbar expand="md" sticky="top" data-bs-theme="dark" className="main-navbar">
+    <Navbar
+      expand="md"
+      sticky="top"
+      data-bs-theme="dark"
+      className="main-navbar mx-md-3 mb-3 shadow"
+    >
       <Container fluid>
         {/* Brand */}
         <Link to="/" className="navbar-brand">

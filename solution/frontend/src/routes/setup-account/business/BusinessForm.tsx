@@ -3,7 +3,7 @@ import { Col, Form, Row } from "react-bootstrap";
 import { SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import ImageInput from "../../../components/ImageInput";
-import { CompanyInfo, useSetupAccountContext } from "../SetupAccount";
+import { TCompanyInfo, useSetupAccountContext } from "../SetupAccount";
 import BsHorizonralInput from "../BsHorizontalInput";
 
 export default function BusinessForm() {
@@ -24,7 +24,7 @@ export default function BusinessForm() {
 
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<CompanyInfo> = () => {
+  const onSubmit: SubmitHandler<TCompanyInfo> = () => {
     setValidated(true);
 
     if (validImg) {

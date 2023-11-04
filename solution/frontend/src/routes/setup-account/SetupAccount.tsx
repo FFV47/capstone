@@ -23,7 +23,7 @@ const zPhoneNumber = z.string().regex(/^(\d{1,3})(\d{2})(\d{9})$/);
 const accountTypeSchema = z.object({
   accountType: z.enum(["business", "personal"]),
 });
-export type Account = z.infer<typeof accountTypeSchema>;
+export type TAccount = z.infer<typeof accountTypeSchema>;
 
 // *** Business Form ***
 const companyInfoSchema = z.object({
@@ -39,7 +39,7 @@ const companyInfoSchema = z.object({
   companyUrl: z.string().url().optional().or(z.literal("")),
   description: z.string(),
 });
-export type CompanyInfo = z.infer<typeof companyInfoSchema>;
+export type TCompanyInfo = z.infer<typeof companyInfoSchema>;
 
 const companyRepSchema = z.object({
   personalPhoto: z.instanceof(File).optional(),
@@ -49,7 +49,7 @@ const companyRepSchema = z.object({
   phone: zPhoneNumber,
 });
 
-export type CompanyRep = z.infer<typeof companyRepSchema>;
+export type TCompanyRep = z.infer<typeof companyRepSchema>;
 
 // *** Personal Form ***
 export const maxBirthDate = subYears(new Date(), 18);
@@ -71,14 +71,14 @@ const personalInfoSchema = z.object({
   about: z.string().optional(),
 });
 
-export type PersonalInfo = z.infer<typeof personalInfoSchema>;
+export type TPersonalInfo = z.infer<typeof personalInfoSchema>;
 
 // *** Component ***
 type Context = {
-  accountForm: UseFormReturn<Account>;
-  companyInfoForm: UseFormReturn<CompanyInfo>;
-  companyRepForm: UseFormReturn<CompanyRep>;
-  personalInfoForm: UseFormReturn<PersonalInfo>;
+  accountForm: UseFormReturn<TAccount>;
+  companyInfoForm: UseFormReturn<TCompanyInfo>;
+  companyRepForm: UseFormReturn<TCompanyRep>;
+  personalInfoForm: UseFormReturn<TPersonalInfo>;
 };
 
 export function useSetupAccountContext() {
@@ -136,7 +136,7 @@ export default function SetupAccount() {
   });
 
   return (
-    <Container fluid="sm" id="setup-account" className="mt-2 flex-grow-1">
+    <Container fluid="sm" id="setup-account" className="flex-grow-1">
       <Outlet context={{ accountForm, companyInfoForm, companyRepForm, personalInfoForm }} />
     </Container>
   );

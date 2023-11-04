@@ -2,20 +2,20 @@
 
 #search-modal {
   .row .btn {
-    border: 1.5px solid c.$space-cadet;
+    border: 1.5px solid c.$yale-blue;
 
     &.modal-item-selected {
       color: white;
-      background-color: c.$space-cadet;
+      background-color: c.$yale-blue;
     }
 
     &:hover {
-      outline: 3px solid c.$space-cadet;
+      outline: 3px solid c.$yale-blue;
       outline-offset: -1px;
     }
 
     &:focus {
-      box-shadow: 0 0 5px 3px shift-color(c.$space-cadet, -50%);
+      box-shadow: 0 0 5px 3px shift-color(c.$yale-blue, -50%);
     }
   }
 
@@ -29,11 +29,11 @@
     border: none;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
-    background-color: c.$neon-blue;
+    background-color: c.$majorelle-blue;
     color: white;
 
     &:hover {
-      background-color: shift-color(c.$neon-blue, 25%);
+      background-color: shift-color(c.$majorelle-blue, 25%);
     }
   }
 }

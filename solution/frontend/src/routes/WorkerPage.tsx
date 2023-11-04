@@ -14,7 +14,7 @@ import StarFilledIcon from "../icons/StarFilledIcon";
 import StarOutlineIcon from "../icons/StarOutlineIcon";
 import workerQuery from "../queries/workerQuery";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import { LoaderData } from "../utils/utils";
+import { TLoaderData } from "../utils/utils";
 
 export function loader(queryClient: QueryClient) {
   return async () => {
@@ -39,7 +39,7 @@ export default function WorkerPage() {
 
   const params = useParams();
 
-  const initialData = useLoaderData() as LoaderData<typeof loader>;
+  const initialData = useLoaderData() as TLoaderData<typeof loader>;
   const { data: profiles } = useQuery({ ...workerQuery, initialData });
 
   const profile = profiles.find((profile) => profile.id === Number(params.id));

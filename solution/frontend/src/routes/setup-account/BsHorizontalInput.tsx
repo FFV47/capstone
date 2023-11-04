@@ -2,7 +2,7 @@ import { InputHTMLAttributes } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { FieldError, FieldValues, Path, UseFormRegister } from "react-hook-form";
 
-interface Props<T extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
+interface TProps<T extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
   field: Path<T>;
   label: string;
   register: UseFormRegister<T>;
@@ -19,7 +19,7 @@ export default function BsHorizonralInput<T extends FieldValues>({
   as,
   rows,
   ...rest
-}: Props<T>) {
+}: TProps<T>) {
   return (
     <Form.Group as={Row} className="mb-3" controlId={field}>
       <Form.Label column xs={12} md={3} className={rest.required ? "required" : ""}>

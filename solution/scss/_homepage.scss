@@ -1,7 +1,9 @@
-@use "bootstrap" as *;
+@use "bootstrap" as bs;
 @use "colors" as c;
 
 .homepage {
+  margin-top: -1rem;
+
   footer {
     margin-bottom: 2rem;
   }
@@ -34,11 +36,11 @@
 
   .home-worker {
     h1 {
-      color: $gray-600;
+      color: bs.$gray-600;
     }
 
     h3 {
-      color: c.$neon-blue;
+      color: c.$majorelle-blue;
     }
 
     .text-side {
@@ -55,13 +57,13 @@
       }
 
       .btn.left {
-        background-color: $green-500;
+        background-color: bs.$green-500;
         color: white;
       }
 
       .btn.right {
-        background-color: $gray-400;
-        color: c.$space-cadet;
+        background-color: bs.$gray-400;
+        color: c.$yale-blue;
       }
     }
 
@@ -71,23 +73,25 @@
   }
 
   .home-enterprise {
+    h1 {
+      color: bs.$gray-600;
+    }
     .btn.role {
-      border: 3px solid $indigo-800;
-      color: c.$neon-blue;
+      border: 3px solid bs.$indigo-800;
+      color: c.$majorelle-blue;
 
       &:hover {
-        background-color: $gray-200;
+        background-color: bs.$gray-200;
       }
 
       &:active {
-        background-color: $gray-500;
+        background-color: bs.$gray-500;
       }
     }
   }
 
   // * MEDIUM SCREENS
-
-  @include media-breakpoint-up(md) {
+  @include bs.media-breakpoint-up(md) {
     .home-main {
       padding-top: 1rem;
       height: auto;
@@ -100,8 +104,11 @@
 
       & p {
         font-size: 2rem;
-        color: c.$neon-blue;
-        padding: 1rem;
+        // color: bs.shift-color(c.$yale-blue, -10%);
+        background-color: c.$yale-blue;
+        padding: 2rem;
+        border-radius: 4rem;
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.4), 0 -1rem 3rem rgba(0, 0, 0, 0.4);
       }
     }
 
@@ -155,8 +162,7 @@
   }
 
   // * LARGE SCREENS
-
-  @include media-breakpoint-up(lg) {
+  @include bs.media-breakpoint-up(lg) {
     .headline-wrapper {
       background-image: none;
 
@@ -176,8 +182,7 @@
   }
 
   // * EXTRA LARGE
-
-  @include media-breakpoint-up(xl) {
+  @include bs.media-breakpoint-up(xl) {
     .headline-wrapper p {
       font-size: 3.5rem;
     }

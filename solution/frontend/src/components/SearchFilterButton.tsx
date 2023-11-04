@@ -2,7 +2,7 @@ import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import CloseIcon from "../icons/CloseIcon";
 import StarFilledIcon from "../icons/StarFilledIcon";
 
-type Props<T extends FieldValues> = {
+type TProps<T extends FieldValues> = {
   register: UseFormRegister<T>;
   handleClick: () => void;
   fieldName: keyof T;
@@ -18,7 +18,7 @@ export default function SearchFilterButton<T extends FieldValues>({
   value,
   handleClick,
   selectedRating,
-}: Props<T>) {
+}: TProps<T>) {
   return (
     <button
       type="button"

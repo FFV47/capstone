@@ -7,11 +7,11 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import { z } from "zod";
 import NavBar from "../components/NavBar";
 import useStateReducer, { StateReducerDispatch } from "../hooks/useStateReducer";
-import { LoaderData } from "../utils/utils";
+import { TLoaderData } from "../utils/utils";
 
 // *** Data fetch ***
 const rolesSchema = z.array(z.string());
-export type JobRoles = z.infer<typeof rolesSchema>;
+export type TJobRoles = z.infer<typeof rolesSchema>;
 
 const rolesQuery = {
   queryKey: ["roles"],
@@ -22,7 +22,7 @@ const rolesQuery = {
 };
 
 // *** Component ***
-export type RootLoaderData = LoaderData<typeof loader>;
+export type TRootLoaderData = TLoaderData<typeof loader>;
 
 // loader is a normal function when no parameters are used, or must return
 // another async function when called with parameters from the router
@@ -35,17 +35,17 @@ export function loader(queryClient: QueryClient) {
   };
 }
 
-type RootState = {
+type TRootState = {
   showToast: boolean;
   toastHeader: string;
   toastBody: string;
 };
 
-type Context = {
-  dispatch: StateReducerDispatch<RootState>;
+type TContext = {
+  dispatch: StateReducerDispatch<TRootState>;
 };
 
-const RootContext = createContext<Context | null>(null);
+const RootContext = createContext<TContext | null>(null);
 
 export function useRootContext() {
   const context = useContext(RootContext);
@@ -57,7 +57,7 @@ export function useRootContext() {
 }
 
 export default function Root() {
-  const initialData = useLoaderData() as RootLoaderData;
+  const initialData = useLoaderData() as TRootLoaderData;
   useQuery({ ...rolesQuery, initialData });
 
   const [state, dispatch] = useStateReducer({

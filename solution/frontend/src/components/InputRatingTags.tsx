@@ -2,7 +2,7 @@ import { Row } from "react-bootstrap";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import StarFilledIcon from "../icons/StarFilledIcon";
 
-type Props<T extends FieldValues> = {
+type TProps<T extends FieldValues> = {
   title: string;
   register: UseFormRegister<T>;
   fieldName: keyof T;
@@ -14,7 +14,7 @@ export default function InputRatingTags<T extends FieldValues>({
   fieldName,
   selectedTag,
   register,
-}: Props<T>) {
+}: TProps<T>) {
   return (
     <fieldset className="mt-3">
       <legend className="text-center">{title}</legend>

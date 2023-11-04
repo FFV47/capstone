@@ -1,9 +1,12 @@
 @use "bootstrap" as *;
 @use "colors" as c;
 
+$active-bg-color: shift-color(c.$majorelle-blue, 10%);
+$active-bg-hover-color: shift-color(c.$majorelle-blue, -10%);
+
 .main-navbar {
   color: white;
-  background: c.$space-cadet;
+  background: c.$yale-blue;
 
   .navbar-brand {
     border-radius: 0.5rem;
@@ -13,7 +16,7 @@
   }
 
   .navbar-brand:hover {
-    background-color: shift-color(c.$neon-blue, -10%);
+    background-color: $active-bg-color;
   }
 
   .navbar-brand,
@@ -22,29 +25,44 @@
   }
 
   .nav-link {
+    position: relative;
     border-radius: 0.5rem;
 
     &.active {
       color: white;
-      background-color: c.$neon-blue;
+      background-color: $active-bg-color;
     }
     &.active:hover {
       color: white;
-      background-color: shift-color(c.$neon-blue, 30%);
+      background-color: $active-bg-hover-color;
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      border-radius: 1rem;
+      right: 5%;
+      bottom: 5px;
+      background-color: shift-color(c.$majorelle-blue, -30%);
+      height: 0.3rem;
+      width: 90%;
+      transform: scaleX(0);
+      transition: transform 0.5s;
+    }
+    &.active::after {
+      display: none;
     }
   }
 
-  .nav-link:hover {
-    color: shift-color(c.$neon-blue, -35%);
+  .nav-link:hover::after {
+    transform: scaleX(1);
   }
 
   @include media-breakpoint-up(md) {
-    margin: 0.5rem 1rem 0rem;
+    // margin: 0.5rem 1rem 0rem;
     top: 0.5rem;
-    border-radius: 0.75rem;
 
-    & > nav {
-      border-radius: 0.75rem;
-    }
+    border-radius: 0.75rem;
   }
 }

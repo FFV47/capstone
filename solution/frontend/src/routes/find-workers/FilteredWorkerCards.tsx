@@ -1,16 +1,16 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { WorkerProfiles } from "../../queries/workerQuery";
-import WorkerCard, { WorkerCardRef } from "./WorkerCard";
+import { TWorkerProfiles } from "../../queries/workerQuery";
+import WorkerCard, { TWorkerCardRef } from "./WorkerCard";
 import { Col, Row } from "react-bootstrap";
 
-type Props = {
-  filteredProfiles: WorkerProfiles;
+type TProps = {
+  filteredProfiles: TWorkerProfiles;
 };
 
-export default function FilteredWorkerCards({ filteredProfiles }: Props) {
+export default function FilteredWorkerCards({ filteredProfiles }: TProps) {
   const location = useLocation();
-  const firstResultElem = useRef<WorkerCardRef>(null);
+  const firstResultElem = useRef<TWorkerCardRef>(null);
 
   useEffect(() => {
     if (filteredProfiles.length && location.search) {

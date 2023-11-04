@@ -2,20 +2,20 @@ import { Card, Col, ListGroup, Row } from "react-bootstrap";
 import companyLogo from "../../assets/companyLogo.jpg";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import CardTags from "./CardTags";
-import type { FindJobsQuery } from "./FindJobs";
+import type { TFindJobsQuery } from "./FindJobs";
 
-type Props = {
-  job: FindJobsQuery[number];
+type TProps = {
+  job: TFindJobsQuery[number];
 };
 
-export default function JobHighlightCard({ job }: Props) {
+export default function JobHighlightCard({ job }: TProps) {
   return (
-    <Card as="article" className="border-neon shadow-sm">
+    <Card id="job-highlight-card" as="article" className="shadow-sm">
       <Row className="g-0">
         <Col xs={12} md={4} className="align-self-center">
           <img src={companyLogo} alt="company business logo" className="img-fluid rounded-start" />
         </Col>
-        <Col xs={12} md={8} className="d-flex flex-column job-highlight-border">
+        <Col xs={12} md={8} className="d-flex flex-column card-border">
           <Card.Body>
             <Card.Title>{job.title}</Card.Title>
             <Card.Subtitle className="text-muted">

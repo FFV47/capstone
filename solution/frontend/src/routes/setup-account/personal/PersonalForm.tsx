@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useRouteLoaderData } from "react-router-dom";
 import ImageInput from "../../../components/ImageInput";
-import { PersonalInfo, maxBirthDate, minBirthDate, useSetupAccountContext } from "../SetupAccount";
+import { TPersonalInfo, maxBirthDate, minBirthDate, useSetupAccountContext } from "../SetupAccount";
 
 import axios from "axios";
 import { CloseButton, Col, Form, Row, Spinner } from "react-bootstrap";
 import ReactDatePicker from "react-datepicker";
 import { SubmitHandler, useWatch } from "react-hook-form";
 import { handleAxiosError, sleep } from "../../../utils/utils";
-import { RootLoaderData, useRootContext } from "../../Root";
+import { TRootLoaderData, useRootContext } from "../../Root";
 import BsHorizonralInput from "../BsHorizontalInput";
 import useStateReducer from "../../../hooks/useStateReducer";
 
-export default function PersonalInfo() {
-  const roles = useRouteLoaderData("root") as RootLoaderData;
+export default function PersonalForm() {
+  const roles = useRouteLoaderData("root") as TRootLoaderData;
   const { dispatch: rootDispatch } = useRootContext();
 
   const { personalInfoForm, accountForm } = useSetupAccountContext();
@@ -39,7 +39,7 @@ export default function PersonalInfo() {
 
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<PersonalInfo> = async (data) => {
+  const onSubmit: SubmitHandler<TPersonalInfo> = async (data) => {
     const formData = {
       ...data,
       accountType,

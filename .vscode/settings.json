@@ -6,7 +6,8 @@
     "**/requirements{/**,*}.{txt,in}": "pip-requirements"
   },
   "editor.autoClosingBrackets": "always",
-  "python.testing.pytestArgs": ["solution"],
-  "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true
+  "editor.lineHeight": 20,
+  "python.testing.pytestEnabled": true,
+  "python.analysis.typeCheckingMode": "off",
+  "window.zoomLevel": 0.5
 }

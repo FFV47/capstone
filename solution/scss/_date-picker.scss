@@ -22,7 +22,7 @@ $datepicker__triangle-size: 8px !default;
 .react-datepicker {
   font-family: "Fira Sans";
   font-size: 1rem;
-  border: 2px solid c.$neon-blue;
+  border: 2px solid c.$majorelle-blue;
   border-radius: 0.5rem;
 }
 
@@ -44,7 +44,7 @@ $datepicker__triangle-size: 8px !default;
 .react-datepicker__header {
   background-color: $gray-400;
   border-top-left-radius: 0.4rem;
-  border-bottom: 2px solid c.$neon-blue;
+  border-bottom: 2px solid c.$majorelle-blue;
 }
 
 .react-datepicker__header:not(.react-datepicker__header--has-time-select) {
@@ -70,11 +70,11 @@ $datepicker__triangle-size: 8px !default;
 
 .react-datepicker__navigation {
   & ::before {
-    border-color: c.$neon-blue;
+    border-color: c.$majorelle-blue;
   }
 
   &:hover ::before {
-    border-color: shift-color(c.$neon-blue, 50%);
+    border-color: shift-color(c.$majorelle-blue, 50%);
   }
 }
 
@@ -89,18 +89,18 @@ $datepicker__triangle-size: 8px !default;
 
 .react-datepicker__day--keyboard-selected,
 .react-datepicker__day--today {
-  background-color: shift-color(c.$neon-blue, -40%);
+  background-color: shift-color(c.$majorelle-blue, -40%);
 
   &:hover {
-    background-color: c.$neon-blue;
+    background-color: c.$majorelle-blue;
   }
 }
 
 .react-datepicker__day--selected {
-  background-color: c.$neon-blue;
+  background-color: c.$majorelle-blue;
 
   &:hover {
-    background-color: shift-color(c.$neon-blue, 30%);
+    background-color: shift-color(c.$majorelle-blue, 30%);
   }
 }
 

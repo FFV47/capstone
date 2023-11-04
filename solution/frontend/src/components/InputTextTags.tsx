@@ -1,7 +1,7 @@
 import { Row } from "react-bootstrap";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
-type Props<T extends FieldValues> = {
+type TProps<T extends FieldValues> = {
   title: string;
   fieldName: keyof T;
   tags: string[];
@@ -15,7 +15,7 @@ export default function InputTextTags<T extends FieldValues>({
   tags,
   selectedTags,
   register,
-}: Props<T>) {
+}: TProps<T>) {
   return (
     <fieldset className="mb-3">
       <legend className="text-center">{title}</legend>
@@ -23,7 +23,9 @@ export default function InputTextTags<T extends FieldValues>({
         {tags.map((tag) => (
           <label
             key={tag}
-            className={`btn w-auto rounded-pill ${selectedTags.includes(tag) ? "modal-item-selected" : ""}`}
+            className={`btn w-auto rounded-pill ${
+              selectedTags.includes(tag) ? "modal-item-selected" : ""
+            }`}
           >
             <input
               type="checkbox"

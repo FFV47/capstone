@@ -4,7 +4,7 @@ import { SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import ImageInput from "../../../components/ImageInput";
 import BsHorizonralInput from "../BsHorizontalInput";
-import { CompanyRep, useSetupAccountContext } from "../SetupAccount";
+import { TCompanyRep, useSetupAccountContext } from "../SetupAccount";
 import useStateReducer from "../../../hooks/useStateReducer";
 import axios from "axios";
 import { handleAxiosError, sleep } from "../../../utils/utils";
@@ -39,7 +39,7 @@ export default function BusinessRepForm() {
     }
   }, [accountType, navigate, trigger]);
 
-  const onSubmit: SubmitHandler<CompanyRep> = async (data) => {
+  const onSubmit: SubmitHandler<TCompanyRep> = async (data) => {
     const formData = { ...data, ...companyInfoForm.getValues(), accountType };
 
     if (validImg) {

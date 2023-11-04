@@ -31,6 +31,7 @@ SECRET_KEY = "django-insecure-*hytq74#dulwf%flrcovlpxn6#1$o@$eu#2j^x_nvhj%$(61wr
 
 SESSION_COOKIE_SAMESITE = "Strict"
 SESSION_COOKIE_SECURE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CSRF_USE_SESSIONS = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -57,6 +58,8 @@ INSTALLED_APPS = [
     "django_vite",
     "django_extensions",
     "rest_framework",
+    "drf_spectacular",
+    "drf_standardized_errors",
 ]
 
 if DEBUG:
@@ -96,9 +99,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-            ],
+            ]
         },
-    },
+    }
 ]
 
 WSGI_APPLICATION = "capstone.wsgi.application"
@@ -107,12 +110,7 @@ WSGI_APPLICATION = "capstone.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
 
 AUTH_USER_MODEL = "solution.User"
 
@@ -120,18 +118,10 @@ AUTH_USER_MODEL = "solution.User"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 
@@ -152,12 +142,8 @@ USE_TZ = True
 
 # WhiteNoise compression and caching support
 STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
 
 
@@ -178,15 +164,14 @@ MEDIA_URL = "/media/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
+    "NON_FIELD_ERRORS_KEY": "errors",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly"
-    ],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
     "DEFAULT_RENDERER_CLASSES": [
         "solution.api.renderers.ORJSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
@@ -196,7 +181,21 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.FormParser",
         "rest_framework.parsers.MultiPartParser",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "EXCEPTION_HANDLER": "drf_standardized_errors.handler.exception_handler",
 }
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Solution API",
+    "DESCRIPTION": "All fields must be changed to camelCase before use",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SERVE_PUBLIC": False,
+    "SORT_OPERATIONS": False,
+    "CAMELIZE_NAMES": True,
+}
+
+DRF_STANDARDIZED_ERRORS = {"ENABLE_IN_DEBUG_FOR_UNHANDLED_EXCEPTIONS": True}
 
 # Same as "ourDir" in vite config
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "solution/static/solution"
@@ -221,11 +220,7 @@ LOGGING = {
         "minimal": {"format": "%(asctime)s - %(message)s"},
     },
     "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "level": "DEBUG",
-            "formatter": "minimal",
-        },
+        "console": {"class": "logging.StreamHandler", "level": "DEBUG", "formatter": "minimal"},
         "file": {
             "class": "logging.FileHandler",
             "level": "DEBUG",
@@ -233,19 +228,10 @@ LOGGING = {
             "formatter": "minimal",
             "delay": True,
         },
-        "json": {
-            "class": "logging.StreamHandler",
-            "level": "DEBUG",
-        },
+        "json": {"class": "logging.StreamHandler", "level": "DEBUG"},
     },
     "loggers": {
-        "django.request": {
-            "handlers": ["console"],
-            "level": "DEBUG",
-        },
-        "solution.request": {
-            "handlers": ["json"],
-            "level": "DEBUG",
-        },
+        "django.request": {"handlers": ["console"], "level": "DEBUG"},
+        "solution.request": {"handlers": ["json"], "level": "DEBUG"},
     },
 }
