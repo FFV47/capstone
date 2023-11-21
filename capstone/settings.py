@@ -14,7 +14,7 @@ from pathlib import Path
 import environ
 
 # set casting, default value
-env = environ.Env(DEBUG=(bool, False))
+env = environ.Env(DEBUG=(bool, True))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -143,6 +143,7 @@ USE_TZ = True
 # WhiteNoise compression and caching support
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    # "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
 
@@ -198,17 +199,11 @@ SPECTACULAR_SETTINGS = {
 DRF_STANDARDIZED_ERRORS = {"ENABLE_IN_DEBUG_FOR_UNHANDLED_EXCEPTIONS": True}
 
 # Same as "ourDir" in vite config
-DJANGO_VITE_ASSETS_PATH = BASE_DIR / "solution/static/solution"
-
-DJANGO_VITE_DEV_MODE = DEBUG
+DJANGO_VITE = {"default": {"dev_mode": True, "dev_server_port": 5173}}
 
 # Include DJANGO_VITE_ASSETS_PATH into STATICFILES_DIRS to be copied inside
 # when run command python manage.py collectstatic
-STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
-
-# RUNSERVERPLUS_SERVER_ADDRESS_PORT = "0.0.0.0:8000"
-
-# RUNSERVERPLUS_POLLER_RELOADER_TYPE = "watchdog"
+# STATICFILES_DIRS = [BASE_DIR / "solution/static/solution"]
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 Mb limit
 

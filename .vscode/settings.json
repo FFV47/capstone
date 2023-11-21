@@ -9,5 +9,5 @@
   "editor.lineHeight": 20,
   "python.testing.pytestEnabled": true,
   "python.analysis.typeCheckingMode": "off",
-  "window.zoomLevel": 0.5
+  "window.zoomLevel": 1
 }

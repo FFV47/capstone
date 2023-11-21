@@ -9,10 +9,6 @@ export default defineConfig({
   base: "/static/",
   server: {
     origin: "http://localhost:5173",
-    // https: {
-    //   cert: fs.readFileSync("localhost.pem"),
-    //   key: fs.readFileSync("localhost-key.pem"),
-    // },
   },
   build: {
     assetsDir: "",
