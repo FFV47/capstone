@@ -198,9 +198,9 @@ SPECTACULAR_SETTINGS = {
 
 DRF_STANDARDIZED_ERRORS = {"ENABLE_IN_DEBUG_FOR_UNHANDLED_EXCEPTIONS": True}
 
-# Same as "ourDir" in vite config
 DJANGO_VITE = {"default": {"dev_mode": True, "dev_server_port": 5173}}
 
+# Same as "ourDir" in vite config
 # Include DJANGO_VITE_ASSETS_PATH into STATICFILES_DIRS to be copied inside
 # when run command python manage.py collectstatic
 # STATICFILES_DIRS = [BASE_DIR / "solution/static/solution"]

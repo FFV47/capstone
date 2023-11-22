@@ -27,8 +27,8 @@ class User(AbstractUser):
     personal_account: Manager[WorkerAccount]
     business_account: Manager[EmployerAccount]
 
-    has_personal_account = models.BooleanField(default=False)
-    has_business_account = models.BooleanField(default=False)
+    has_worker_account = models.BooleanField(default=False)
+    has_employer_account = models.BooleanField(default=False)
 
 
 class BaseModel(models.Model):
@@ -101,7 +101,7 @@ class WorkerAccount(BaseModel):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="personal_account",
+        related_name="worker_account",
         primary_key=True,
     )
     photo = models.ImageField(
@@ -144,17 +144,18 @@ class EmployerAccount(BaseModel):
     contracts: Manager[Contract]
 
     class CompanySize(models.IntegerChoices):
+        # name = value, label
         MICRO = 0, _("Fewer than 10 employees")
-        SMALL = 1, "10 to 50 employees"
-        MEDIUM = 2, "50 to 250 employees"
-        LARGE = 3, "250 to 500 employees"
-        ENTERPRISE = 4, "More than 500 employees"
+        SMALL = 1, _("10 to 50 employees")
+        MEDIUM = 2, _("50 to 250 employees")
+        LARGE = 3, _("250 to 500 employees")
+        ENTERPRISE = 4, _("More than 500 employees")
 
     user_id: int
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="business_account",
+        related_name="employer_account",
         primary_key=True,
     )
     logo = models.ImageField(blank=True, upload_to=business_logo_path, validators=[file_validator])
@@ -211,6 +212,7 @@ class Job(BaseModel):
     tags = models.JSONField(validators=[app_validators.validate_tags])
     applicants = models.ManyToManyField(to=WorkerAccount, related_name="applied_jobs")
     workers = models.ManyToManyField(to=WorkerAccount, related_name="jobs")
+    done = models.BooleanField(default=False)
     posted_date = models.DateTimeField(auto_now_add=True)
 
     def __repr__(self) -> str:

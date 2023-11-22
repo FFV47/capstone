@@ -33,30 +33,18 @@ def fill_db(apps, schema_editor):
 
     User.objects.create_superuser(username="fernando", email="fernando@me.com", password="123")  # type: ignore
 
-    new_user = User.objects.create_user(
-        username="john",
-        email="john@me.com",
-        password="123",
-    )
+    new_user = User.objects.create_user(username="john", email="john@me.com", password="123")
     new_user.first_name = "John"
     new_user.last_name = "Doe"
     new_user.save()
 
-    new_user = User.objects.create_user(
-        username="jane",
-        email="jane@me.com",
-        password="123",
-    )
+    new_user = User.objects.create_user(username="jane", email="jane@me.com", password="123")
     new_user.first_name = "Jane"
     new_user.last_name = "Doe"
     new_user.save()
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ("solution", "0001_initial"),
-    ]
+    dependencies = [("solution", "0001_initial")]
 
-    operations = [
-        migrations.RunPython(fill_db),
-    ]
+    operations = [migrations.RunPython(fill_db)]

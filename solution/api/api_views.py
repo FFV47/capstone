@@ -2,13 +2,12 @@ from django.db import models
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import OpenApiResponse, extend_schema
-from rest_framework import generics, permissions, status
+from rest_framework import generics, status, permissions
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.serializers import Serializer
-
 from solution import models as app_models
 from solution.api import serializers as app_serializers
 from solution.api.permissions import IsOwnerOrStaff
@@ -25,8 +24,8 @@ def api_root(request):
         {
             "roles": reverse("solution:api:roles", request=request),
             "job-data": reverse("solution:api:job-data", request=request),
-            "personal-account": reverse("solution:api:personal-account", request=request),
-            "business-account": reverse("solution:api:business-account", request=request),
+            "worker-account": reverse("solution:api:worker-account", request=request),
+            "employer-account": reverse("solution:api:employer-account", request=request),
         }
     )
 
@@ -103,23 +102,23 @@ class AccountView(generics.GenericAPIView):
                 self.get_serializer(self.get_queryset(), many=True).data, status=status.HTTP_200_OK
             )
 
-    def post(self, request):
+    def post(self, request: AuthRequest):
         serializer = self.get_serializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         if self.model == app_models.WorkerAccount:
-            request.user.has_personal_account = True
+            request.user.has_worker_account = True
         else:
-            request.user.has_business_account = True
+            request.user.has_employer_account = True
         request.user.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def put(self, request):
+    def put(self, request: AuthRequest):
         return self.update(request, partial=False)
 
-    def patch(self, request):
+    def patch(self, request: AuthRequest):
         return self.update(request, partial=True)
 
     def delete(self, request: AuthRequest, username=None):
@@ -149,7 +148,7 @@ class AccountView(generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class PersonalAccountView(AccountView):
+class WorkerAccountView(AccountView):
     """
     A simple view to create and edit personal accounts
     """
@@ -161,7 +160,7 @@ class PersonalAccountView(AccountView):
         return self.model.objects.select_related("user", "profession")
 
 
-class BusinessAccountView(AccountView):
+class EmployerAccountView(AccountView):
     """
     A simple view to create and edit business accounts
     """

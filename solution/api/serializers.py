@@ -68,13 +68,34 @@ class PersonalAccountSerializer(CustomModelSerializer):
 class BusinessAccountSerializer(CustomModelSerializer):
     class Meta:
         model = app_models.EmployerAccount
-        fields = ["company_name", "role", "company_size"]
+        fields = [
+            "user",
+            "logo",
+            "company_name",
+            "address",
+            "legal_name",
+            "industry",
+            "company_size",
+            "location",
+            "company_url",
+            "description",
+            "personal_photo",
+            "role",
+            "first_name",
+            "last_name",
+            "phone",
+        ]
+
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     def to_representation(self, instance: Any) -> Any:
+        """
+        Change choice "value" to "label"
+        """
         response = super().to_representation(instance)
-        response["companySize"] = app_models.EmployerAccount.CompanySize.labels[
-            instance.company_size
-        ]
+        response["companySize"] = str(
+            app_models.EmployerAccount.CompanySize.labels[instance.company_size]
+        )
         return response
 
     def to_internal_value(self, data: QueryDict) -> Any:
@@ -82,6 +103,8 @@ class BusinessAccountSerializer(CustomModelSerializer):
         When the request is sent as FormData, request.data will be a QueryDict
         which is immutable. Each key can have multiple values.
         https://docs.djangoproject.com/en/4.2/ref/request-response/#querydict-objects
+
+        JSON received has the choice "name", but the model field only accepts the "value"
         """
         if "companySize" not in data:
             raise serializers.ValidationError({"company_size": [_("This field is required.")]})

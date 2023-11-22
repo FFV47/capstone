@@ -65,7 +65,7 @@
     },
     {
       "label": "start dev",
-      "dependsOn": ["django", "json server", "sass-watch", "vite dev"],
+      "dependsOn": ["json server", "sass-watch", "vite dev", "django"],
       "problemMatcher": []
     }
   ]
