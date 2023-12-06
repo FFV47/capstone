@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ImageInput from "../../../components/ImageInput";
 import { TCompanyInfo, useSetupAccountContext } from "../SetupAccount";
 import BsHorizonralInput from "../BsHorizontalInput";
+import companySizes from "../../../../static-data/companySizes.json";
 
 export default function BusinessForm() {
   const { accountForm, companyInfoForm } = useSetupAccountContext();
@@ -131,53 +132,23 @@ export default function BusinessForm() {
         </datalist>
         <fieldset className="mb-3">
           <legend className="required fs-6">Company Size</legend>
-          <Form.Check
-            id="size-micro"
-            type="radio"
-            label="Fewer than 10 employees"
-            value="micro"
-            isInvalid={Boolean(errors.companySize)}
-            required
-            {...register("companySize")}
-          />
-          <Form.Check
-            id="size-small"
-            type="radio"
-            label="10 to 50 employees"
-            value="small"
-            isInvalid={Boolean(errors.companySize)}
-            required
-            {...register("companySize")}
-          />
-          <Form.Check
-            id="size-medium"
-            type="radio"
-            label="50 to 250 employees"
-            value="medium"
-            isInvalid={Boolean(errors.companySize)}
-            required
-            {...register("companySize")}
-          />
-          <Form.Check
-            id="size-large"
-            type="radio"
-            label="250 to 500 employees"
-            value="large"
-            isInvalid={Boolean(errors.companySize)}
-            required
-            {...register("companySize")}
-          />
-          <Form.Check
-            id="size-enterprise"
-            type="radio"
-            label="More than 500 employees"
-            value="enterprise"
-            isInvalid={Boolean(errors.companySize)}
-            feedback="Company size is required"
-            feedbackType="invalid"
-            required
-            {...register("companySize")}
-          />
+          {(Object.keys(companySizes) as (keyof typeof companySizes)[]).map((key, i) => {
+            return (
+              <Form.Check
+                key={key}
+                type="radio"
+                label={companySizes[key]}
+                value={key}
+                isInvalid={Boolean(errors.companySize)}
+                required
+                feedback={
+                  i === Object.keys(companySizes).length - 1 ? "Company size is required" : ""
+                }
+                feedbackType={i === Object.keys(companySizes).length - 1 ? "invalid" : undefined}
+                {...register("companySize")}
+              />
+            );
+          })}
         </fieldset>
         <BsHorizonralInput
           type="text"

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { z } from "zod";
+import { queryOptions } from "@tanstack/react-query";
 
 export const workerProfilesSchema = z.array(
   z.object({
@@ -20,12 +21,12 @@ export const workerProfilesSchema = z.array(
 
 export type TWorkerProfiles = z.infer<typeof workerProfilesSchema>;
 
-const workerQuery = {
+const workerQuery = queryOptions({
   queryKey: ["workerQuery"],
   queryFn: async () => {
     const { data } = await axios.get("http://localhost:3000/profiles");
     return workerProfilesSchema.parse(data);
   },
-};
+});
 
 export default workerQuery;

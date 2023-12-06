@@ -37,8 +37,7 @@
             <small class="text-muted">Username from the provided e-mail will be used as default
             username. You can change it later in account settings</small>
             <div id="emailValidation" class="invalid-feedback" aria-live="polite">
-              {{
-              form_errors.email|join:" " }}
+              {{ form_errors.email|join:" " }}
             </div>
             <input type="hidden" name="username" id="username">
           </div>

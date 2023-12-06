@@ -7,10 +7,12 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title text-center">Solution</h4>
-        {% if auth_error %}<div class="alert alert-danger text-center">{{ auth_error }}</div>{% endif %}
-        {% comment %}
-      <div class="alert alert-danger text-center">{{ form_errors.email_username|join:" " }}</div>
-        {% endcomment %}
+        {% if auth_error %}
+          <div class="alert alert-danger text-center">{{ auth_error }}</div>
+          <div>Teste</div>
+          <div>Teste</div>
+        {% endif %}
+        {# <div class="alert alert-danger text-center">{{ form_errors.email_username|join:" " }}</div>#}
         <form action="{% url 'solution:login' %}"
               method="post"
               class="needs-validation mb-3"

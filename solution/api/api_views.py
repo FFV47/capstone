@@ -2,12 +2,13 @@ from django.db import models
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import OpenApiResponse, extend_schema
-from rest_framework import generics, status, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.serializers import Serializer
+
 from solution import models as app_models
 from solution.api import serializers as app_serializers
 from solution.api.permissions import IsOwnerOrStaff
@@ -92,14 +93,16 @@ class AccountView(generics.GenericAPIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def get(self, _, username=None) -> Response:
+    def get(self, request, username=None) -> Response:
         if username:
             return Response(
-                self.get_serializer(self.get_object(username)).data, status=status.HTTP_200_OK
+                self.get_serializer(self.get_object(username)).data,
+                status=status.HTTP_200_OK,
             )
         else:
             return Response(
-                self.get_serializer(self.get_queryset(), many=True).data, status=status.HTTP_200_OK
+                self.get_serializer(self.get_queryset(), many=True).data,
+                status=status.HTTP_200_OK,
             )
 
     def post(self, request: AuthRequest):
@@ -126,22 +129,21 @@ class AccountView(generics.GenericAPIView):
             self.get_queryset().delete()
             all_users = app_models.User.objects.all()
             for user in all_users:
-                user.has_personal_account = False
-                user.has_business_account = False
+                user.has_worker_account = False
+                user.has_employer_account = False
                 user.save()
 
             app_models.User.objects.bulk_update(
-                all_users, ["has_personal_account", "has_business_account"]
+                all_users, ["has_worker_account", "has_employer_account"]
             )
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        instance = self.get_object(username)
-        instance.delete()
+        self.get_object(username).delete()
 
         if self.model == app_models.WorkerAccount:
-            request.user.has_personal_account = False
+            request.user.has_worker_account = False
         else:
-            request.user.has_business_account = False
+            request.user.has_employer_account = False
 
         request.user.save()
 
@@ -154,7 +156,7 @@ class WorkerAccountView(AccountView):
     """
 
     model = app_models.WorkerAccount
-    serializer_class = app_serializers.PersonalAccountSerializer
+    serializer_class = app_serializers.WorkerAccountSerializer
 
     def get_queryset(self) -> models.QuerySet:
         return self.model.objects.select_related("user", "profession")
@@ -166,7 +168,7 @@ class EmployerAccountView(AccountView):
     """
 
     model = app_models.EmployerAccount
-    serializer_class = app_serializers.BusinessAccountSerializer
+    serializer_class = app_serializers.EmployerAccountSerializer
 
     def get_queryset(self) -> models.QuerySet:
         return self.model.objects.select_related("user")

@@ -1,24 +1,9 @@
-import orjson
+original_dict = {"a": 1, "b": 2, "c": 3, "d": 4}
+keys_to_remove = ["b", "d"]
 
-data = [
-    {
-        "logo": None,
-        "companyName": "Brave",
-        "address": "128379",
-        "legalName": "Brave",
-        "industry": "Arts",
-        "companySize": "Fewer than 10 employees",
-        "location": "New York",
-        "companyUrl": "",
-        "description": "",
-        "personalPhoto": None,
-        "role": "Consultant",
-        "firstName": "Fernando",
-        "lastName": "Flores",
-        "phone": "12345918723897",
-    }
-]
+# Remove key-value pair with value 2
+for key in list(original_dict.keys()):
+    if key in keys_to_remove:
+        original_dict.pop(key)
 
-result = orjson.dumps(data, option=orjson.OPT_INDENT_2)
-
-print(result)
+print(original_dict)

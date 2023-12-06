@@ -26,9 +26,9 @@
       "type": "shell",
       "group": "test",
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}/solution/frontend"
       },
-      "command": "npx json-server -w db_json/db.json",
+      "command": "json-server -w static-data/db.json",
       "problemMatcher": []
     },
     {

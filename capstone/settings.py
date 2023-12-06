@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import environ
 
@@ -56,7 +57,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_vite",
-    "django_extensions",
     "rest_framework",
     "drf_spectacular",
     "drf_standardized_errors",
@@ -132,6 +132,8 @@ LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "America/Sao_Paulo"
 
+ZONE_INFO = ZoneInfo(TIME_ZONE)
+
 USE_I18N = True
 
 USE_TZ = True
@@ -143,8 +145,8 @@ USE_TZ = True
 # WhiteNoise compression and caching support
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    # "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
-    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    # "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
 
 
@@ -196,7 +198,10 @@ SPECTACULAR_SETTINGS = {
     "CAMELIZE_NAMES": True,
 }
 
-DRF_STANDARDIZED_ERRORS = {"ENABLE_IN_DEBUG_FOR_UNHANDLED_EXCEPTIONS": True}
+DRF_STANDARDIZED_ERRORS = {
+    "ENABLE_IN_DEBUG_FOR_UNHANDLED_EXCEPTIONS": True,
+    "EXCEPTION_FORMATTER_CLASS": "solution.api.exception.MyExceptionFormatter",
+}
 
 DJANGO_VITE = {"default": {"dev_mode": True, "dev_server_port": 5173}}
 

@@ -72,7 +72,7 @@ function validateEmailUsername(fieldID: string) {
 
   const emailRegExp =
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gim;
-  const userRegExp = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/gim;
+  const userRegExp = /^(?!.*\.\.)(?!.*\.$)\w[\w.]{0,29}$/gim;
 
   if (field && fieldValidation) {
     if (field.value.includes("@") && !emailRegExp.test(field.value)) {

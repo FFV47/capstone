@@ -41,16 +41,16 @@ def upload_path(instance, filename):
     return f"{app_name}/user_{user_id}/{uuid4().hex}{file_ext}"
 
 
-def personal_account_path(instance, filename):
-    return account_path_handler(instance, filename, "personal/")
+def worker_account_path(instance, filename):
+    return account_path_handler(instance, filename, "worker/")
 
 
-def business_logo_path(instance, filename):
-    return account_path_handler(instance, filename, "business/logo/")
+def employer_logo_path(instance, filename):
+    return account_path_handler(instance, filename, "employer/logo/")
 
 
-def business_photo_path(instance, filename):
-    return account_path_handler(instance, filename, "business/photo/")
+def employer_photo_path(instance, filename):
+    return account_path_handler(instance, filename, "employer/photo/")
 
 
 def account_path_handler(instance, filename, extra_path):

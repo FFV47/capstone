@@ -21,6 +21,6 @@ react_root = [
         name="react_root",
     )
 ]
-urlpatterns = urlpatterns + react_root
 
+urlpatterns = urlpatterns + react_root
 # urlpatterns = format_suffix_patterns(urlpatterns)

@@ -1,0 +1,7 @@
+{
+  "micro": "Fewer than 10 employees",
+  "small": "10 to 50 employees",
+  "medium": "50 to 250 employees",
+  "large": "250 to 500 employees",
+  "enterprise": "More than 500 employees"
+}

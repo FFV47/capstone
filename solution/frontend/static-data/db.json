@@ -11,7 +11,13 @@
     "Temporary Staff",
     "General Labor"
   ],
-  "jobTypes": ["Part-Time", "Full-Time", "Overtime", "Contract", "Internship"],
+  "jobTypes": [
+    "Part-Time",
+    "Full-Time",
+    "Overtime",
+    "Contract",
+    "Internship"
+  ],
   "shifts": [
     "Day Shift",
     "Night Shift",
@@ -33,7 +39,11 @@
     "Weekend",
     "Whole Week"
   ],
-  "jobTags": ["Hiring multiple candidates", "Urgently hiring", "Temporary"],
+  "jobTags": [
+    "Hiring multiple candidates",
+    "Urgently hiring",
+    "Temporary"
+  ],
   "find-jobs": [
     {
       "id": 1,
@@ -43,8 +53,15 @@
       "companyDescription": "We are seeking a bicycle mechanic to join our team. The ideal candidate will have experience working in a bicycle environment and be able to perform physical labor for extended periods of time.",
       "description": "We are seeking an experienced and detail-oriented bicycle mechanic to join our team. The ideal candidate will have a strong knowledge of bicycle mechanics and a passion for providing high-quality service to customers.",
       "location": "Portland, OR",
-      "types": ["Full-Time", "Contract"],
-      "shifts": ["8 Hour Shift", "12 Hour Shift", "24 Hour Shift"],
+      "types": [
+        "Full-Time",
+        "Contract"
+      ],
+      "shifts": [
+        "8 Hour Shift",
+        "12 Hour Shift",
+        "24 Hour Shift"
+      ],
       "responsibilities": [
         "Perform tune-ups and repairs on bicycles",
         "Assist customers with bike selection and fitting",
@@ -75,13 +92,20 @@
       },
       "workSchedules": [
         {
-          "schedules": ["Monday to Friday", "Weekend"],
+          "schedules": [
+            "Monday to Friday",
+            "Weekend"
+          ],
           "from": "2021-01-01T12:00:00.000Z",
           "to": "2021-01-01T20:00:00.000Z"
         }
       ],
       "applicationInstructions": "To apply for this position, please send your resume, a cover letter, and any relevant certifications or training to hr@company.com.",
-      "tags": ["Hiring multiple candidates", "Urgently hiring", "Temporary"],
+      "tags": [
+        "Hiring multiple candidates",
+        "Urgently hiring",
+        "Temporary"
+      ],
       "postedDate": "2023-05-04T12:31:00.000Z"
     }
   ],

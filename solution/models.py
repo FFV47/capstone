@@ -1,19 +1,20 @@
 from __future__ import annotations
 
 import uuid
+from datetime import date
 from typing import TYPE_CHECKING
 
+import orjson
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.utils.translation import gettext_lazy as _
-
 from django.core import validators
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.forms import JSONField
+from django.utils.translation import gettext_lazy as _
 
 from solution import validators as app_validators
-
-from solution.utils import business_logo_path, business_photo_path, personal_account_path
+from solution.utils import employer_logo_path, employer_photo_path, worker_account_path
 
 file_validator = app_validators.FileValidator(max_size=3, content_types=("image/jpeg", "image/png"))
 
@@ -21,12 +22,32 @@ if TYPE_CHECKING:
     from django.db.models import Manager
 
 
+def get_company_size():
+    with open(settings.BASE_DIR / "solution/frontend/static-data/companySizes.json") as f:
+        return orjson.loads(f.read())
+
+
 class User(AbstractUser):
     id: int
 
-    personal_account: Manager[WorkerAccount]
-    business_account: Manager[EmployerAccount]
+    worker_account: Manager[WorkerAccount]
+    employer_account: Manager[EmployerAccount]
 
+    first_name = models.CharField(
+        blank=True, max_length=20, validators=[validators.MinLengthValidator(2)]
+    )
+    last_name = models.CharField(
+        blank=True, max_length=20, validators=[validators.MinLengthValidator(2)]
+    )
+    birthdate = models.DateField(
+        blank=True, null=True, validators=[app_validators.validate_birthdate]
+    )
+    phone = models.CharField(
+        blank=True,
+        max_length=20,
+        validators=[validators.RegexValidator(r"^(\d{1,3})(\d{2})(\d{9})$")],
+    )
+    verified_id = models.BooleanField(default=False)
     has_worker_account = models.BooleanField(default=False)
     has_employer_account = models.BooleanField(default=False)
 
@@ -105,7 +126,7 @@ class WorkerAccount(BaseModel):
         primary_key=True,
     )
     photo = models.ImageField(
-        blank=True, upload_to=personal_account_path, validators=[file_validator]
+        blank=True, upload_to=worker_account_path, validators=[file_validator]
     )
     profession_id: int
     profession = models.ForeignKey(
@@ -143,14 +164,6 @@ class EmployerAccount(BaseModel):
     received_feedbacks: Manager[WorkerFeedback]
     contracts: Manager[Contract]
 
-    class CompanySize(models.IntegerChoices):
-        # name = value, label
-        MICRO = 0, _("Fewer than 10 employees")
-        SMALL = 1, _("10 to 50 employees")
-        MEDIUM = 2, _("50 to 250 employees")
-        LARGE = 3, _("250 to 500 employees")
-        ENTERPRISE = 4, _("More than 500 employees")
-
     user_id: int
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -158,18 +171,21 @@ class EmployerAccount(BaseModel):
         related_name="employer_account",
         primary_key=True,
     )
-    logo = models.ImageField(blank=True, upload_to=business_logo_path, validators=[file_validator])
+    # Company Data
+    logo = models.ImageField(blank=True, upload_to=employer_logo_path, validators=[file_validator])
     company_name = models.CharField(max_length=50)
     address = models.CharField(max_length=255)
     legal_name = models.CharField(max_length=100)
     industry = models.CharField(max_length=50)
-    company_size = models.IntegerField(choices=CompanySize.choices)
+    # noinspection PyTypeChecker
+    company_size = models.CharField(max_length=10, choices=get_company_size)
     location = models.CharField(max_length=50)
     company_url = models.URLField(blank=True)
     description = models.TextField(blank=True)
 
+    # Personal Data
     personal_photo = models.ImageField(
-        blank=True, upload_to=business_photo_path, validators=[file_validator]
+        blank=True, upload_to=employer_photo_path, validators=[file_validator]
     )
     role = models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
@@ -192,10 +208,12 @@ class Job(BaseModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.CharField(max_length=255)
     employer = models.ForeignKey(
-        to=EmployerAccount, on_delete=models.SET_NULL, null=True, related_name="jobs"
+        to=EmployerAccount, null=True, on_delete=models.SET_NULL, related_name="jobs"
     )
-    start_date = models.DateField()
-    end_date = models.DateField(blank=True)
+    start_date = models.DateField(validators=[MinValueValidator(limit_value=date.today())])
+    end_date = models.DateField(
+        blank=True, null=True, validators=[MinValueValidator(limit_value=date.today())]
+    )
     description = models.TextField()
     location = models.CharField(max_length=255)
     types = models.JSONField(validators=[app_validators.validate_job_types])
@@ -222,14 +240,15 @@ class Job(BaseModel):
 class Contract(BaseModel):
     class Status(models.TextChoices):
         PENDING = "PEN", _("Pending")
-        ACTIVE = "ACT", _("Active")
+        ACTIVE = "ATV", _("Active")
         ENDED = "END", _("Ended")
-        TERMINATED = "TER", _("Terminated")
-        REJECTED = "REJ", _("Rejected")
+        REJECTED = "RJT", _("Rejected")
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    start_date = models.DateField()
-    end_date = models.DateField(blank=True)
+    start_date = models.DateField(validators=[MinValueValidator(limit_value=date.today())])
+    end_date = models.DateField(
+        blank=True, null=True, validators=[MinValueValidator(limit_value=date.today())]
+    )
     status = models.TextField(choices=Status.choices, default=Status.PENDING)
     signed_employer = models.ForeignKey(
         to=EmployerAccount, on_delete=models.SET_NULL, null=True, related_name="contracts"

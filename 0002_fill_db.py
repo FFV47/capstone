@@ -2,6 +2,7 @@
 
 import json
 
+from django.conf import settings
 from django.db import migrations
 
 
@@ -15,7 +16,7 @@ def fill_db(apps, schema_editor):
     DaysSchedule = apps.get_model("solution", "DaysSchedule")
     JobTag = apps.get_model("solution", "JobTag")
 
-    with open("db_json/db.json") as db:
+    with open(settings.BASE_DIR / "solution/frontend/static-data/db.json") as db:
         db_json = json.loads(db.read())
         profession_objs = [Profession(name=role) for role in db_json["roles"]]
         job_types = [JobType(name=job_type) for job_type in db_json["jobTypes"]]

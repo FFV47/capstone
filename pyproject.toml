@@ -6,7 +6,7 @@ name = "capstone"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
-Django = "^4.2.7"
+Django = "^5.0"
 Pillow = "^10.0.0"
 django-environ = "^0.11.2"
 django-filter = "^23.2"
@@ -26,12 +26,13 @@ whitenoise = "*"
 black = "^23.1.0"
 django-browser-reload = "^1.6.0"
 django-debug-toolbar = "^4.0.0"
-django-extensions = "^3.2.1"
 django-stubs = {extras = ["compatible-mypy"], version = "*"}
 django-vite = "^3.0.0"
 djangorestframework-stubs = {extras = ["compatible-mypy"], version = "*"}
 djlint = "^1.12.1"
 drf-spectacular = "^0.26.4"
+flake8-black = "^0.3.6"
+pylint-django = "^2.5.5"
 pyopenssl = "^23.0.0"
 pytest-django = "^4.5.2"
 pytest-xdist = "^3.3.1"
@@ -39,6 +40,7 @@ pytest-xdist = "^3.3.1"
 [tool.djlint]
 blank_line_after_tag = "load,extends,include,endblock"
 format_attribute_template_tags = true
+format_css = true
 format_js = true
 ignore = "H031,D018,H030,H017,T002,H014"
 indent = 2
@@ -50,9 +52,8 @@ use_gitignore = true
 [tool.djlint.js]
 indent_size = 2
 
-[tool.ruff]
-ignore = ["E501"]
-line-length = 100
+[tool.djlint.css]
+indent_size = 2
 
 [tool.black]
 line-length = 100
